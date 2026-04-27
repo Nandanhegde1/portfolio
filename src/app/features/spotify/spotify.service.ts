@@ -1,4 +1,7 @@
-import { Injectable, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Injectable, inject, signal } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export interface SpotifyTrack {
   name: string;
@@ -11,23 +14,32 @@ export interface SpotifyTrack {
   url: string;
 }
 
+interface NowPlayingResponse {
+  isPlaying: boolean;
+  title?: string;
+  artist?: string;
+  album?: string;
+  albumArt?: string;
+  progress?: number;
+  duration?: number;
+  url?: string;
+  mock?: boolean;
+}
+
 @Injectable({ providedIn: 'root' })
 export class SpotifyService {
+  private readonly http = inject(HttpClient);
+  private readonly API = `${environment.apiUrl}/api/spotify/now-playing`;
+
   readonly currentTrack = signal<SpotifyTrack | null>(null);
   readonly loading = signal(false);
   readonly error = signal<string | null>(null);
 
   private pollInterval: ReturnType<typeof setInterval> | null = null;
 
-  /**
-   * Start polling for now-playing data.
-   * In production, this calls the backend proxy at /api/spotify/now-playing
-   * which handles the OAuth token refresh.
-   * For now, uses mock data.
-   */
   startPolling(): void {
     this.fetchNowPlaying();
-    this.pollInterval = setInterval(() => this.fetchNowPlaying(), 30000);
+    this.pollInterval = setInterval(() => this.fetchNowPlaying(), 30_000);
   }
 
   stopPolling(): void {
@@ -40,23 +52,35 @@ export class SpotifyService {
   private async fetchNowPlaying(): Promise<void> {
     this.loading.set(true);
     try {
-      // TODO: Replace with actual backend call
-      // const response = await fetch('/api/spotify/now-playing');
-      // const data = await response.json();
-
-      // Mock data for now
-      this.currentTrack.set({
-        name: 'Blinding Lights',
-        artist: 'The Weeknd',
-        album: 'After Hours',
-        albumArt: 'https://i.scdn.co/image/ab67616d0000b2738863bc11d2aa12b54f5aeb36',
-        isPlaying: true,
-        progress: 45,
-        duration: 200,
-        url: 'https://open.spotify.com',
-      });
+      const data = await firstValueFrom(this.http.get<NowPlayingResponse>(this.API));
+      if (data?.isPlaying && data.title) {
+        this.currentTrack.set({
+          name: data.title,
+          artist: data.artist || '',
+          album: data.album || '',
+          albumArt: data.albumArt || '',
+          isPlaying: true,
+          progress: data.progress || 0,
+          duration: data.duration || 0,
+          url: data.url || 'https://open.spotify.com',
+        });
+      } else if (data?.mock) {
+        // backend not configured — use a single static fallback so the widget still renders
+        this.currentTrack.set({
+          name: 'Blinding Lights',
+          artist: 'The Weeknd',
+          album: 'After Hours',
+          albumArt: 'https://i.scdn.co/image/ab67616d0000b2738863bc11d2aa12b54f5aeb36',
+          isPlaying: false,
+          progress: 0,
+          duration: 200_000,
+          url: 'https://open.spotify.com',
+        });
+      } else {
+        this.currentTrack.set(null);
+      }
     } catch {
-      this.error.set('Could not fetch Spotify data');
+      this.error.set('Spotify offline');
       this.currentTrack.set(null);
     } finally {
       this.loading.set(false);

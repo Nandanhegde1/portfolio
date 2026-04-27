@@ -15,5 +15,18 @@ export class AppComponent {
 
   constructor() {
     this.seo.init();
+    this.registerServiceWorker();
+  }
+
+  private registerServiceWorker(): void {
+    if (typeof window === 'undefined') return;
+    if (!('serviceWorker' in navigator)) return;
+    // Only in production builds (avoid stale SW during ng serve)
+    if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') return;
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js').catch(() => {
+        /* silently fail \u2014 SW is non-critical */
+      });
+    });
   }
 }

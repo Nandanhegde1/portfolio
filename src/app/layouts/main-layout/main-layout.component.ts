@@ -12,12 +12,14 @@ import { SpotifyWidgetComponent } from '../../features/spotify/spotify-widget.co
   imports: [RouterOutlet, NavbarComponent, FooterComponent, SocialSidebarComponent, ChatbotComponent, TerminalShellComponent, SpotifyWidgetComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
+    <a href="#main-content" class="skip-to-content">Skip to main content</a>
+
     <!-- Scroll progress bar -->
     <div class="scroll-progress" [style.width.%]="scrollProgress()"></div>
 
     <app-navbar />
     <app-social-sidebar />
-    <main class="main-content">
+    <main class="main-content" id="main-content" tabindex="-1">
       <router-outlet />
     </main>
     <app-footer />

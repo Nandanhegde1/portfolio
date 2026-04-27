@@ -1,59 +1,90 @@
-# Portfolio
+# Nandan Hegde — Portfolio
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.0.
+[![Deploy](https://github.com/Nandanhegde1/portfolio/actions/workflows/deploy.yml/badge.svg)](https://github.com/Nandanhegde1/portfolio/actions/workflows/deploy.yml)
+[![Live Site](https://img.shields.io/badge/live-nandanhegde1.github.io%2Fportfolio-6c63ff?logo=github)](https://nandanhegde1.github.io/portfolio/)
+[![Angular](https://img.shields.io/badge/Angular-19-DD0031?logo=angular&logoColor=white)](https://angular.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.6-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Node](https://img.shields.io/badge/Node-20.x-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-## Development server
+A data-rich, interactive developer portfolio built with **Angular 19** + **SCSS** + **Three.js** + **Express** + **Supabase** + **Anthropic Claude**.
 
-To start a local development server, run:
+> **Live:** https://nandanhegde1.github.io/portfolio/
 
-```bash
-ng serve
+---
+
+## ✨ Features
+
+| | |
+|---|---|
+| 🎨 **Interactive 3D Hero** | Three.js particles with mouse parallax, theme-reactive |
+| 🤖 **AI Chatbot** | Claude Sonnet, knows my full resume, conversation memory |
+| 🔥 **Roast My Stack** | Claude Opus 4 roasts your tech choices with 3 intensity levels |
+| 📊 **Live Dashboard** | GitHub heatmap, code vitals, tech orbit, real-time stats |
+| 📈 **Visitor Analytics** | Self-hosted via Supabase, no cookies, GDPR-friendly |
+| 💼 **Recruiter Tracker** | Real recruiter reach-outs + interview pipeline visualization |
+| 📝 **Guestbook** | Backed by Supabase, optimistic UI, DiceBear avatars |
+| 💌 **Contact Form** | Persisted to Supabase, rate-limited, validated |
+| 🎴 **Card Forge** | Generate & download a custom holographic dev card (Canvas API) |
+| 🌗 **5 Themes** | Light · Dark · Synthwave · Nord · Dracula |
+| ⌨️ **Terminal Palette** | `Ctrl+K` opens a CLI with autocomplete & easter eggs |
+| 📄 **Print to PDF** | One-click clean PDF export of the About page |
+| 🔍 **SEO Ready** | Per-route meta, JSON-LD Person schema, sitemap, robots |
+| 📱 **PWA** | Installable, offline-capable, manifest + icons |
+
+---
+
+## 🛠️ Stack
+
+```
+Frontend  ─ Angular 19, TypeScript, SCSS, RxJS, Signals, Three.js
+Backend   ─ Express 4, Supabase (Postgres), Helmet, rate limiting
+AI        ─ Anthropic Claude Sonnet 4 (chat) + Opus 4 (roast)
+Hosting   ─ GitHub Pages (frontend) + Render (API)
+CI/CD     ─ GitHub Actions
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## 🏗️ Architecture
 
-## Code scaffolding
+```
+src/app/
+├── core/             # Singleton services, models, interceptors
+├── shared/           # Reusable components, directives, pipes
+├── features/         # Lazy-loaded route features
+│   ├── hero/         # 3D Three.js scene
+│   ├── about/        # Character sheet + card forge
+│   ├── dashboard/    # GitHub stats, code vitals, live stats
+│   ├── chatbot/      # Claude-powered AI
+│   ├── roast/        # AI tech-stack roaster
+│   ├── guestbook/    # Supabase-backed guestbook
+│   ├── contact/      # Backend-wired contact form
+│   ├── blog/         # "Under the Hood" build doc
+│   ├── quiz/         # "How well do you know me?" quiz
+│   └── pitch/        # 60-second hire-me pitch
+└── layouts/          # Main + dashboard layouts
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+backend/
+├── server.js         # Express app, all endpoints
+└── supabase.js       # Lazy Supabase client
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## 🚀 Local Development
 
 ```bash
-ng generate --help
+# Frontend
+npm install --legacy-peer-deps
+npx ng serve         # http://localhost:4200
+
+# Backend
+cd backend
+npm install
+npm run dev          # http://localhost:3000
 ```
 
-## Building
+## 🚢 Deploy
 
-To build the project run:
+Push to `main`. GitHub Actions builds and deploys to Pages automatically.
 
-```bash
-ng build
-```
+## 🪪 License
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+MIT — feel free to fork, learn from, or steal ideas. Just don't impersonate me 😉

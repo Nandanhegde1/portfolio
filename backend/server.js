@@ -388,6 +388,138 @@ app.post('/api/guestbook', guestbookLimiter, async (req, res) => {
   res.json(data);
 });
 
+// ── Recruiter Tracker ──
+app.get('/api/recruiter/stats', async (_req, res) => {
+  const sb = getSupabase();
+  if (!sb) return res.json({ total: 0, last30Days: 0, byCompany: {}, recent: [] });
+
+  const { data } = await sb.from('recruiter_logs').select('*').order('contacted_at', { ascending: false });
+  const all = data || [];
+  const thirtyDaysAgo = new Date(Date.now() - 30 * 86400 * 1000);
+  const byCompany = {};
+  all.forEach(r => { byCompany[r.company || 'Unknown'] = (byCompany[r.company || 'Unknown'] || 0) + 1; });
+
+  res.json({
+    total: all.length,
+    last30Days: all.filter(r => new Date(r.contacted_at) >= thirtyDaysAgo).length,
+    byCompany,
+    recent: all.slice(0, 5).map(r => ({
+      company: r.company,
+      role: r.role,
+      contacted_at: r.contacted_at,
+      source: r.source,
+    })),
+  });
+});
+
+app.post('/api/recruiter/log', async (req, res) => {
+  if (req.query.key !== process.env.ADMIN_KEY) return res.status(401).json({ error: 'Unauthorized' });
+  const { company, role, source, contacted_at, notes } = req.body;
+  const sb = getSupabase();
+  if (!sb) return res.status(503).json({ error: 'DB unavailable' });
+  const { data, error } = await sb.from('recruiter_logs').insert({
+    company: (company || 'Unknown').substring(0, 200),
+    role: (role || '').substring(0, 200),
+    source: (source || '').substring(0, 100),
+    contacted_at: contacted_at || new Date().toISOString(),
+    notes: (notes || '').substring(0, 1000),
+  }).select().single();
+  if (error) return res.status(500).json({ error: error.message });
+  res.json(data);
+});
+
+// ── Interview Tracker ──
+app.get('/api/interviews/stats', async (_req, res) => {
+  const sb = getSupabase();
+  if (!sb) return res.json({ total: 0, byStage: {}, byOutcome: {}, recent: [] });
+
+  const { data } = await sb.from('interviews').select('*').order('interview_date', { ascending: false });
+  const all = data || [];
+  const byStage = {};
+  const byOutcome = {};
+  all.forEach(i => {
+    byStage[i.stage || 'Unknown'] = (byStage[i.stage || 'Unknown'] || 0) + 1;
+    byOutcome[i.outcome || 'Pending'] = (byOutcome[i.outcome || 'Pending'] || 0) + 1;
+  });
+
+  res.json({
+    total: all.length,
+    byStage,
+    byOutcome,
+    recent: all.slice(0, 5).map(i => ({
+      company: i.company,
+      stage: i.stage,
+      outcome: i.outcome,
+      interview_date: i.interview_date,
+    })),
+  });
+});
+
+app.post('/api/interviews/log', async (req, res) => {
+  if (req.query.key !== process.env.ADMIN_KEY) return res.status(401).json({ error: 'Unauthorized' });
+  const { company, role, stage, outcome, interview_date, notes } = req.body;
+  const sb = getSupabase();
+  if (!sb) return res.status(503).json({ error: 'DB unavailable' });
+  const { data, error } = await sb.from('interviews').insert({
+    company: (company || 'Unknown').substring(0, 200),
+    role: (role || '').substring(0, 200),
+    stage: (stage || 'Applied').substring(0, 50),
+    outcome: (outcome || 'Pending').substring(0, 50),
+    interview_date: interview_date || new Date().toISOString(),
+    notes: (notes || '').substring(0, 1000),
+  }).select().single();
+  if (error) return res.status(500).json({ error: error.message });
+  res.json(data);
+});
+
+// ── Spotify proxy (uses Refresh Token Flow) ──
+let spotifyTokenCache = { token: null, expiresAt: 0 };
+
+async function getSpotifyToken() {
+  if (spotifyTokenCache.token && Date.now() < spotifyTokenCache.expiresAt) return spotifyTokenCache.token;
+  const clientId = process.env.SPOTIFY_CLIENT_ID;
+  const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
+  const refreshToken = process.env.SPOTIFY_REFRESH_TOKEN;
+  if (!clientId || !clientSecret || !refreshToken) return null;
+
+  const auth = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
+  const response = await fetch('https://accounts.spotify.com/api/token', {
+    method: 'POST',
+    headers: { 'Authorization': `Basic ${auth}`, 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: `grant_type=refresh_token&refresh_token=${refreshToken}`,
+  });
+  if (!response.ok) return null;
+  const data = await response.json();
+  spotifyTokenCache = { token: data.access_token, expiresAt: Date.now() + (data.expires_in - 60) * 1000 };
+  return data.access_token;
+}
+
+app.get('/api/spotify/now-playing', async (_req, res) => {
+  const token = await getSpotifyToken();
+  if (!token) return res.json({ isPlaying: false, mock: true });
+
+  try {
+    const response = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
+      headers: { 'Authorization': `Bearer ${token}` },
+    });
+    if (response.status === 204) return res.json({ isPlaying: false });
+    if (!response.ok) return res.json({ isPlaying: false });
+    const data = await response.json();
+    res.json({
+      isPlaying: data.is_playing,
+      title: data.item?.name,
+      artist: data.item?.artists?.map(a => a.name).join(', '),
+      album: data.item?.album?.name,
+      albumArt: data.item?.album?.images?.[0]?.url,
+      progress: data.progress_ms,
+      duration: data.item?.duration_ms,
+      url: data.item?.external_urls?.spotify,
+    });
+  } catch {
+    res.json({ isPlaying: false });
+  }
+});
+
 // ── Admin: view all data ──
 app.get('/api/admin/contacts', async (req, res) => {
   if (req.query.key !== process.env.ADMIN_KEY) return res.status(401).json({ error: 'Unauthorized' });

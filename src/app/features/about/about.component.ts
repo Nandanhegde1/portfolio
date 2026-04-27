@@ -59,6 +59,14 @@ interface InventoryItem {
           <span class="rpg__tag">// character-select</span>
           <h1 class="rpg__title">Character Sheet</h1>
           <p class="rpg__subtitle">Level {{ level }} · Senior Developer · {{ xpYears }}+ years of adventure</p>
+          <button
+            type="button"
+            class="rpg__print-btn"
+            (click)="printResume()"
+            aria-label="Save this page as PDF resume"
+          >
+            📄 Save as PDF Resume
+          </button>
         </div>
 
         <!-- Two-column: Card sidebar + Content -->
@@ -273,6 +281,20 @@ interface InventoryItem {
                       [title]="avatar.label"
                     >{{ avatar.emoji }}</button>
                   }
+                  <button
+                    class="rpg__forge-avatar-btn"
+                    [class.rpg__forge-avatar-btn--active]="forgeAvatar() === 'dicebear'"
+                    (click)="forgeAvatar.set('dicebear')"
+                    title="DiceBear cartoon avatar (unique to your name)"
+                  >
+                    <img
+                      [src]="getDiceBearUrl(visitorName || 'guest')"
+                      alt="DiceBear avatar option"
+                      class="rpg__forge-dicebear-thumb"
+                      width="28"
+                      height="28"
+                    />
+                  </button>
                 </div>
               </div>
               <div class="rpg__forge-field">
@@ -370,6 +392,12 @@ interface InventoryItem {
                   <div class="rpg__forge-avatar-display">
                     @if (forgeAvatar() === 'initials') {
                       <span>{{ getInitials(visitorName) }}</span>
+                    } @else if (forgeAvatar() === 'dicebear') {
+                      <img
+                        [src]="getDiceBearUrl(visitorName || 'guest')"
+                        alt="Cartoon avatar"
+                        class="rpg__forge-dicebear-display"
+                      />
                     } @else {
                       <span class="rpg__forge-avatar-emoji">{{ getAvatarEmoji(forgeAvatar()) }}</span>
                     }
@@ -447,6 +475,17 @@ export class AboutComponent implements OnInit {
 
   getAvatarEmoji(id: string): string {
     return this.avatarOptions.find(a => a.id === id)?.emoji ?? '??';
+  }
+
+  getDiceBearUrl(name: string): string {
+    const seed = encodeURIComponent((name || 'guest').toLowerCase().trim());
+    return `https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf`;
+  }
+
+  printResume(): void {
+    if (typeof window !== 'undefined') {
+      window.print();
+    }
   }
 
   readonly attributes: RpgStat[] = [

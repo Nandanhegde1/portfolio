@@ -2,11 +2,12 @@ import { Component, inject, OnInit, OnDestroy, ChangeDetectionStrategy, signal }
 import { AnimatedCounterComponent, LoadingSkeletonComponent } from '../../shared/components';
 import { GitHubService } from '../../core/services';
 import { ScrollRevealDirective } from '../../shared/directives/scroll-reveal.directive';
+import { LiveStatsWidgetComponent } from './live-stats-widget.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [AnimatedCounterComponent, LoadingSkeletonComponent, ScrollRevealDirective],
+  imports: [AnimatedCounterComponent, LoadingSkeletonComponent, ScrollRevealDirective, LiveStatsWidgetComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="dash">
@@ -23,6 +24,11 @@ import { ScrollRevealDirective } from '../../shared/directives/scroll-reveal.dir
           <div class="dash__visitors-glow"></div>
           <app-animated-counter [targetValue]="visitorCount" size="lg" label="visitors & counting" />
           <p class="dash__visitors-sub">People who've checked out this portfolio</p>
+        </div>
+
+        <!-- Live Stats Widget (real backend data) -->
+        <div appScrollReveal>
+          <app-live-stats-widget />
         </div>
 
         <!-- Code Vitals — "Health Monitor" -->

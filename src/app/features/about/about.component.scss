@@ -64,6 +64,32 @@
     font-family: $font-mono;
   }
 
+  &__print-btn {
+    margin-top: $space-md;
+    padding: $space-sm $space-lg;
+    background: var(--bg-secondary);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    border-radius: $radius-full;
+    font-family: $font-mono;
+    font-size: $fs-sm;
+    font-weight: $fw-semibold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: var(--accent);
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px var(--accent-glow);
+    }
+
+    &:focus-visible {
+      outline: 3px solid var(--accent-glow);
+      outline-offset: 3px;
+    }
+  }
+
   // ── Holographic Card ──
   &__card-wrapper {
     display: flex;
@@ -1018,6 +1044,23 @@
   &__forge-avatar-emoji {
     font-size: 2rem;
     line-height: 1;
+  }
+
+  &__forge-dicebear-thumb {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+  }
+
+  &__forge-dicebear-display {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+    background: rgba(255, 255, 255, 0.4);
   }
 
   // Forge form controls

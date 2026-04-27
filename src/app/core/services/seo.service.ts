@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Title, Meta } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter, map } from 'rxjs/operators';
+import { StatsService } from './stats.service';
 
 export interface SeoConfig {
   title?: string;
@@ -13,7 +14,7 @@ export interface SeoConfig {
 
 const SITE_NAME = 'Nandan Hegde';
 const SITE_BASE = 'https://nandanhegde1.github.io/portfolio';
-const DEFAULT_IMAGE = `${SITE_BASE}/assets/og-image.svg`;
+const DEFAULT_IMAGE = `${SITE_BASE}/assets/og-image.png`;
 
 @Injectable({ providedIn: 'root' })
 export class SeoService {
@@ -21,15 +22,19 @@ export class SeoService {
   private readonly metaService = inject(Meta);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  private readonly stats = inject(StatsService);
 
   /** Subscribe to router events and apply SEO from each route's data.seo. */
   init(): void {
     this.router.events
       .pipe(
         filter((e): e is NavigationEnd => e instanceof NavigationEnd),
-        map(() => this.collectSeoData(this.route)),
+        map(() => ({ seo: this.collectSeoData(this.route), url: this.router.url })),
       )
-      .subscribe(seo => this.update(seo ?? {}));
+      .subscribe(({ seo, url }) => {
+        this.update(seo ?? {});
+        this.stats.trackPageView(url || '/');
+      });
   }
 
   update(config: SeoConfig): void {

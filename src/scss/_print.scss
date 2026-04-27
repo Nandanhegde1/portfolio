@@ -1,0 +1,57 @@
+// Print stylesheet for resume export.
+// Hides everything except #printable-resume content for clean PDF.
+
+@media print {
+  // Hide all UI shell
+  app-navbar,
+  app-footer,
+  app-chatbot,
+  app-spotify-widget,
+  app-terminal-shell,
+  .rpg__forge-section,
+  .navbar,
+  .footer,
+  nav,
+  button,
+  .skip-to-content {
+    display: none !important;
+  }
+
+  body {
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 11pt !important;
+  }
+
+  // Force light theme on print
+  :root {
+    --bg-primary: #fff !important;
+    --bg-secondary: #f5f5f5 !important;
+    --text-primary: #000 !important;
+    --text-secondary: #333 !important;
+    --accent: #4f46e5 !important;
+    --card-bg: #fff !important;
+    --border: #ddd !important;
+    --card-shadow: none !important;
+  }
+
+  a {
+    color: #4f46e5 !important;
+    text-decoration: underline !important;
+  }
+
+  // Avoid splitting cards across pages
+  .rpg__quest-card,
+  .rpg__skill-card,
+  .rpg__achievement,
+  .rpg__cert {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  // Page setup
+  @page {
+    margin: 0.75in;
+    size: A4;
+  }
+}
