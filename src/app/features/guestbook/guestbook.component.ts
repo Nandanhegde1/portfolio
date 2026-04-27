@@ -8,6 +8,7 @@ import {
 import { FormsModule } from '@angular/forms';
 import { GuestbookService } from './guestbook.service';
 import { TooltipDirective } from '../../shared/directives/tooltip.directive';
+import { burstConfetti } from '../../shared/utils/confetti';
 
 @Component({
   selector: 'app-guestbook',
@@ -151,6 +152,17 @@ export class GuestbookComponent {
 
     this.guestbook.addEntry(n, m);
     this.message = '';
+
+    // 🎉 Reward the user with confetti
+    if (typeof window !== 'undefined') {
+      const submitBtn = document.querySelector<HTMLElement>('.guestbook__submit');
+      const rect = submitBtn?.getBoundingClientRect();
+      burstConfetti({
+        x: rect ? rect.left + rect.width / 2 : window.innerWidth / 2,
+        y: rect ? rect.top : window.innerHeight / 2,
+        count: 70,
+      });
+    }
 
     this.cooldown.set(true);
     setTimeout(() => this.cooldown.set(false), 5000);

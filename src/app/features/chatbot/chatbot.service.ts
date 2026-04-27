@@ -28,6 +28,21 @@ export class ChatbotService {
     'What are you currently learning?',
   ];
 
+  /** Returns 3 most relevant quick questions based on the user's current page */
+  contextualQuestions(path: string): string[] {
+    const map: Record<string, string[]> = {
+      '/': ['Tell me about your experience', "What's your tech stack?", 'Are you open to new opportunities?'],
+      '/about': ['Walk me through your career path', 'What is your strongest skill?', 'What are you currently learning?'],
+      '/dashboard': ['How do you measure impact?', 'Which language do you ship most?', "What's your favorite project?"],
+      '/blog': ['Which post should I read first?', 'What inspires your writing?', 'How often do you publish?'],
+      '/roast': ['Be honest \u2014 is my stack good?', 'Suggest a better stack for SaaS', 'What stack would you pick today?'],
+      '/quiz': ['Got a harder question?', 'How did I score?', "What's the trickiest concept?"],
+      '/guestbook': ['Who has signed recently?', 'Why a guestbook?', 'Will you reply to my note?'],
+      '/contact': ['What is your response time?', 'Best way to reach you?', 'Are you available for freelance?'],
+    };
+    return map[path] ?? this.quickQuestions.slice(0, 3);
+  }
+
   async sendMessage(content: string): Promise<void> {
     if (this.messageCount >= this.MAX_MESSAGES_PER_SESSION) {
       this.rateLimited.set(true);

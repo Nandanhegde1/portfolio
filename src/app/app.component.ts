@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { SeoService } from './core/services/seo.service';
+import { EngagementService } from './core/services/engagement.service';
 
 @Component({
   selector: 'app-root',
@@ -12,9 +13,11 @@ import { SeoService } from './core/services/seo.service';
 })
 export class AppComponent {
   private readonly seo = inject(SeoService);
+  private readonly engagement = inject(EngagementService);
 
   constructor() {
     this.seo.init();
+    this.engagement.init();
     this.registerServiceWorker();
   }
 

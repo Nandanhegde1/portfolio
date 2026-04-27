@@ -2,6 +2,7 @@ import { Component, ChangeDetectionStrategy, AfterViewInit, OnDestroy, signal, N
 import { isPlatformBrowser } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent, FooterComponent, SocialSidebarComponent } from '../../shared/components';
+import { CursorGlowComponent } from '../../shared/components/cursor-glow/cursor-glow.component';
 import { ChatbotComponent } from '../../features/chatbot/chatbot.component';
 import { TerminalShellComponent } from '../../features/terminal/terminal-shell.component';
 import { SpotifyWidgetComponent } from '../../features/spotify/spotify-widget.component';
@@ -9,13 +10,16 @@ import { SpotifyWidgetComponent } from '../../features/spotify/spotify-widget.co
 @Component({
   selector: 'app-main-layout',
   standalone: true,
-  imports: [RouterOutlet, NavbarComponent, FooterComponent, SocialSidebarComponent, ChatbotComponent, TerminalShellComponent, SpotifyWidgetComponent],
+  imports: [RouterOutlet, NavbarComponent, FooterComponent, SocialSidebarComponent, CursorGlowComponent, ChatbotComponent, TerminalShellComponent, SpotifyWidgetComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <a href="#main-content" class="skip-to-content">Skip to main content</a>
 
     <!-- Scroll progress bar -->
     <div class="scroll-progress" [style.width.%]="scrollProgress()"></div>
+
+    <!-- Cursor glow trail (auto-disabled on touch + reduced-motion) -->
+    <app-cursor-glow />
 
     <app-navbar />
     <app-social-sidebar />

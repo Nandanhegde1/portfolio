@@ -3,6 +3,7 @@ import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { SectionHeaderComponent } from '../../shared/components';
 import { environment } from '../../../environments/environment';
+import { burstConfetti } from '../../shared/utils/confetti';
 
 @Component({
   selector: 'app-contact',
@@ -116,6 +117,7 @@ export class ContactComponent {
         this.submitted.set(true);
         this.submitting.set(false);
         this.form.reset();
+        burstConfetti({ count: 90, spread: 90 });
         setTimeout(() => this.submitted.set(false), 5000);
       },
       error: (err) => {

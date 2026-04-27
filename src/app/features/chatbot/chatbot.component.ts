@@ -6,8 +6,11 @@ import {
   ElementRef,
   ChangeDetectionStrategy,
   OnInit,
+  computed,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 import { ChatbotService } from './chatbot.service';
 
 @Component({
@@ -51,9 +54,9 @@ import { ChatbotService } from './chatbot.service';
           <!-- Welcome -->
           @if (!chatService.messages().length) {
             <div class="chat-window__welcome">
-              <p>👋 Hi! I'm Nandan's AI assistant. Ask me about his skills, experience, or anything else!</p>
+              <p>👋 Hi! I'm Nandan's AI assistant. Based on the page you're on, you might want to ask:</p>
               <div class="chat-window__quick-questions">
-                @for (q of chatService.quickQuestions; track q) {
+                @for (q of contextualQuestions(); track q) {
                   <button class="chat-window__quick-btn" (click)="sendQuick(q)">{{ q }}</button>
                 }
               </div>
@@ -113,14 +116,20 @@ import { ChatbotService } from './chatbot.service';
 })
 export class ChatbotComponent implements OnInit {
   readonly chatService = inject(ChatbotService);
+  private readonly router = inject(Router);
   private readonly chatBodyRef = viewChild<ElementRef<HTMLDivElement>>('chatBody');
 
   readonly isOpen = signal(false);
   readonly showAttention = signal(false);
+  readonly currentPath = signal<string>('/');
+  readonly contextualQuestions = computed(() => this.chatService.contextualQuestions(this.currentPath()));
   inputText = '';
 
   ngOnInit(): void {
     if (typeof window === 'undefined') return;
+    this.router.events.pipe(filter((e) => e instanceof NavigationEnd)).subscribe((e: any) => {
+      this.currentPath.set(e.urlAfterRedirects.split('?')[0].split('#')[0]);
+    });
     if (!localStorage.getItem('chat_seen')) {
       // After 8 seconds on the page, gently ping new visitors
       setTimeout(() => this.showAttention.set(true), 8000);
