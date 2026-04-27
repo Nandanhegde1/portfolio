@@ -1,0 +1,203 @@
+// ──────────────────────────────────────────────
+// Premium UI Effects
+// Glassmorphism, gradient borders, noise, cursor, page transitions
+// ──────────────────────────────────────────────
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// ──────────────────────────────────────────────
+// 1. NOISE TEXTURE OVERLAY
+// Adds subtle grain for depth — like high-end design tools
+// ──────────────────────────────────────────────
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.018;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n' x='0' y='0'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  mix-blend-mode: overlay;
+}
+
+// ──────────────────────────────────────────────
+// 2. ANIMATED GRADIENT BORDER UTILITY
+// Add .gradient-border to any element
+// ──────────────────────────────────────────────
+.gradient-border {
+  position: relative;
+  border-radius: $radius-lg;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 2px;
+    background: linear-gradient(
+      135deg,
+      var(--accent),
+      var(--glow-color, var(--accent)),
+      transparent,
+      var(--accent)
+    );
+    background-size: 300% 300%;
+    animation: gradient-shift 5s ease infinite;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+}
+
+// Rainbow variant
+.gradient-border--rainbow {
+  &::before {
+    background: linear-gradient(
+      135deg,
+      #ff6b6b, #feca57, #48dbfb, #ff9ff3, #54a0ff, #5f27cd, #ff6b6b
+    );
+    background-size: 400% 400%;
+    animation: gradient-shift 6s ease infinite;
+  }
+}
+
+// ──────────────────────────────────────────────
+// 3. GLASSMORPHISM CARD UTILITY
+// Add .glass-card for frosted glass effect
+// ──────────────────────────────────────────────
+.glass-card {
+  background: var(--glass-bg, rgba(255, 255, 255, 0.05));
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.08));
+  border-radius: $radius-xl;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: all $transition-base;
+
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow:
+      0 12px 40px rgba(0, 0, 0, 0.16),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    transform: translateY(-2px);
+  }
+}
+
+// ──────────────────────────────────────────────
+// 4. GLOW EFFECT UTILITY
+// .glow-accent, .glow-soft
+// ──────────────────────────────────────────────
+.glow-accent {
+  box-shadow: 0 0 20px rgba(var(--accent-rgb, 99, 102, 241), 0.2),
+              0 0 60px rgba(var(--accent-rgb, 99, 102, 241), 0.08);
+}
+
+.glow-soft {
+  box-shadow: 0 0 40px rgba(var(--accent-rgb, 99, 102, 241), 0.06);
+}
+
+// Hover glow
+.hover-glow {
+  transition: box-shadow $transition-base;
+
+  &:hover {
+    box-shadow: 0 0 30px rgba(var(--accent-rgb, 99, 102, 241), 0.15),
+                0 8px 25px rgba(0, 0, 0, 0.1);
+  }
+}
+
+// ──────────────────────────────────────────────
+// 5. SCROLL PROGRESS BAR
+// Fixed at top of page
+// ──────────────────────────────────────────────
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: var(--accent-gradient, var(--accent));
+  z-index: 10000;
+  transition: width 0.05s linear;
+  border-radius: 0 2px 2px 0;
+}
+
+// ──────────────────────────────────────────────
+// 7. HOVER LIFT EFFECT
+// Add .hover-lift for consistent lift on hover
+// ──────────────────────────────────────────────
+.hover-lift {
+  transition: transform $transition-base, box-shadow $transition-base;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--card-shadow), 0 12px 24px rgba(0, 0, 0, 0.08);
+  }
+}
+
+// ──────────────────────────────────────────────
+// 8. SELECTION STYLING
+// Custom text selection colors
+// ──────────────────────────────────────────────
+::selection {
+  background: var(--selection-bg, var(--accent));
+  color: #fff;
+}
+
+// ──────────────────────────────────────────────
+// 9. SMOOTH FOCUS RING
+// Consistent accessible focus across all themes
+// ──────────────────────────────────────────────
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: $radius-sm;
+}
+
+// ──────────────────────────────────────────────
+// 10. LINK UNDERLINE ANIMATION
+// .link-fancy for animated underline on hover
+// ──────────────────────────────────────────────
+.link-fancy {
+  position: relative;
+  display: inline;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--accent-gradient, var(--accent));
+    border-radius: 1px;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  &:hover::after {
+    width: 100%;
+  }
+}
+
+// ──────────────────────────────────────────────
+// 11. SHIMMER LOADING EFFECT
+// .shimmer-bg for text or block loading
+// ──────────────────────────────────────────────
+.shimmer-text {
+  background: linear-gradient(
+    90deg,
+    var(--text-primary) 0%,
+    var(--accent) 50%,
+    var(--text-primary) 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 2s ease infinite;
+}

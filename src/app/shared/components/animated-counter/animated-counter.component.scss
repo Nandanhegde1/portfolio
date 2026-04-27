@@ -1,0 +1,112 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.counter {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-sm;
+
+  &__digits {
+    display: flex;
+    gap: 2px;
+  }
+
+  &__slot {
+    overflow: hidden;
+    border-radius: 4px;
+    background: var(--bg-tertiary);
+    position: relative;
+  }
+
+  &__reel {
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  &__num {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-variant-numeric: tabular-nums;
+    font-weight: $fw-bold;
+    color: var(--text-primary);
+  }
+
+  &__label {
+    font-size: $fs-sm;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: $fw-medium;
+  }
+
+  // ── sm: Used in stat cards ──
+  &--sm {
+    .counter__slot {
+      width: 28px;
+      height: 36px;
+    }
+    .counter__num {
+      width: 28px;
+      height: 36px;
+      font-size: $fs-xl;
+    }
+    .counter__reel {
+      transition-duration: 0.4s;
+    }
+  }
+
+  // ── md: Default ──
+  &--md {
+    .counter__slot {
+      width: 34px;
+      height: 44px;
+    }
+    .counter__num {
+      width: 34px;
+      height: 44px;
+      font-size: $fs-2xl;
+    }
+  }
+
+  // ── lg: Hero visitor counter ──
+  &--lg {
+    .counter__digits {
+      gap: 6px;
+    }
+    .counter__slot {
+      width: 48px;
+      height: 64px;
+      background: transparent;
+
+      @include mobile {
+        width: 36px;
+        height: 48px;
+      }
+    }
+    .counter__num {
+      width: 48px;
+      height: 64px;
+      font-size: 3rem;
+      font-family: $font-heading;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 8px var(--accent-glow));
+
+      @include mobile {
+        width: 36px;
+        height: 48px;
+        font-size: 2rem;
+      }
+    }
+    .counter__label {
+      font-size: $fs-md;
+      margin-top: $space-sm;
+      letter-spacing: 0.15em;
+    }
+  }
+}

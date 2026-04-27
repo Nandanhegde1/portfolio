@@ -1,0 +1,77 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.stat-card {
+  @include card;
+  display: flex;
+  align-items: center;
+  gap: $space-md;
+  padding: $space-lg;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--card-accent);
+    border-radius: 0 $radius-sm $radius-sm 0;
+  }
+
+  &__icon {
+    @include flex-center;
+    width: 48px;
+    height: 48px;
+    border-radius: $radius-lg;
+    background: var(--accent-light);
+    color: var(--card-accent);
+    font-size: $fs-xl;
+    flex-shrink: 0;
+  }
+
+  &__content {
+    @include flex-col;
+    gap: $space-xs;
+    flex: 1;
+  }
+
+  &__value {
+    font-family: $font-heading;
+    font-size: $fs-2xl;
+    font-weight: $fw-bold;
+    color: var(--text-primary);
+    line-height: 1;
+  }
+
+  &__label {
+    font-size: $fs-sm;
+    color: var(--text-secondary);
+  }
+
+  &__change {
+    font-size: $fs-sm;
+    font-weight: $fw-semibold;
+    padding: $space-xs $space-sm;
+    border-radius: $radius-full;
+
+    &.positive {
+      color: var(--success);
+      background: rgba(40, 167, 69, 0.1);
+    }
+
+    &.negative {
+      color: var(--danger);
+      background: rgba(220, 53, 69, 0.1);
+    }
+
+    &-label {
+      font-size: $fs-xs;
+      font-weight: $fw-normal;
+      color: var(--text-muted);
+      margin-left: $space-xs;
+    }
+  }
+}

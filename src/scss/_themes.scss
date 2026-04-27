@@ -1,0 +1,178 @@
+// Theme Definitions — CSS Custom Properties
+// ──────────────────────────────────────────────
+
+:root,
+[data-theme='light'] {
+  --bg-primary: #fafaf9;
+  --bg-secondary: #f3f2f0;
+  --bg-tertiary: #e8e6e3;
+  --text-primary: #1c1917;
+  --text-secondary: #57534e;
+  --text-muted: #a8a29e;
+  --accent: #4f46e5;
+  --accent-hover: #4338ca;
+  --accent-light: rgba(79, 70, 229, 0.08);
+  --accent-glow: rgba(79, 70, 229, 0.25);
+  --accent-gradient: linear-gradient(135deg, #4f46e5, #7c3aed);
+  --success: #16a34a;
+  --warning: #ea580c;
+  --danger: #dc2626;
+  --info: #0891b2;
+  --card-bg: #ffffff;
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.06);
+  --card-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.08), 0 12px 32px rgba(0, 0, 0, 0.1);
+  --border: #e7e5e4;
+  --border-strong: #d6d3d1;
+  --navbar-bg: rgba(250, 250, 249, 0.8);
+  --glass-bg: rgba(255, 255, 255, 0.65);
+  --glass-border: rgba(0, 0, 0, 0.05);
+  --code-bg: #f5f5f4;
+  --heatmap-0: #ebedf0;
+  --heatmap-1: #c6dbef;
+  --heatmap-2: #6baed6;
+  --heatmap-3: #3182bd;
+  --heatmap-4: #4f46e5;
+  --scrollbar-thumb: #d6d3d1;
+  --selection-bg: rgba(79, 70, 229, 0.15);
+  --glow-color: rgba(79, 70, 229, 0.15);
+}
+
+[data-theme='dark'] {
+  --bg-primary: #0a0e1a;
+  --bg-secondary: #111827;
+  --bg-tertiary: #1e293b;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #475569;
+  --accent: #22d3ee;
+  --accent-hover: #67e8f9;
+  --accent-light: rgba(34, 211, 238, 0.1);
+  --accent-glow: rgba(34, 211, 238, 0.3);
+  --accent-gradient: linear-gradient(135deg, #22d3ee, #818cf8);
+  --success: #34d399;
+  --warning: #fbbf24;
+  --danger: #f87171;
+  --info: #60a5fa;
+  --card-bg: #111827;
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.4);
+  --card-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.4), 0 12px 32px rgba(34, 211, 238, 0.08);
+  --border: #1e293b;
+  --border-strong: #334155;
+  --navbar-bg: rgba(10, 14, 26, 0.85);
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --code-bg: #1e293b;
+  --heatmap-0: #111827;
+  --heatmap-1: #0e3a4a;
+  --heatmap-2: #0e7490;
+  --heatmap-3: #06b6d4;
+  --heatmap-4: #22d3ee;
+  --scrollbar-thumb: #334155;
+  --selection-bg: rgba(34, 211, 238, 0.2);
+  --glow-color: rgba(34, 211, 238, 0.12);
+}
+
+[data-theme='synthwave'] {
+  --bg-primary: #1a1025;
+  --bg-secondary: #241734;
+  --bg-tertiary: #2e1f42;
+  --text-primary: #f5e6ff;
+  --text-secondary: #b794d6;
+  --text-muted: #6b4f87;
+  --accent: #ff6ec7;
+  --accent-hover: #ff94d7;
+  --accent-light: rgba(255, 110, 199, 0.15);
+  --accent-glow: rgba(255, 110, 199, 0.4);
+  --accent-gradient: linear-gradient(135deg, #ff6ec7, #fede5d);
+  --success: #72f1b8;
+  --warning: #fede5d;
+  --danger: #fe4450;
+  --info: #36f9f6;
+  --card-bg: #241734;
+  --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  --card-shadow-hover: 0 4px 30px rgba(255, 110, 199, 0.2);
+  --border: #3d2957;
+  --border-strong: #5a3d7a;
+  --navbar-bg: rgba(26, 16, 37, 0.9);
+  --glass-bg: rgba(255, 110, 199, 0.05);
+  --glass-border: rgba(255, 110, 199, 0.1);
+  --code-bg: #2e1f42;
+  --heatmap-0: #241734;
+  --heatmap-1: #4a1942;
+  --heatmap-2: #8b2c6e;
+  --heatmap-3: #c44298;
+  --heatmap-4: #ff6ec7;
+  --scrollbar-thumb: #5a3d7a;
+  --selection-bg: rgba(255, 110, 199, 0.3);
+  --glow-color: rgba(255, 110, 199, 0.15);
+}
+
+[data-theme='nord'] {
+  --bg-primary: #2e3440;
+  --bg-secondary: #3b4252;
+  --bg-tertiary: #434c5e;
+  --text-primary: #eceff4;
+  --text-secondary: #d8dee9;
+  --text-muted: #4c566a;
+  --accent: #88c0d0;
+  --accent-hover: #8fbcbb;
+  --accent-light: rgba(136, 192, 208, 0.15);
+  --accent-glow: rgba(136, 192, 208, 0.3);
+  --accent-gradient: linear-gradient(135deg, #88c0d0, #a3be8c);
+  --success: #a3be8c;
+  --warning: #ebcb8b;
+  --danger: #bf616a;
+  --info: #81a1c1;
+  --card-bg: #3b4252;
+  --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  --card-shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.35);
+  --border: #434c5e;
+  --border-strong: #4c566a;
+  --navbar-bg: rgba(46, 52, 64, 0.9);
+  --glass-bg: rgba(136, 192, 208, 0.05);
+  --glass-border: rgba(136, 192, 208, 0.1);
+  --code-bg: #434c5e;
+  --heatmap-0: #3b4252;
+  --heatmap-1: #4c6a5e;
+  --heatmap-2: #6b9e7e;
+  --heatmap-3: #8fbf9e;
+  --heatmap-4: #a3be8c;
+  --scrollbar-thumb: #4c566a;
+  --selection-bg: rgba(136, 192, 208, 0.2);
+  --glow-color: rgba(136, 192, 208, 0.12);
+}
+
+[data-theme='dracula'] {
+  --bg-primary: #282a36;
+  --bg-secondary: #343746;
+  --bg-tertiary: #44475a;
+  --text-primary: #f8f8f2;
+  --text-secondary: #bd93f9;
+  --text-muted: #6272a4;
+  --accent: #ff79c6;
+  --accent-hover: #ff92d0;
+  --accent-light: rgba(255, 121, 198, 0.15);
+  --accent-glow: rgba(255, 121, 198, 0.4);
+  --accent-gradient: linear-gradient(135deg, #ff79c6, #bd93f9);
+  --success: #50fa7b;
+  --warning: #f1fa8c;
+  --danger: #ff5555;
+  --info: #8be9fd;
+  --card-bg: #343746;
+  --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+  --card-shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.45);
+  --border: #44475a;
+  --border-strong: #6272a4;
+  --navbar-bg: rgba(40, 42, 54, 0.9);
+  --glass-bg: rgba(189, 147, 249, 0.05);
+  --glass-border: rgba(189, 147, 249, 0.1);
+  --code-bg: #44475a;
+  --heatmap-0: #343746;
+  --heatmap-1: #3d5a3e;
+  --heatmap-2: #44804a;
+  --heatmap-3: #4aab58;
+  --heatmap-4: #50fa7b;
+  --scrollbar-thumb: #6272a4;
+  --selection-bg: rgba(189, 147, 249, 0.3);
+  --glow-color: rgba(255, 121, 198, 0.12);
+}

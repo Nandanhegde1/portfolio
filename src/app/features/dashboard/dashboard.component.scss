@@ -1,0 +1,476 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.dash {
+  padding: $space-2xl 0 $space-3xl;
+
+  .container {
+    @include container;
+  }
+
+  // ── Header ──
+  &__header {
+    text-align: center;
+    margin-bottom: $space-2xl;
+  }
+
+  &__tag {
+    @include mono-text;
+    color: var(--accent);
+    font-size: $fs-sm;
+    display: block;
+    margin-bottom: $space-sm;
+  }
+
+  &__title {
+    font-family: $font-heading;
+    font-size: $fs-4xl;
+    font-weight: $fw-extrabold;
+    color: var(--text-primary);
+    letter-spacing: -0.03em;
+    margin-bottom: $space-sm;
+
+    @include tablet {
+      font-size: $fs-3xl;
+    }
+  }
+
+  &__subtitle {
+    font-size: $fs-md;
+    color: var(--text-secondary);
+  }
+
+  &__section-title {
+    display: flex;
+    align-items: center;
+    gap: $space-sm;
+    font-family: $font-heading;
+    font-size: $fs-xl;
+    font-weight: $fw-bold;
+    color: var(--text-primary);
+    margin-bottom: $space-xl;
+
+    svg { color: var(--accent); }
+  }
+
+  // ── Visitor Counter Hero ──
+  &__visitors {
+    text-align: center;
+    padding: $space-2xl $space-xl;
+    margin-bottom: $space-2xl;
+    position: relative;
+    border-radius: $radius-2xl;
+    overflow: hidden;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+  }
+
+  &__visitors-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, var(--glow-color) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  &__visitors-sub {
+    font-size: $fs-sm;
+    color: var(--text-muted);
+    margin-top: $space-sm;
+  }
+
+  // ── Code Vitals ──
+  &__vitals {
+    margin-bottom: $space-2xl;
+  }
+
+  &__vitals-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: $space-lg;
+
+    @include tablet {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include mobile {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__vital-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: $radius-xl;
+    padding: $space-xl;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $space-sm;
+    transition: all $transition-base;
+    position: relative;
+    overflow: hidden;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--accent-gradient);
+      opacity: 0;
+      transition: opacity $transition-fast;
+    }
+
+    &:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+      box-shadow: var(--card-shadow-hover);
+
+      &::after { opacity: 1; }
+    }
+  }
+
+  &__vital-icon {
+    font-size: 2rem;
+  }
+
+  &__vital-label {
+    font-size: $fs-sm;
+    font-weight: $fw-semibold;
+    color: var(--text-primary);
+  }
+
+  &__vital-sub {
+    font-size: $fs-xs;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  &__pulse {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--success);
+    display: inline-block;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      border-radius: 50%;
+      border: 2px solid var(--success);
+      animation: pulseRing 2s ease-out infinite;
+    }
+  }
+
+  // ── Tech Orbit ──
+  &__orbit-section {
+    margin-bottom: $space-2xl;
+    text-align: center;
+  }
+
+  &__orbit {
+    position: relative;
+    width: 360px;
+    height: 360px;
+    margin: 0 auto $space-xl;
+
+    @include mobile {
+      width: 280px;
+      height: 280px;
+    }
+  }
+
+  &__orbit-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--accent-gradient);
+    @include flex-center;
+    z-index: 2;
+    box-shadow: 0 0 30px var(--accent-glow);
+
+    span {
+      font-family: $font-mono;
+      font-size: $fs-sm;
+      font-weight: $fw-bold;
+      color: #fff;
+    }
+  }
+
+  &__orbit-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 50%;
+    border: 1px dashed var(--border);
+
+    &--1 {
+      width: 200px;
+      height: 200px;
+      margin: -100px 0 0 -100px;
+      animation: orbitSpin 30s linear infinite;
+
+      @include mobile {
+        width: 160px;
+        height: 160px;
+        margin: -80px 0 0 -80px;
+      }
+    }
+
+    &--2 {
+      width: 320px;
+      height: 320px;
+      margin: -160px 0 0 -160px;
+      animation: orbitSpin 50s linear infinite reverse;
+
+      @include mobile {
+        width: 250px;
+        height: 250px;
+        margin: -125px 0 0 -125px;
+      }
+    }
+  }
+
+  &__orbit-item {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    @include flex-center;
+    font-size: 1.2rem;
+    top: 50%;
+    left: 50%;
+    cursor: default;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: border-color $transition-fast, transform $transition-fast;
+
+    &:hover {
+      border-color: var(--accent);
+      z-index: 5;
+    }
+  }
+
+  &__orbit-ring--1 &__orbit-item {
+    transform: rotate(var(--angle)) translateX(100px) rotate(calc(-1 * var(--angle)));
+
+    @include mobile {
+      transform: rotate(var(--angle)) translateX(80px) rotate(calc(-1 * var(--angle)));
+    }
+  }
+
+  &__orbit-ring--2 &__orbit-item {
+    transform: rotate(var(--angle)) translateX(160px) rotate(calc(-1 * var(--angle)));
+
+    @include mobile {
+      transform: rotate(var(--angle)) translateX(125px) rotate(calc(-1 * var(--angle)));
+    }
+  }
+
+  &__orbit-legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: $space-sm;
+  }
+
+  &__orbit-tag {
+    padding: $space-xs $space-md;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: $radius-full;
+    font-size: $fs-xs;
+    color: var(--text-secondary);
+    transition: all $transition-fast;
+
+    &:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+  }
+
+  // ── Card (generic) ──
+  &__card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: $radius-xl;
+    padding: $space-xl;
+    margin-bottom: $space-3xl;
+  }
+
+  // ── Heatmap ──
+  .heatmap {
+    &__grid {
+      display: grid;
+      grid-template-rows: repeat(7, 1fr);
+      grid-auto-flow: column;
+      grid-auto-columns: 14px;
+      gap: 3px;
+      overflow-x: auto;
+      padding-bottom: $space-md;
+      @include custom-scrollbar;
+    }
+
+    &__cell {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      transition: all $transition-fast;
+
+      &[data-level='0'] { background: var(--heatmap-0); }
+      &[data-level='1'] { background: var(--heatmap-1); }
+      &[data-level='2'] { background: var(--heatmap-2); }
+      &[data-level='3'] { background: var(--heatmap-3); }
+      &[data-level='4'] { background: var(--heatmap-4); }
+
+      &:hover {
+        outline: 2px solid var(--accent);
+        outline-offset: 1px;
+        transform: scale(1.5);
+        z-index: 2;
+        position: relative;
+      }
+    }
+
+    &__legend {
+      display: flex;
+      align-items: center;
+      gap: $space-xs;
+      margin-top: $space-md;
+      font-size: $fs-xs;
+      color: var(--text-muted);
+      font-family: $font-mono;
+
+      .heatmap__cell {
+        cursor: default;
+        &:hover {
+          outline: none;
+          transform: none;
+        }
+      }
+    }
+  }
+
+  // ── Fortune Cookie ──
+  &__fortune {
+    text-align: center;
+    padding: $space-2xl;
+    margin-bottom: $space-3xl;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: $radius-xl;
+    cursor: pointer;
+    transition: all $transition-base;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--accent-gradient);
+      opacity: 0;
+      transition: opacity $transition-fast;
+    }
+
+    &:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: var(--card-shadow-hover);
+
+      &::before { opacity: 0.03; }
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+
+  &__fortune-icon {
+    font-size: 2.5rem;
+    margin-bottom: $space-md;
+    display: inline-block;
+    transition: transform $transition-base;
+
+    .dash__fortune:hover & {
+      transform: rotate(15deg) scale(1.1);
+    }
+  }
+
+  &__fortune-text {
+    font-size: $fs-base;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    max-width: 550px;
+    margin: 0 auto $space-sm;
+    font-style: italic;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+
+    &--fading {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+  }
+
+  &__fortune-hint {
+    font-size: $fs-xs;
+    color: var(--text-muted);
+    font-family: $font-mono;
+  }
+
+  // ── Hot Takes Ticker ──
+  &__ticker {
+    overflow: hidden;
+    padding: $space-md 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    margin-bottom: $space-2xl;
+  }
+
+  &__ticker-track {
+    display: flex;
+    gap: $space-2xl;
+    animation: ticker 40s linear infinite;
+    width: max-content;
+
+    &:hover {
+      animation-play-state: paused;
+    }
+  }
+
+  &__ticker-item {
+    white-space: nowrap;
+    font-size: $fs-sm;
+    color: var(--text-secondary);
+    padding: $space-xs $space-md;
+    background: var(--bg-secondary);
+    border-radius: $radius-full;
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+}
+
+// ── Animations ──
+@keyframes orbitSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulseRing {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}

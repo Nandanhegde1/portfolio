@@ -1,0 +1,209 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.hero {
+  position: relative;
+  min-height: calc(100vh - $navbar-height);
+  @include flex-center;
+  overflow: hidden;
+  background: var(--bg-primary);
+
+  &__particles-fallback {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: radial-gradient(ellipse at 50% 30%, var(--glow-color) 0%, transparent 60%);
+  }
+
+  &__content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    @include flex-col;
+    align-items: center;
+    gap: $space-lg;
+    padding: $space-xl;
+  }
+
+  &__greeting {
+    font-family: $font-mono;
+    font-size: $fs-md;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+    animation: fadeInDown 0.6s ease forwards;
+  }
+
+  &__name {
+    font-family: $font-heading;
+    font-size: $fs-5xl;
+    font-weight: $fw-extrabold;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    animation: fadeInUp 0.6s ease 0.2s both;
+
+    // Animated gradient text
+    background: var(--accent-gradient);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: fadeInUp 0.6s ease 0.2s both, gradientShift 4s ease infinite 1s;
+
+    @include tablet {
+      font-size: $fs-3xl;
+    }
+  }
+
+  &__title-wrapper {
+    display: flex;
+    align-items: center;
+    gap: $space-xs;
+    animation: fadeInUp 0.6s ease 0.4s both;
+  }
+
+  &__title {
+    font-family: $font-mono;
+    font-size: $fs-xl;
+    color: var(--text-secondary);
+  }
+
+  &__cursor {
+    font-family: $font-mono;
+    font-size: $fs-xl;
+    color: var(--accent);
+    animation: blink 1s step-end infinite;
+  }
+
+  &__tagline {
+    font-size: $fs-md;
+    color: var(--text-secondary);
+    max-width: 600px;
+    line-height: 1.6;
+    animation: fadeInUp 0.6s ease 0.6s both;
+  }
+
+  &__actions {
+    display: flex;
+    gap: $space-md;
+    margin-top: $space-md;
+    animation: fadeInUp 0.6s ease 0.8s both;
+
+    @include mobile {
+      flex-direction: column;
+    }
+  }
+
+  &__scroll-hint {
+    position: absolute;
+    bottom: $space-xl;
+    color: var(--text-muted);
+    animation: float 2s ease-in-out infinite;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $space-xs;
+
+    svg { opacity: 0.5; }
+  }
+
+  &__scroll-label {
+    font-family: $font-mono;
+    font-size: $fs-xs;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.5;
+  }
+}
+
+// ── Buttons ──
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: $space-md $space-2xl;
+  font-size: $fs-base;
+  font-weight: $fw-semibold;
+  font-family: $font-primary;
+  border-radius: $radius-full;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  position: relative;
+  overflow: hidden;
+
+  &--primary {
+    background: var(--accent-gradient);
+    color: #fff;
+    box-shadow: 0 4px 15px var(--accent-glow);
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px var(--accent-glow);
+    }
+
+    &:active {
+      transform: translateY(-1px);
+    }
+  }
+
+  &--outline {
+    background: transparent;
+    color: var(--accent);
+    border: 2px solid var(--accent);
+
+    &:hover {
+      background: var(--accent-light);
+      transform: translateY(-3px);
+      box-shadow: 0 4px 15px var(--accent-glow);
+    }
+  }
+
+  &--ghost {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+    gap: $space-xs;
+    padding: $space-md $space-xl;
+    font-size: $fs-sm;
+
+    svg {
+      transition: transform 0.3s ease;
+    }
+
+    &:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+      transform: translateY(-3px);
+
+      svg {
+        transform: translateY(2px);
+      }
+    }
+  }
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}

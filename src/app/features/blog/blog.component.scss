@@ -1,0 +1,342 @@
+﻿@use 'variables' as *;
+@use 'mixins' as *;
+
+.built {
+  padding: $space-3xl 0 $space-4xl;
+  min-height: 100vh;
+
+  &__container {
+    @include container;
+    max-width: $content-narrow;
+  }
+
+  // ── Header ──
+  &__header {
+    text-align: center;
+    margin-bottom: $space-3xl;
+  }
+
+  &__tag {
+    @include mono-text;
+    color: var(--accent);
+    display: block;
+    margin-bottom: $space-sm;
+  }
+
+  &__title {
+    @include heading($fs-4xl);
+    letter-spacing: -0.03em;
+    margin-bottom: $space-sm;
+  }
+
+  &__subtitle {
+    color: var(--text-secondary);
+    font-size: $fs-md;
+  }
+
+  &__section-title {
+    @include heading($fs-xl);
+    margin-bottom: $space-xl;
+  }
+
+  // ── Terminal ──
+  &__terminal {
+    background: #0d1117;
+    border: 1px solid var(--border);
+    border-radius: $radius-xl;
+    overflow: hidden;
+    margin-bottom: $space-3xl;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+
+  &__terminal-header {
+    display: flex;
+    align-items: center;
+    gap: $space-sm;
+    padding: $space-md $space-lg;
+    background: rgba(255, 255, 255, 0.04);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  &__terminal-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+
+    &--red { background: #ff5f56; }
+    &--yellow { background: #ffbd2e; }
+    &--green { background: #27c93f; }
+  }
+
+  &__terminal-title {
+    font-family: $font-mono;
+    font-size: $fs-xs;
+    color: #8b949e;
+    margin-left: $space-md;
+  }
+
+  &__terminal-body {
+    padding: $space-lg;
+    font-family: $font-mono;
+    font-size: $fs-sm;
+    line-height: 1.8;
+    max-height: 380px;
+    overflow-y: auto;
+    min-height: 200px;
+    @include custom-scrollbar;
+  }
+
+  &__terminal-line {
+    color: #8b949e;
+    white-space: pre;
+    animation: fadeIn 0.2s ease;
+
+    &--cmd { color: #e6edf3; }
+    &--success { color: #3fb950; }
+    &--info { color: #58a6ff; }
+  }
+
+  &__terminal-cursor {
+    display: inline-block;
+    width: 10px;
+    height: 18px;
+    background: var(--accent);
+    animation: blink 1s step-end infinite;
+    vertical-align: middle;
+    margin-left: 2px;
+  }
+
+  // ── Build Stats ──
+  &__stats {
+    margin-bottom: $space-3xl;
+  }
+
+  &__stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: $space-lg;
+
+    @include tablet {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include mobile {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__stat-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: $radius-xl;
+    padding: $space-xl;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $space-sm;
+    transition: all $transition-base;
+
+    &:hover {
+      border-color: var(--accent);
+      transform: translateY(-3px);
+      box-shadow: var(--card-shadow-hover);
+    }
+  }
+
+  &__stat-icon {
+    font-size: 1.8rem;
+  }
+
+  &__stat-value {
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+  }
+
+  &__stat-suffix {
+    font-family: $font-mono;
+    font-size: $fs-lg;
+    font-weight: $fw-bold;
+    color: var(--accent);
+  }
+
+  &__stat-label {
+    font-size: $fs-sm;
+    color: var(--text-secondary);
+    font-weight: $fw-medium;
+  }
+
+  // ── Tech Stack ──
+  &__stack {
+    margin-bottom: $space-3xl;
+  }
+
+  &__stack-grid {
+    display: flex;
+    flex-direction: column;
+    gap: $space-md;
+  }
+
+  &__tech-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: $radius-xl;
+    padding: $space-lg;
+    cursor: pointer;
+    transition: all $transition-base;
+
+    &:hover {
+      border-color: var(--accent);
+    }
+
+    &--expanded {
+      border-color: var(--accent);
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+  }
+
+  &__tech-header {
+    display: flex;
+    align-items: center;
+    gap: $space-lg;
+  }
+
+  &__tech-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+  }
+
+  &__tech-info {
+    flex: 1;
+  }
+
+  &__tech-name {
+    font-size: $fs-lg;
+    font-weight: $fw-bold;
+    color: var(--text-primary);
+    margin-bottom: $space-xs;
+  }
+
+  &__tech-tagline {
+    font-size: $fs-sm;
+    color: var(--text-secondary);
+  }
+
+  &__tech-toggle {
+    font-family: $font-mono;
+    font-size: $fs-xl;
+    color: var(--accent);
+    font-weight: $fw-bold;
+    width: 32px;
+    text-align: center;
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+
+    .built__tech-card--expanded & {
+      transform: rotate(180deg);
+    }
+  }
+
+  &__tech-details {
+    margin-top: $space-lg;
+    padding-top: $space-lg;
+    border-top: 1px solid var(--border);
+    animation: fadeInUp 0.3s ease;
+  }
+
+  &__tech-why {
+    @include body-text;
+    margin-bottom: $space-md;
+  }
+
+  &__tech-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-sm;
+  }
+
+  &__tech-feature {
+    font-family: $font-mono;
+    font-size: $fs-xs;
+    padding: $space-xs $space-md;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: $radius-full;
+    color: var(--text-secondary);
+  }
+
+  // ── Design Decisions ──
+  &__decisions {
+    margin-bottom: $space-3xl;
+  }
+
+  &__decisions-grid {
+    display: flex;
+    flex-direction: column;
+    gap: $space-lg;
+  }
+
+  &__decision-card {
+    @include card;
+    padding: $space-xl;
+  }
+
+  &__decision-q {
+    font-family: $font-mono;
+    font-size: $fs-md;
+    font-weight: $fw-bold;
+    color: var(--accent);
+    margin-bottom: $space-sm;
+  }
+
+  &__decision-a {
+    @include body-text;
+    font-style: italic;
+  }
+
+  // ── Colophon ──
+  &__colophon {
+    margin-bottom: $space-2xl;
+  }
+
+  &__colophon-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: $space-md;
+
+    @include mobile {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__colophon-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: $space-md $space-lg;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: $radius-md;
+    transition: all $transition-fast;
+
+    &:hover {
+      border-color: var(--accent);
+    }
+  }
+
+  &__colophon-key {
+    font-family: $font-mono;
+    font-size: $fs-sm;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  &__colophon-val {
+    font-size: $fs-sm;
+    font-weight: $fw-semibold;
+    color: var(--text-primary);
+  }
+}
+

@@ -1,0 +1,139 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.contact {
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: $space-2xl;
+
+    @include tablet {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__info {
+    @include flex-col;
+    gap: $space-xl;
+  }
+
+  &__info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: $space-md;
+
+    svg {
+      color: var(--accent);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    h4 {
+      font-size: $fs-sm;
+      font-weight: $fw-semibold;
+      color: var(--text-primary);
+      margin-bottom: $space-xs;
+    }
+
+    a, p {
+      font-size: $fs-sm;
+      color: var(--text-secondary);
+    }
+
+    a:hover {
+      color: var(--accent);
+    }
+  }
+
+  &__social {
+    display: flex;
+    gap: $space-md;
+    margin-top: $space-md;
+  }
+
+  &__form {
+    @include flex-col;
+    gap: $space-lg;
+  }
+
+  &__field {
+    @include flex-col;
+    gap: $space-xs;
+
+    label {
+      font-size: $fs-sm;
+      font-weight: $fw-medium;
+      color: var(--text-primary);
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: $space-sm $space-md;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: $radius-md;
+      color: var(--text-primary);
+      font-size: $fs-base;
+      transition: border-color $transition-fast;
+
+      &::placeholder {
+        color: var(--text-muted);
+      }
+
+      &:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px var(--accent-light);
+      }
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+  }
+
+  &__toast {
+    padding: $space-sm $space-md;
+    border-radius: $radius-md;
+    font-size: $fs-sm;
+    font-weight: $fw-medium;
+    display: flex;
+    align-items: center;
+    gap: $space-sm;
+    animation: toastSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    &--success {
+      background: rgba(40, 167, 69, 0.1);
+      color: var(--success);
+      border: 1px solid var(--success);
+    }
+  }
+
+  &__toast-check {
+    flex-shrink: 0;
+    animation: checkDraw 0.5s ease 0.2s both;
+  }
+}
+
+@keyframes toastSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes checkDraw {
+  from {
+    stroke-dasharray: 30;
+    stroke-dashoffset: 30;
+  }
+  to {
+    stroke-dasharray: 30;
+    stroke-dashoffset: 0;
+  }
+}

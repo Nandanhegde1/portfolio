@@ -1,0 +1,107 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.spotify-widget {
+  display: flex;
+  align-items: center;
+  gap: $space-md;
+  padding: $space-md;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: $radius-lg;
+  text-decoration: none;
+  transition: all $transition-fast;
+  max-width: 340px;
+
+  &:hover {
+    border-color: #1db954;
+    box-shadow: 0 4px 20px rgba(29, 185, 84, 0.15);
+  }
+
+  &--idle {
+    gap: $space-sm;
+    opacity: 0.6;
+    font-size: $fs-sm;
+    color: var(--text-muted);
+  }
+
+  &__art {
+    width: 48px;
+    height: 48px;
+    border-radius: $radius-md;
+    overflow: hidden;
+    flex-shrink: 0;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    &.spinning {
+      animation: spin 4s linear infinite;
+      border-radius: 50%;
+    }
+  }
+
+  &__info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__label {
+    display: flex;
+    align-items: center;
+    gap: $space-xs;
+    font-size: $fs-xs;
+    color: #1db954;
+    margin-bottom: 2px;
+  }
+
+  &__track {
+    display: block;
+    font-size: $fs-sm;
+    font-weight: $fw-semibold;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__artist {
+    display: block;
+    font-size: $fs-xs;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 20px;
+
+    span {
+      width: 3px;
+      background: #1db954;
+      border-radius: 2px;
+      animation: bar 1.2s ease-in-out infinite;
+
+      &:nth-child(1) { height: 60%; animation-delay: 0s; }
+      &:nth-child(2) { height: 100%; animation-delay: 0.2s; }
+      &:nth-child(3) { height: 40%; animation-delay: 0.4s; }
+    }
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes bar {
+  0%, 100% { height: 40%; }
+  50% { height: 100%; }
+}

@@ -1,0 +1,388 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.quiz {
+  min-height: calc(100vh - $navbar-height);
+  padding: $space-3xl $space-lg;
+  background: var(--bg-primary);
+  position: relative;
+  overflow: hidden;
+
+  &__container {
+    @include container;
+    max-width: 700px;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $space-2xl;
+  }
+
+  // ── Header ──
+  &__header {
+    text-align: center;
+  }
+
+  &__icon {
+    font-size: 3.5rem;
+    margin-bottom: $space-sm;
+  }
+
+  &__title {
+    font-family: $font-heading;
+    font-size: $fs-3xl;
+    font-weight: $fw-extrabold;
+    color: var(--text-primary);
+    margin-bottom: $space-sm;
+
+    @include mobile {
+      font-size: $fs-2xl;
+    }
+  }
+
+  &__subtitle {
+    color: var(--text-secondary);
+    font-size: $fs-md;
+  }
+
+  // ── Progress ──
+  &__progress {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: $space-md;
+  }
+
+  &__progress-bar {
+    flex: 1;
+    height: 6px;
+    border-radius: $radius-full;
+    background: var(--border);
+    overflow: hidden;
+  }
+
+  &__progress-fill {
+    height: 100%;
+    border-radius: $radius-full;
+    background: var(--accent-gradient, var(--accent));
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  &__progress-text {
+    font-family: $font-mono;
+    font-size: $fs-sm;
+    color: var(--text-secondary);
+    white-space: nowrap;
+  }
+
+  // ── Question Card ──
+  &__question-card {
+    width: 100%;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+
+    &--animating {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+  }
+
+  &__scenario {
+    margin-bottom: $space-xl;
+  }
+
+  &__scenario-label {
+    display: inline-block;
+    font-size: $fs-xs;
+    font-weight: $fw-bold;
+    color: var(--accent);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: $space-sm;
+    padding: $space-xs $space-md;
+    border: 1px solid var(--accent);
+    border-radius: $radius-full;
+    opacity: 0.8;
+  }
+
+  &__scenario-text {
+    font-family: $font-heading;
+    font-size: $fs-xl;
+    font-weight: $fw-bold;
+    color: var(--text-primary);
+    line-height: 1.4;
+
+    @include mobile {
+      font-size: $fs-lg;
+    }
+  }
+
+  // ── Options ──
+  &__options {
+    display: flex;
+    flex-direction: column;
+    gap: $space-md;
+  }
+
+  &__option {
+    display: flex;
+    align-items: flex-start;
+    gap: $space-md;
+    padding: $space-lg;
+    border: 2px solid var(--border);
+    border-radius: $radius-lg;
+    background: var(--card-bg);
+    color: var(--text-primary);
+    font-size: $fs-base;
+    line-height: 1.5;
+    text-align: left;
+    cursor: pointer;
+    transition: all $transition-base;
+    animation: fadeInUp 0.4s ease both;
+
+    &:hover {
+      border-color: var(--accent);
+      background: rgba(var(--accent), 0.05);
+      transform: translateX(4px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    &:active {
+      transform: translateX(2px) scale(0.99);
+    }
+  }
+
+  &__option-letter {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: $radius-md;
+    background: var(--bg-secondary);
+    color: var(--accent);
+    font-family: $font-mono;
+    font-weight: $fw-bold;
+    font-size: $fs-sm;
+    transition: all $transition-fast;
+
+    .quiz__option:hover & {
+      background: var(--accent);
+      color: #fff;
+    }
+  }
+
+  &__option-text {
+    padding-top: 4px;
+  }
+
+  // ── Result ──
+  &__result {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $space-xl;
+    animation: fadeInUp 0.6s ease;
+  }
+
+  &__result-reveal {
+    text-align: center;
+  }
+
+  &__result-label {
+    display: block;
+    font-size: $fs-xs;
+    font-weight: $fw-bold;
+    color: var(--accent);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: $space-md;
+  }
+
+  &__result-emoji {
+    font-size: 5rem;
+    animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  // ── Archetype Card ──
+  &__archetype-card {
+    width: 100%;
+    max-width: 600px;
+    border-radius: $radius-xl;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: $radius-xl;
+      padding: 2px;
+      background: linear-gradient(135deg, var(--archetype-color), transparent, var(--archetype-color));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+    }
+  }
+
+  &__archetype-inner {
+    background: var(--card-bg);
+    padding: $space-xl;
+    border-radius: $radius-xl;
+    position: relative;
+  }
+
+  &__archetype-header {
+    margin-bottom: $space-lg;
+  }
+
+  &__archetype-name {
+    font-family: $font-heading;
+    font-size: $fs-2xl;
+    font-weight: $fw-extrabold;
+    color: var(--text-primary);
+    margin-bottom: $space-xs;
+  }
+
+  &__archetype-tagline {
+    color: var(--archetype-color);
+    font-size: $fs-md;
+    font-weight: $fw-medium;
+    font-style: italic;
+  }
+
+  &__archetype-desc {
+    color: var(--text-secondary);
+    font-size: $fs-base;
+    line-height: 1.7;
+    margin-bottom: $space-xl;
+  }
+
+  // ── Traits ──
+  &__traits {
+    margin-bottom: $space-xl;
+  }
+
+  &__traits-title {
+    font-size: $fs-xs;
+    font-weight: $fw-bold;
+    color: var(--text-secondary);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: $space-md;
+  }
+
+  &__trait {
+    display: flex;
+    align-items: center;
+    gap: $space-md;
+    margin-bottom: $space-sm;
+  }
+
+  &__trait-label {
+    width: 140px;
+    flex-shrink: 0;
+    font-size: $fs-sm;
+    color: var(--text-secondary);
+    font-weight: $fw-medium;
+
+    @include mobile {
+      width: 100px;
+      font-size: $fs-xs;
+    }
+  }
+
+  &__trait-bar {
+    flex: 1;
+    height: 10px;
+    border-radius: $radius-full;
+    background: var(--bg-secondary);
+    overflow: hidden;
+  }
+
+  &__trait-fill {
+    height: 100%;
+    border-radius: $radius-full;
+    animation: traitGrow 1s cubic-bezier(0.4, 0, 0.2, 1) both;
+  }
+
+  &__runner-up {
+    padding: $space-md;
+    border-radius: $radius-lg;
+    background: var(--bg-secondary);
+    text-align: center;
+    font-size: $fs-sm;
+    color: var(--text-secondary);
+    margin-bottom: $space-lg;
+  }
+
+  &__archetype-footer {
+    text-align: center;
+    font-size: $fs-xs;
+    color: var(--text-secondary);
+    opacity: 0.6;
+    padding-top: $space-md;
+    border-top: 1px solid var(--border);
+  }
+
+  // ── Actions ──
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-sm;
+    justify-content: center;
+  }
+
+  &__action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-xs;
+    padding: $space-sm $space-lg;
+    border: 1px solid var(--border);
+    border-radius: $radius-full;
+    background: var(--card-bg);
+    color: var(--text-secondary);
+    font-size: $fs-sm;
+    font-weight: $fw-medium;
+    cursor: pointer;
+    transition: all $transition-fast;
+
+    &:hover {
+      transform: translateY(-1px);
+    }
+
+    &--share:hover {
+      border-color: #1DA1F2;
+      color: #1DA1F2;
+    }
+
+    &--linkedin:hover {
+      border-color: #0A66C2;
+      color: #0A66C2;
+    }
+
+    &--copy:hover {
+      border-color: #10b981;
+      color: #10b981;
+    }
+
+    &--download:hover {
+      border-color: var(--archetype-color, var(--accent));
+      color: var(--archetype-color, var(--accent));
+    }
+
+    &--retry:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+  }
+}
+
+@keyframes traitGrow {
+  from {
+    width: 0 !important;
+  }
+}

@@ -1,0 +1,64 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.project-card {
+  @include card;
+  @include flex-col;
+  @include gradient-border-hover($radius-lg);
+  gap: $space-md;
+  height: 100%;
+
+  &__header {
+    @include flex-between;
+  }
+
+  &__icon {
+    @include flex-center;
+    width: 48px;
+    height: 48px;
+    border-radius: $radius-lg;
+    background: var(--accent-light);
+    color: var(--accent);
+  }
+
+  &__links {
+    display: flex;
+    gap: $space-md;
+
+    a {
+      color: var(--text-secondary);
+      transition: color $transition-fast;
+
+      &:hover {
+        color: var(--accent);
+      }
+    }
+  }
+
+  &__title {
+    font-family: $font-heading;
+    font-size: $fs-lg;
+    font-weight: $fw-semibold;
+    color: var(--text-primary);
+  }
+
+  &__client {
+    font-size: $fs-sm;
+    color: var(--accent);
+    font-weight: $fw-medium;
+  }
+
+  &__description {
+    font-size: $fs-sm;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    flex: 1;
+  }
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-xs;
+    margin-top: auto;
+  }
+}

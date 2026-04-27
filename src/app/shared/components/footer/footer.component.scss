@@ -1,0 +1,102 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.footer {
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border);
+  padding: $space-2xl 0;
+  margin-top: auto;
+
+  &__inner {
+    @include container;
+    @include flex-col;
+    align-items: center;
+    gap: $space-lg;
+    text-align: center;
+  }
+
+  &__left {
+    @include flex-col;
+    align-items: center;
+    gap: $space-sm;
+  }
+
+  &__logo {
+    font-family: $font-mono;
+    font-size: $fs-lg;
+    font-weight: $fw-bold;
+    color: var(--accent);
+    cursor: pointer;
+    transition: all $transition-fast;
+
+    &:hover {
+      filter: drop-shadow(0 0 8px var(--accent-glow));
+    }
+  }
+
+  &__tagline {
+    color: var(--text-secondary);
+    font-size: $fs-sm;
+  }
+
+  &__easter-egg {
+    font-family: $font-mono;
+    font-size: $fs-sm;
+    color: var(--accent);
+    animation: eggReveal 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  &__social {
+    display: flex;
+    gap: $space-lg;
+
+    a {
+      color: var(--text-secondary);
+      transition: all $transition-fast;
+      position: relative;
+
+      &::after {
+        content: '';
+        position: absolute;
+        inset: -6px;
+        border-radius: 50%;
+        background: var(--accent-glow);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: -1;
+        filter: blur(8px);
+      }
+
+      &:hover {
+        color: var(--accent);
+        transform: translateY(-3px);
+
+        &::after {
+          opacity: 0.5;
+        }
+      }
+    }
+  }
+
+  &__bottom {
+    padding-top: $space-lg;
+    border-top: 1px solid var(--border);
+    width: 100%;
+
+    p {
+      font-size: $fs-xs;
+      color: var(--text-muted);
+    }
+  }
+}
+
+@keyframes eggReveal {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

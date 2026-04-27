@@ -1,0 +1,272 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: $navbar-height;
+  z-index: $z-sticky;
+  background: var(--navbar-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  transition: background-color $transition-base;
+
+  &__inner {
+    @include flex-between;
+    @include container;
+    height: 100%;
+  }
+
+  &__logo {
+    font-family: $font-mono;
+    font-size: $fs-lg;
+    font-weight: $fw-bold;
+    color: var(--text-primary);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+
+    &-bracket {
+      color: var(--accent);
+    }
+
+    &-name {
+      color: var(--text-primary);
+    }
+  }
+
+  &__links {
+    display: flex;
+    align-items: center;
+    gap: $space-xl;
+    list-style: none;
+
+    a {
+      font-size: $fs-sm;
+      font-weight: $fw-medium;
+      color: var(--text-secondary);
+      text-decoration: none;
+      padding: $space-xs $space-sm;
+      border-radius: $radius-md;
+      transition: all $transition-fast;
+      position: relative;
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 50%;
+        width: 0;
+        height: 2px;
+        background: var(--accent);
+        transition: all $transition-fast;
+        transform: translateX(-50%);
+      }
+
+      &:hover,
+      &.active {
+        color: var(--accent);
+
+        &::after {
+          width: 100%;
+        }
+      }
+    }
+
+    @include tablet {
+      display: none;
+    }
+  }
+
+  // ── Dropdown ──
+  &__dropdown {
+    position: relative;
+  }
+
+  &__dropdown-trigger {
+    font-size: $fs-sm;
+    font-weight: $fw-medium;
+    color: var(--text-secondary);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: $space-xs $space-sm;
+    border-radius: $radius-md;
+    transition: all $transition-fast;
+    font-family: inherit;
+
+    &:hover {
+      color: var(--accent);
+    }
+  }
+
+  &__dropdown-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 200px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: $radius-lg;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    padding: $space-sm;
+    list-style: none;
+    z-index: $z-dropdown;
+    animation: fadeInDown 0.2s ease;
+
+    li a {
+      display: block;
+      padding: $space-sm $space-md;
+      border-radius: $radius-md;
+      font-size: $fs-sm;
+      white-space: nowrap;
+
+      &::after {
+        display: none; // Override underline from parent
+      }
+
+      &:hover {
+        background: var(--bg-secondary);
+      }
+    }
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: $space-md;
+  }
+
+  &__theme-toggle {
+    @include flex-center;
+    width: 40px;
+    height: 40px;
+    border-radius: $radius-md;
+    color: var(--text-secondary);
+    transition: all $transition-fast;
+
+    svg {
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    &--spin svg {
+      transform: rotate(360deg) scale(1.2);
+    }
+
+    &:hover {
+      background: var(--accent-light);
+      color: var(--accent);
+    }
+  }
+
+  &__mobile-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    padding: $space-sm;
+
+    span {
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: var(--text-primary);
+      border-radius: 2px;
+      transition: all 0.3s ease;
+      transform-origin: center;
+    }
+
+    &--open {
+      span:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+      }
+      span:nth-child(2) {
+        opacity: 0;
+        transform: scaleX(0);
+      }
+      span:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+      }
+    }
+
+    @include tablet {
+      display: flex;
+    }
+  }
+
+  // ── Mobile overlay + slide-in menu ──
+  &__mobile-overlay {
+    display: none;
+
+    @include tablet {
+      display: block;
+      position: fixed;
+      inset: 0;
+      top: $navbar-height;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(4px);
+      z-index: $z-dropdown;
+      animation: fadeIn 0.2s ease;
+    }
+  }
+
+  &__mobile-menu {
+    display: none;
+
+    @include tablet {
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: $navbar-height;
+      right: 0;
+      width: 280px;
+      height: calc(100vh - $navbar-height);
+      background: var(--card-bg);
+      border-left: 1px solid var(--border);
+      padding: $space-lg;
+      list-style: none;
+      z-index: $z-modal;
+      animation: slideInRight 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow-y: auto;
+
+      li {
+        a {
+          display: block;
+          padding: $space-md $space-lg;
+          font-size: $fs-md;
+          font-weight: $fw-medium;
+          color: var(--text-secondary);
+          text-decoration: none;
+          border-radius: $radius-lg;
+          transition: all $transition-fast;
+
+          &:hover,
+          &.active {
+            color: var(--accent);
+            background: var(--accent-light);
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}

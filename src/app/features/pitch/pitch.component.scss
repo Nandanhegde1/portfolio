@@ -1,0 +1,514 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.pitch {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  overflow-x: hidden;
+}
+
+// ── Scene (Full-screen section) ──
+.pitch__scene {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $space-4xl $space-lg;
+  position: relative;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &--visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  // First scene always visible
+  &--opening {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.pitch__scene-inner {
+  max-width: 900px;
+  width: 100%;
+  text-align: center;
+}
+
+.pitch__eyebrow {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  font-weight: $fw-bold;
+  color: var(--accent);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: $space-xl;
+  opacity: 0.8;
+}
+
+// ── Scene 1: Opening ──
+.pitch__scene--opening {
+  background: var(--bg-primary);
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 20% 50%, rgba(var(--accent-rgb, 99, 102, 241), 0.06) 0%, transparent 50%),
+      radial-gradient(circle at 80% 30%, rgba(var(--accent-rgb, 99, 102, 241), 0.04) 0%, transparent 50%);
+    pointer-events: none;
+  }
+}
+
+.pitch__hero-text {
+  display: flex;
+  flex-direction: column;
+  gap: $space-sm;
+  margin-bottom: $space-xl;
+}
+
+.pitch__hero-line {
+  font-family: $font-heading;
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  font-weight: $fw-extrabold;
+  line-height: 1.1;
+  color: var(--text-primary);
+  opacity: 0;
+  animation: pitchFadeUp 0.8s ease forwards;
+
+  &:nth-child(2) { animation-delay: 0.2s; }
+  &:nth-child(3) { animation-delay: 0.4s; }
+
+  &--accent {
+    background: var(--accent-gradient, linear-gradient(135deg, var(--accent), var(--glow-color, var(--accent))));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+.pitch__hero-sub {
+  font-size: $fs-lg;
+  color: var(--text-secondary);
+  max-width: 500px;
+  margin: 0 auto $space-3xl;
+  line-height: 1.6;
+  opacity: 0;
+  animation: pitchFadeUp 0.8s ease 0.6s forwards;
+}
+
+.pitch__scroll-hint {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-sm;
+  color: var(--text-secondary);
+  font-size: $fs-sm;
+  opacity: 0;
+  animation: pitchFadeUp 0.8s ease 0.8s forwards;
+
+  span {
+    letter-spacing: 1px;
+  }
+}
+
+.pitch__scroll-arrow {
+  animation: pitchBounce 2s ease infinite;
+
+  svg {
+    opacity: 0.5;
+  }
+}
+
+// ── Scene 2: Stats ──
+.pitch__scene--stats {
+  background: var(--bg-secondary);
+}
+
+.pitch__stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $space-2xl $space-xl;
+  max-width: 700px;
+  margin: 0 auto;
+
+  @include mobile {
+    grid-template-columns: repeat(2, 1fr);
+    gap: $space-xl $space-md;
+  }
+}
+
+.pitch__stat-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-xs;
+}
+
+.pitch__stat-value {
+  font-family: $font-heading;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: $fw-extrabold;
+  background: var(--accent-gradient, linear-gradient(135deg, var(--accent), var(--glow-color, var(--accent))));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+}
+
+.pitch__stat-label {
+  font-size: $fs-sm;
+  color: var(--text-secondary);
+  font-weight: $fw-medium;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+// ── Scene 3: Journey ──
+.pitch__scene--journey {
+  .pitch__scene-inner {
+    text-align: left;
+    max-width: 700px;
+  }
+
+  .pitch__eyebrow {
+    text-align: center;
+  }
+}
+
+.pitch__journey-track {
+  position: relative;
+  padding: $space-xl 0;
+}
+
+.pitch__journey-line {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, transparent, var(--accent), var(--accent), transparent);
+  transform: translateX(-50%);
+
+  @include mobile {
+    left: 20px;
+  }
+}
+
+.pitch__journey-node {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: $space-2xl;
+  position: relative;
+  opacity: 0;
+  transform: translateX(-30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+
+  .pitch__scene--visible & {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  @for $i from 1 through 4 {
+    &:nth-child(#{$i + 1}) {
+      transition-delay: #{$i * 0.15}s;
+    }
+  }
+
+  // Left-aligned by default
+  padding-right: 55%;
+
+  @include mobile {
+    padding-right: 0;
+    padding-left: 50px;
+  }
+
+  &--right {
+    padding-right: 0;
+    padding-left: 55%;
+    flex-direction: row-reverse;
+    transform: translateX(30px);
+
+    .pitch__scene--visible & {
+      transform: translateX(0);
+    }
+
+    @include mobile {
+      padding-left: 50px;
+      flex-direction: row;
+    }
+
+    .pitch__journey-card {
+      text-align: left;
+    }
+  }
+}
+
+.pitch__journey-dot {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 3px solid var(--bg-primary);
+  box-shadow: 0 0 0 3px var(--accent), 0 0 15px rgba(var(--accent-rgb, 99, 102, 241), 0.3);
+  z-index: 2;
+
+  @include mobile {
+    left: 20px;
+  }
+}
+
+.pitch__journey-card {
+  @include card;
+  padding: $space-lg;
+  flex: 1;
+
+  h3 {
+    font-family: $font-heading;
+    font-size: $fs-lg;
+    font-weight: $fw-bold;
+    color: var(--text-primary);
+    margin-bottom: $space-xs;
+  }
+
+  p {
+    color: var(--text-secondary);
+    font-size: $fs-sm;
+    line-height: 1.6;
+  }
+}
+
+.pitch__journey-year {
+  display: inline-block;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  font-weight: $fw-bold;
+  color: var(--accent);
+  padding: 2px $space-sm;
+  border: 1px solid var(--accent);
+  border-radius: $radius-full;
+  margin-bottom: $space-sm;
+}
+
+// ── Scene 4: Value Props ──
+.pitch__scene--value {
+  background: var(--bg-primary);
+}
+
+.pitch__value-heading {
+  font-family: $font-heading;
+  font-size: $fs-2xl;
+  font-weight: $fw-bold;
+  color: var(--text-primary);
+  margin-bottom: $space-3xl;
+
+  @include mobile {
+    font-size: $fs-xl;
+  }
+}
+
+.pitch__value-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $space-xl;
+  text-align: left;
+
+  @include tablet {
+    grid-template-columns: 1fr;
+    gap: $space-lg;
+  }
+}
+
+.pitch__value-card {
+  @include card;
+  padding: $space-xl;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--accent-gradient, var(--accent));
+    border-radius: $radius-lg $radius-lg 0 0;
+  }
+}
+
+.pitch__value-icon {
+  font-size: 2.5rem;
+  margin-bottom: $space-md;
+}
+
+.pitch__value-title {
+  font-family: $font-heading;
+  font-size: $fs-lg;
+  font-weight: $fw-bold;
+  color: var(--text-primary);
+  margin-bottom: $space-sm;
+}
+
+.pitch__value-desc {
+  color: var(--text-secondary);
+  font-size: $fs-sm;
+  line-height: 1.7;
+}
+
+// ── Scene 5: Stack Cloud ──
+.pitch__scene--stack {
+  background: var(--bg-secondary);
+}
+
+.pitch__stack-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: $space-md;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.pitch__stack-tag {
+  display: inline-block;
+  padding: $space-sm $space-lg;
+  border: 1px solid var(--border);
+  border-radius: $radius-full;
+  font-size: $fs-sm;
+  font-weight: $fw-medium;
+  color: var(--text-secondary);
+  background: var(--card-bg);
+  transition: all $transition-base;
+  animation: pitchFadeUp 0.5s ease both;
+  cursor: default;
+
+  &:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  &--primary {
+    border-color: var(--accent);
+    color: var(--accent);
+    font-weight: $fw-bold;
+    background: rgba(var(--accent-rgb, 99, 102, 241), 0.08);
+  }
+}
+
+// ── Scene 6: CTA ──
+.pitch__scene--cta {
+  background: var(--bg-primary);
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(var(--accent-rgb, 99, 102, 241), 0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+}
+
+.pitch__cta-text {
+  font-family: $font-heading;
+  font-size: clamp(2rem, 6vw, 4rem);
+  font-weight: $fw-extrabold;
+  color: var(--text-primary);
+  margin-bottom: $space-md;
+}
+
+.pitch__cta-sub {
+  font-size: $fs-lg;
+  color: var(--text-secondary);
+  margin-bottom: $space-2xl;
+}
+
+.pitch__cta-buttons {
+  display: flex;
+  gap: $space-md;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: $space-xl;
+}
+
+.pitch__cta-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: $space-md $space-2xl;
+  border-radius: $radius-full;
+  font-size: $fs-md;
+  font-weight: $fw-bold;
+  font-family: $font-heading;
+  text-decoration: none;
+  transition: all $transition-base;
+
+  &--primary {
+    background: var(--accent-gradient, var(--accent));
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(var(--accent-rgb, 99, 102, 241), 0.3);
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(var(--accent-rgb, 99, 102, 241), 0.4);
+    }
+  }
+
+  &--secondary {
+    border: 2px solid var(--border);
+    color: var(--text-primary);
+    background: transparent;
+
+    &:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+  }
+}
+
+.pitch__cta-or {
+  font-size: $fs-sm;
+  color: var(--text-secondary);
+
+  a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}
+
+// ── Keyframes ──
+@keyframes pitchFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pitchBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}

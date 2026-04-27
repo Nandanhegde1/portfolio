@@ -1,0 +1,1213 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.rpg {
+  padding: $space-3xl 0 $space-4xl;
+  min-height: 100vh;
+
+  &__container {
+    @include container;
+    max-width: 1200px;
+  }
+
+  // ── Two-column Layout ──
+  &__layout {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: $space-2xl;
+    align-items: start;
+
+    @include tablet {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__sidebar {
+    position: sticky;
+    top: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $space-lg;
+
+    @include tablet {
+      position: static;
+    }
+  }
+
+  &__main {
+    min-width: 0;
+  }
+
+  // ── Header ──
+  &__header {
+    text-align: center;
+    margin-bottom: $space-3xl;
+  }
+
+  &__tag {
+    @include mono-text;
+    color: var(--accent);
+    display: block;
+    margin-bottom: $space-sm;
+  }
+
+  &__title {
+    @include heading($fs-4xl);
+    letter-spacing: -0.03em;
+    margin-bottom: $space-sm;
+  }
+
+  &__subtitle {
+    color: var(--text-secondary);
+    font-size: $fs-md;
+    font-family: $font-mono;
+  }
+
+  // ── Holographic Card ──
+  &__card-wrapper {
+    display: flex;
+    justify-content: center;
+    perspective: 800px;
+  }
+
+  &__card {
+    --holo-x: 50%;
+    --holo-y: 50%;
+    position: relative;
+    width: 340px;
+    padding: $space-2xl $space-xl;
+    background: var(--card-bg);
+    border-radius: $radius-2xl;
+    text-align: center;
+    transition: transform 0.12s ease-out, box-shadow 0.3s ease;
+    overflow: hidden;
+    isolation: isolate;
+
+    // Static cyan glow for profile card
+    box-shadow:
+      var(--card-shadow),
+      0 0 40px rgba(6, 182, 212, 0.15),
+      0 0 80px rgba(59, 130, 246, 0.08);
+    border: 1px solid rgba(6, 182, 212, 0.3);
+
+    .rpg__card-wrapper:hover & {
+      box-shadow:
+        var(--card-shadow),
+        0 0 50px rgba(6, 182, 212, 0.25),
+        0 0 100px rgba(59, 130, 246, 0.12),
+        0 16px 50px rgba(0, 0, 0, 0.3);
+      border-color: rgba(6, 182, 212, 0.5);
+    }
+
+    @include mobile {
+      width: 100%;
+      max-width: 300px;
+    }
+  }
+
+  &__card-holo {
+    position: absolute;
+    inset: 0;
+    border-radius: $radius-2xl;
+    pointer-events: none;
+    z-index: 1;
+    mix-blend-mode: screen;
+    transition: opacity 0.3s ease;
+
+    background:
+      radial-gradient(
+        circle at var(--holo-x) var(--holo-y),
+        rgba(255, 255, 255, 0.15) 0%,
+        transparent 50%
+      ),
+      linear-gradient(
+        125deg,
+        rgba(255, 0, 0, 0.04) 0%,
+        rgba(255, 154, 0, 0.04) 14%,
+        rgba(208, 222, 33, 0.05) 28%,
+        rgba(79, 220, 74, 0.05) 42%,
+        rgba(63, 218, 216, 0.06) 56%,
+        rgba(28, 127, 238, 0.05) 70%,
+        rgba(95, 21, 242, 0.04) 84%,
+        rgba(255, 0, 0, 0.04) 100%
+      );
+
+    .rpg__card-wrapper:hover &,
+    .rpg__forge-preview:hover & {
+      background:
+        radial-gradient(
+          circle at var(--holo-x) var(--holo-y),
+          rgba(255, 255, 255, 0.35) 0%,
+          transparent 55%
+        ),
+        linear-gradient(
+          125deg,
+          rgba(255, 0, 0, 0.14) 0%,
+          rgba(255, 154, 0, 0.14) 14%,
+          rgba(208, 222, 33, 0.16) 28%,
+          rgba(79, 220, 74, 0.16) 42%,
+          rgba(63, 218, 216, 0.18) 56%,
+          rgba(28, 127, 238, 0.16) 70%,
+          rgba(95, 21, 242, 0.14) 84%,
+          rgba(255, 0, 0, 0.14) 100%
+        );
+    }
+  }
+
+  // Card style variants now use --user-color-1 / --user-color-2 CSS custom properties
+  // set from template bindings, no per-variant overrides needed
+
+  &__card-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  &__card-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #06b6d4, #3b82f6);
+    @include flex-center;
+    margin: 0 auto $space-md;
+    box-shadow: 0 0 24px rgba(6, 182, 212, 0.35);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+
+    span {
+      font-family: $font-mono;
+      font-size: $fs-xl;
+      font-weight: $fw-extrabold;
+      color: #fff;
+    }
+  }
+
+  &__card-name {
+    @include heading($fs-xl);
+    margin-bottom: $space-xs;
+  }
+
+  &__card-class,
+  &__card-guild,
+  &__card-realm {
+    font-size: $fs-sm;
+    color: var(--text-secondary);
+    margin-bottom: $space-xs;
+    line-height: 1.6;
+  }
+
+  &__card-xp {
+    margin-top: $space-lg;
+  }
+
+  &__card-xp-label {
+    @include flex-between;
+    font-family: $font-mono;
+    font-size: $fs-xs;
+    color: var(--text-muted);
+    margin-bottom: $space-xs;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  &__card-xp-bar {
+    height: 8px;
+    background: var(--bg-tertiary);
+    border-radius: $radius-full;
+    overflow: hidden;
+  }
+
+  &__card-xp-fill {
+    height: 100%;
+    background: var(--accent-gradient);
+    border-radius: $radius-full;
+    transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 8px var(--accent-glow);
+  }
+
+  // ── Sections ──
+  &__section {
+    margin-bottom: $space-2xl;
+  }
+
+  &__section-title {
+    display: flex;
+    align-items: center;
+    gap: $space-sm;
+    @include heading($fs-xl);
+    margin-bottom: $space-lg;
+    padding-bottom: $space-sm;
+    border-bottom: 2px solid var(--border);
+    width: 100%;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: color $transition-fast;
+
+    &:hover {
+      color: var(--accent);
+    }
+  }
+
+  &__section-toggle {
+    margin-left: auto;
+    font-size: $fs-xs;
+    color: var(--text-muted);
+    transition: transform 0.3s ease;
+
+    &--open {
+      transform: rotate(90deg);
+    }
+  }
+
+  &__section-body {
+    animation: fadeInDown 0.35s ease;
+    overflow: hidden;
+  }
+
+  &__section-icon {
+    font-size: $fs-xl;
+  }
+
+  // ── Attributes ──
+  &__stats {
+    display: flex;
+    flex-direction: column;
+    gap: $space-lg;
+  }
+
+  &__stat-header {
+    display: flex;
+    align-items: center;
+    gap: $space-sm;
+    margin-bottom: $space-xs;
+  }
+
+  &__stat-attr {
+    font-family: $font-mono;
+    font-size: $fs-sm;
+    font-weight: $fw-extrabold;
+    width: 40px;
+    text-transform: uppercase;
+  }
+
+  &__stat-name {
+    flex: 1;
+    font-size: $fs-sm;
+    color: var(--text-secondary);
+  }
+
+  &__stat-value {
+    font-family: $font-mono;
+    font-size: $fs-sm;
+    font-weight: $fw-bold;
+    color: var(--text-primary);
+  }
+
+  &__stat-bar {
+    height: 8px;
+    background: var(--bg-tertiary);
+    border-radius: $radius-full;
+    overflow: hidden;
+  }
+
+  &__stat-fill {
+    height: 100%;
+    border-radius: $radius-full;
+    transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 6px currentColor;
+    animation: statBarGrow 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    transform-origin: left;
+  }
+
+  @for $i from 1 through 6 {
+    &__stats > :nth-child(#{$i}) &__stat-fill {
+      animation-delay: #{$i * 0.15}s;
+    }
+  }
+
+  // ── Quest Log ──
+  &__quests {
+    display: flex;
+    flex-direction: column;
+    gap: $space-lg;
+  }
+
+  &__quest {
+    @include card;
+    @include gradient-border-hover($radius-lg);
+    padding: $space-xl;
+    border-left: 4px solid var(--border-strong);
+
+    &--active {
+      border-left-color: var(--accent);
+      box-shadow: var(--card-shadow), inset 0 0 0 1px var(--accent-light);
+      animation: questGlow 3s ease-in-out infinite;
+    }
+  }
+
+  &__quest-status {
+    margin-bottom: $space-sm;
+  }
+
+  &__quest-badge {
+    font-family: $font-mono;
+    font-size: $fs-xs;
+    font-weight: $fw-bold;
+    padding: $space-xs $space-md;
+    border-radius: $radius-full;
+    letter-spacing: 0.05em;
+
+    &--active {
+      background: var(--accent-light);
+      color: var(--accent);
+    }
+
+    &--complete {
+      background: rgba(34, 197, 94, 0.1);
+      color: var(--success);
+    }
+  }
+
+  &__quest-title {
+    font-size: $fs-lg;
+    font-weight: $fw-bold;
+    color: var(--text-primary);
+    margin-bottom: $space-xs;
+  }
+
+  &__quest-guild {
+    font-size: $fs-sm;
+    color: var(--accent);
+    margin-bottom: $space-sm;
+  }
+
+  &__quest-desc {
+    @include body-text;
+    margin-bottom: $space-sm;
+  }
+
+  &__quest-highlights {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 $space-md;
+    display: flex;
+    flex-direction: column;
+    gap: $space-xs;
+
+    li {
+      font-size: $fs-xs;
+      color: var(--text-secondary);
+      padding-left: $space-md;
+      position: relative;
+      line-height: 1.5;
+
+      &::before {
+        content: '\25B8';
+        position: absolute;
+        left: 0;
+        color: var(--accent);
+      }
+    }
+  }
+
+  &__quest-loot {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-xs;
+  }
+
+  &__quest-item {
+    padding: $space-xs $space-md;
+    background: var(--bg-tertiary);
+    border-radius: $radius-full;
+    font-size: $fs-xs;
+    font-family: $font-mono;
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+  }
+
+  // ── Inventory ──
+  &__inventory {
+    display: flex;
+    flex-direction: column;
+    gap: $space-xl;
+  }
+
+  &__inv-label {
+    font-size: $fs-md;
+    font-weight: $fw-semibold;
+    color: var(--text-primary);
+    margin-bottom: $space-sm;
+  }
+
+  &__inv-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-sm;
+  }
+
+  &__inv-item {
+    display: flex;
+    align-items: center;
+    gap: $space-sm;
+    padding: $space-sm $space-md;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: $radius-md;
+    transition: all $transition-fast;
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+      border-radius: $radius-md;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+
+      &::before {
+        opacity: 1;
+      }
+    }
+
+    // ═══ POKÉMON RARITY SYSTEM ═══
+
+    // ── Common (silver/grey – base set reverse) ──
+    &--common {
+      border-color: rgba(148, 163, 184, 0.25);
+
+      &:hover {
+        border-color: rgba(148, 163, 184, 0.5);
+        box-shadow: 0 4px 12px rgba(148, 163, 184, 0.12);
+      }
+
+      .rpg__inv-rarity-dot { background: #94a3b8; }
+      .rpg__inv-level { color: #94a3b8; }
+    }
+
+    // ── Rare (blue holo – Pokémon rare star ★) ──
+    &--rare {
+      border-color: rgba(59, 130, 246, 0.35);
+      background: linear-gradient(135deg,
+        var(--card-bg) 0%,
+        rgba(59, 130, 246, 0.03) 100%);
+
+      &::before {
+        background: linear-gradient(135deg,
+          rgba(59, 130, 246, 0.06) 0%,
+          rgba(99, 179, 237, 0.08) 40%,
+          rgba(59, 130, 246, 0.04) 70%,
+          rgba(34, 211, 238, 0.06) 100%);
+        background-size: 200% 200%;
+        animation: holoShimmer 4s ease infinite;
+      }
+
+      &:hover {
+        border-color: rgba(59, 130, 246, 0.7);
+        box-shadow:
+          0 4px 20px rgba(59, 130, 246, 0.25),
+          0 0 12px rgba(59, 130, 246, 0.1),
+          inset 0 0 12px rgba(59, 130, 246, 0.03);
+        &::before { opacity: 1; }
+      }
+
+      .rpg__inv-rarity-dot { background: #3b82f6; box-shadow: 0 0 4px rgba(59, 130, 246, 0.4); }
+      .rpg__inv-level { color: #3b82f6; }
+    }
+
+    // ── Epic (purple/pink – Neo Discovery holo) ──
+    &--epic {
+      border-color: rgba(168, 85, 247, 0.35);
+      background: linear-gradient(135deg,
+        var(--card-bg) 0%,
+        rgba(168, 85, 247, 0.03) 50%,
+        rgba(236, 72, 153, 0.02) 100%);
+
+      &::before {
+        background: linear-gradient(135deg,
+          rgba(168, 85, 247, 0.08) 0%,
+          rgba(236, 72, 153, 0.06) 25%,
+          rgba(99, 102, 241, 0.08) 50%,
+          rgba(168, 85, 247, 0.06) 75%,
+          rgba(236, 72, 153, 0.08) 100%);
+        background-size: 200% 200%;
+        animation: holoShimmer 3.5s ease infinite;
+      }
+
+      // Subtle holo line on hover
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 60%;
+        height: 100%;
+        background: linear-gradient(90deg,
+          transparent,
+          rgba(168, 85, 247, 0.06),
+          rgba(236, 72, 153, 0.08),
+          transparent);
+        transform: skewX(-20deg);
+        transition: left 0.6s ease;
+        pointer-events: none;
+      }
+
+      &:hover {
+        border-color: rgba(168, 85, 247, 0.7);
+        box-shadow:
+          0 4px 24px rgba(168, 85, 247, 0.25),
+          0 0 16px rgba(168, 85, 247, 0.1),
+          0 0 8px rgba(236, 72, 153, 0.08);
+        &::before { opacity: 1; }
+        &::after { left: 140%; }
+      }
+
+      .rpg__inv-rarity-dot {
+        background: linear-gradient(135deg, #a855f7, #ec4899);
+        box-shadow: 0 0 6px rgba(168, 85, 247, 0.5);
+      }
+      .rpg__inv-level { color: #a855f7; font-weight: $fw-bold; }
+    }
+
+    // ── Legendary (gold rainbow – Neo Genesis holo ★★★) ──
+    &--legendary {
+      border: 2px solid transparent;
+      background-image:
+        linear-gradient(var(--card-bg), var(--card-bg)),
+        linear-gradient(135deg, #f59e0b, #fbbf24, #f59e0b, #eab308);
+      background-origin: border-box;
+      -webkit-background-clip: padding-box, border-box;
+      background-clip: padding-box, border-box;
+
+      // Animated rainbow holo overlay
+      &::before {
+        background:
+          linear-gradient(135deg,
+            rgba(255, 0, 0, 0.08) 0%,
+            rgba(255, 154, 0, 0.08) 14%,
+            rgba(208, 222, 33, 0.1) 28%,
+            rgba(79, 220, 74, 0.1) 42%,
+            rgba(63, 218, 216, 0.1) 56%,
+            rgba(28, 127, 238, 0.1) 70%,
+            rgba(168, 85, 247, 0.08) 84%,
+            rgba(255, 0, 0, 0.08) 100%);
+        background-size: 300% 300%;
+        animation: legendaryHolo 3s ease infinite;
+        opacity: 0.5;
+      }
+
+      // Sparkle sweep on hover
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -120%;
+        width: 80%;
+        height: 100%;
+        background: linear-gradient(90deg,
+          transparent,
+          rgba(255, 255, 255, 0.1),
+          rgba(251, 191, 36, 0.12),
+          rgba(255, 255, 255, 0.1),
+          transparent);
+        transform: skewX(-20deg);
+        transition: left 0.7s ease;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      &:hover {
+        box-shadow:
+          0 4px 30px rgba(245, 158, 11, 0.35),
+          0 0 20px rgba(245, 158, 11, 0.15),
+          0 0 40px rgba(245, 158, 11, 0.08),
+          inset 0 0 20px rgba(245, 158, 11, 0.04);
+        &::before { opacity: 1; }
+        &::after { left: 150%; }
+      }
+
+      .rpg__inv-rarity-dot {
+        background: linear-gradient(135deg, #f59e0b, #fbbf24, #f59e0b);
+        box-shadow: 0 0 8px rgba(245, 158, 11, 0.6);
+        animation: dotPulse 2s ease infinite;
+      }
+      .rpg__inv-level {
+        color: #f59e0b;
+        font-weight: $fw-extrabold;
+        text-shadow: 0 0 8px rgba(245, 158, 11, 0.3);
+      }
+      .rpg__inv-name {
+        color: var(--text-primary);
+        font-weight: $fw-bold;
+      }
+    }
+  }
+
+  &__inv-rarity-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  &__inv-name {
+    font-size: $fs-sm;
+    font-weight: $fw-medium;
+    color: var(--text-primary);
+  }
+
+  &__inv-level {
+    font-family: $font-mono;
+    font-size: $fs-xs;
+    color: var(--accent);
+    font-weight: $fw-bold;
+  }
+
+  // ── Achievements ──
+  &__achievements {
+    display: flex;
+    flex-direction: column;
+    gap: $space-md;
+  }
+
+  &__achievement {
+    display: flex;
+    align-items: center;
+    gap: $space-lg;
+    padding: $space-lg;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: $radius-lg;
+    transition: all $transition-base;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    &:hover::before { opacity: 1; }
+
+    // ═══ Achievement Rarity ═══
+    &--rare {
+      border-left: 3px solid #3b82f6;
+      &::before {
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.04), rgba(34, 211, 238, 0.03), transparent);
+      }
+      &:hover {
+        border-color: rgba(59, 130, 246, 0.5);
+        box-shadow: 0 0 24px rgba(59, 130, 246, 0.2), 0 0 8px rgba(59, 130, 246, 0.08);
+        &::before { opacity: 1; }
+      }
+    }
+
+    &--epic {
+      border-left: 3px solid #a855f7;
+      &::before {
+        background: linear-gradient(135deg,
+          rgba(168, 85, 247, 0.06),
+          rgba(236, 72, 153, 0.04),
+          rgba(99, 102, 241, 0.05),
+          transparent);
+        background-size: 200% 200%;
+        animation: holoShimmer 4s ease infinite;
+      }
+      &:hover {
+        border-color: rgba(168, 85, 247, 0.5);
+        box-shadow: 0 0 24px rgba(168, 85, 247, 0.2), 0 0 10px rgba(236, 72, 153, 0.1);
+        &::before { opacity: 1; }
+      }
+    }
+
+    &--legendary {
+      border-left: 3px solid #f59e0b;
+      background: linear-gradient(135deg,
+        var(--card-bg) 0%,
+        rgba(245, 158, 11, 0.02) 100%);
+      &::before {
+        background: linear-gradient(135deg,
+          rgba(255, 0, 0, 0.04) 0%,
+          rgba(255, 154, 0, 0.05) 20%,
+          rgba(208, 222, 33, 0.05) 40%,
+          rgba(63, 218, 216, 0.05) 60%,
+          rgba(168, 85, 247, 0.04) 80%,
+          rgba(245, 158, 11, 0.04) 100%);
+        background-size: 300% 300%;
+        animation: legendaryHolo 4s ease infinite;
+        opacity: 0.5;
+      }
+      &:hover {
+        border-color: rgba(245, 158, 11, 0.7);
+        box-shadow:
+          0 0 30px rgba(245, 158, 11, 0.25),
+          0 0 12px rgba(245, 158, 11, 0.1),
+          0 0 60px rgba(245, 158, 11, 0.06);
+        &::before { opacity: 1; }
+      }
+    }
+  }
+
+  &__achievement-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+  }
+
+  &__achievement-info {
+    h4 {
+      font-size: $fs-md;
+      font-weight: $fw-semibold;
+      color: var(--text-primary);
+      margin-bottom: $space-xs;
+    }
+
+    p {
+      font-size: $fs-sm;
+      color: var(--text-secondary);
+    }
+  }
+
+  // ── Forge Your Card ──
+  &__forge {
+    margin-top: $space-xl;
+  }
+
+  &__forge-intro {
+    @include body-text;
+    text-align: center;
+    margin-bottom: $space-2xl;
+  }
+
+  &__forge-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $space-2xl;
+    align-items: start;
+
+    @include tablet {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__forge-form {
+    display: flex;
+    flex-direction: column;
+    gap: $space-lg;
+  }
+
+  &__forge-field {
+    display: flex;
+    flex-direction: column;
+    gap: $space-sm;
+  }
+
+  &__forge-label {
+    font-family: $font-mono;
+    font-size: $fs-xs;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  &__forge-input {
+    width: 100%;
+    padding: $space-md $space-lg;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: $radius-md;
+    color: var(--text-primary);
+    font-size: $fs-base;
+    font-family: $font-primary;
+    outline: none;
+    transition: all $transition-fast;
+
+    &::placeholder {
+      color: var(--text-muted);
+    }
+
+    &:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-light);
+    }
+  }
+
+  &__forge-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-xs;
+  }
+
+  &__forge-chip {
+    padding: $space-xs $space-md;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: $radius-full;
+    font-size: $fs-xs;
+    font-family: $font-mono;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all $transition-fast;
+
+    &:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    &--active {
+      background: var(--accent-light);
+      border-color: var(--accent);
+      color: var(--accent);
+      font-weight: $fw-bold;
+    }
+  }
+
+  &__forge-actions {
+    display: flex;
+    gap: $space-md;
+    flex-wrap: wrap;
+  }
+
+  &__forge-btn {
+    flex: 1;
+    min-width: 140px;
+    padding: $space-md $space-lg;
+    border: none;
+    border-radius: $radius-lg;
+    font-family: $font-mono;
+    font-size: $fs-sm;
+    font-weight: $fw-bold;
+    cursor: pointer;
+    transition: all $transition-base;
+    text-align: center;
+
+    &--download {
+      background: var(--accent-gradient);
+      color: #fff;
+      box-shadow: 0 0 16px var(--accent-glow);
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0 28px var(--accent-glow);
+      }
+    }
+
+    &--share {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+
+      &:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+        transform: translateY(-2px);
+      }
+    }
+  }
+
+  &__forge-toast {
+    font-family: $font-mono;
+    font-size: $fs-sm;
+    color: var(--success);
+    padding: $space-sm $space-md;
+    background: rgba(34, 197, 94, 0.08);
+    border-radius: $radius-md;
+    text-align: center;
+    animation: fadeInUp 0.3s ease;
+  }
+
+  &__forge-preview {
+    perspective: 800px;
+    display: flex;
+    justify-content: center;
+
+    @include tablet {
+      order: -1;
+    }
+  }
+
+  &__forge-card {
+    --forge-color-1: #06b6d4;
+    --forge-color-2: #3b82f6;
+    width: 320px;
+    padding: $space-2xl $space-xl;
+
+    // Override base card border/glow
+    border: 1px solid color-mix(in srgb, var(--forge-color-1) 40%, transparent);
+    box-shadow:
+      var(--card-shadow),
+      0 0 40px color-mix(in srgb, var(--forge-color-1) 20%, transparent),
+      0 0 80px color-mix(in srgb, var(--forge-color-2) 10%, transparent);
+
+    // Default: linear gradient border
+    &::after {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: calc(#{$radius-2xl} + 2px);
+      background: linear-gradient(135deg, var(--forge-color-1), var(--forge-color-2));
+      z-index: -1;
+      opacity: 0.6;
+      transition: opacity 0.3s ease;
+    }
+
+    // Gradient style variants
+    &--radial::after {
+      background: radial-gradient(circle at 30% 30%, var(--forge-color-1), var(--forge-color-2));
+    }
+
+    &--conic::after {
+      background: conic-gradient(from 0deg, var(--forge-color-1), var(--forge-color-2), var(--forge-color-1));
+      animation: borderRotate 4s linear infinite;
+    }
+
+    &--solid::after {
+      background: var(--forge-color-1);
+    }
+
+    .rpg__forge-preview:hover & {
+      box-shadow:
+        0 0 50px color-mix(in srgb, var(--forge-color-1) 30%, transparent),
+        0 0 100px color-mix(in srgb, var(--forge-color-2) 12%, transparent),
+        0 16px 50px rgba(0, 0, 0, 0.3);
+      border-color: color-mix(in srgb, var(--forge-color-1) 60%, transparent);
+
+      &::after {
+        opacity: 1;
+      }
+    }
+
+    @include mobile {
+      width: 100%;
+      max-width: 300px;
+    }
+  }
+
+  // Forge avatar display
+  &__forge-avatar-display {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--forge-color-1), var(--forge-color-2));
+    @include flex-center;
+    margin: 0 auto $space-md;
+    box-shadow: 0 0 24px color-mix(in srgb, var(--forge-color-1) 35%, transparent);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+
+    span {
+      font-family: $font-mono;
+      font-size: $fs-xl;
+      font-weight: $fw-extrabold;
+      color: #fff;
+    }
+  }
+
+  &__forge-avatar-emoji {
+    font-size: 2rem;
+    line-height: 1;
+  }
+
+  // Forge form controls
+  &__forge-avatars {
+    display: flex;
+    gap: $space-xs;
+    flex-wrap: wrap;
+  }
+
+  &__forge-avatar-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--border);
+    border-radius: $radius-lg;
+    background: var(--bg-secondary);
+    font-size: $fs-md;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      border-color: var(--text-muted);
+    }
+
+    &--active {
+      border-color: var(--accent);
+      box-shadow: 0 0 12px var(--accent-glow);
+      background: rgba(var(--accent-rgb, 99, 102, 241), 0.08);
+    }
+  }
+
+  &__forge-gradients {
+    display: flex;
+    gap: $space-xs;
+    flex-wrap: wrap;
+  }
+
+  &__forge-grad-btn {
+    display: flex;
+    align-items: center;
+    gap: $space-xs;
+    padding: $space-xs $space-md;
+    border: 2px solid var(--border);
+    border-radius: $radius-full;
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    font-family: $font-mono;
+    font-size: $fs-xs;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      border-color: var(--text-muted);
+      transform: translateY(-1px);
+    }
+
+    &--active {
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+  }
+
+  &__forge-grad-icon {
+    font-size: $fs-sm;
+  }
+
+  &__forge-grad-label {
+    @include mobile {
+      display: none;
+    }
+  }
+
+  &__forge-colors {
+    display: flex;
+    gap: $space-xs;
+    flex-wrap: wrap;
+  }
+
+  &__forge-color-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+    &:hover {
+      transform: scale(1.15);
+    }
+
+    &--active {
+      border-color: #fff;
+      transform: scale(1.15);
+      box-shadow: 0 0 0 2px var(--text-muted), 0 2px 12px rgba(0, 0, 0, 0.25);
+    }
+  }
+
+  &__forge-skills {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: $space-xs;
+    margin-top: $space-lg;
+  }
+
+  &__forge-skill-tag {
+    padding: $space-xs $space-sm;
+    background: var(--accent-light);
+    border: 1px solid var(--accent);
+    border-radius: $radius-sm;
+    font-family: $font-mono;
+    font-size: $fs-xs;
+    color: var(--accent);
+  }
+
+  &__forge-watermark {
+    font-family: $font-mono;
+    font-size: $fs-xs;
+    color: var(--text-muted);
+    margin-top: $space-xl;
+    opacity: 0.5;
+  }
+}
+
+// ═══ POKÉMON-STYLE KEYFRAMES ═══
+
+@keyframes holoShimmer {
+  0% { background-position: 0% 0%; }
+  50% { background-position: 100% 100%; }
+  100% { background-position: 0% 0%; }
+}
+
+@keyframes legendaryHolo {
+  0% { background-position: 0% 0%; }
+  33% { background-position: 100% 50%; }
+  66% { background-position: 50% 100%; }
+  100% { background-position: 0% 0%; }
+}
+
+@keyframes borderRotate {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+@keyframes rainbowSweep {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes sparkleShift {
+  0% { background-position: 0 0, 6px 6px; }
+  100% { background-position: 12px 12px, 18px 18px; }
+}
+
+@keyframes dotPulse {
+  0%, 100% { box-shadow: 0 0 6px rgba(245, 158, 11, 0.5); }
+  50% { box-shadow: 0 0 12px rgba(245, 158, 11, 0.8), 0 0 20px rgba(245, 158, 11, 0.3); }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes statBarGrow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes questGlow {
+  0%, 100% {
+    box-shadow: var(--card-shadow), inset 0 0 0 1px var(--accent-light);
+  }
+  50% {
+    box-shadow: var(--card-shadow), inset 0 0 0 1px var(--accent-light), 0 0 20px var(--accent-glow);
+  }
+}
