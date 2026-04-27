@@ -2,6 +2,7 @@ import { Component, ChangeDetectionStrategy, signal, inject, ElementRef, viewChi
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ScrollRevealDirective } from '../../shared/directives/scroll-reveal.directive';
+import { environment } from '../../../environments/environment';
 
 interface RoastResult {
   stack: string;
@@ -224,7 +225,7 @@ export class RoastComponent {
     this.error.set(null);
     this.result.set(null);
 
-    this.http.post<{ roast: string }>('http://localhost:3000/api/roast', { stack, intensity: this.intensity() }).subscribe({
+    this.http.post<{ roast: string }>(`${environment.apiUrl}/api/roast`, { stack, intensity: this.intensity() }).subscribe({
       next: (res) => {
         this.result.set({ stack, roast: res.roast, intensity: this.intensity(), timestamp: Date.now() });
         this.incrementCount();

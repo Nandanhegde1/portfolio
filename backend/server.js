@@ -3,6 +3,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 require('dotenv').config();
+const { getSupabase } = require('./supabase');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -78,27 +79,38 @@ app.get('/api/github/repos/:username', async (req, res) => {
 });
 
 // Analytics endpoint (lightweight, no cookies)
-const pageViews = new Map();
-
-app.post('/api/analytics', (req, res) => {
+app.post('/api/analytics', async (req, res) => {
   const { path } = req.body;
   if (!path || typeof path !== 'string') {
     return res.status(400).json({ error: 'Invalid path' });
   }
 
   const sanitizedPath = path.substring(0, 200);
-  const count = pageViews.get(sanitizedPath) || 0;
-  pageViews.set(sanitizedPath, count + 1);
+  const sb = getSupabase();
+  if (sb) {
+    await sb.from('page_views').insert({
+      path: sanitizedPath,
+      referrer: req.get('referer') || null,
+      user_agent: req.get('user-agent')?.substring(0, 500) || null,
+      ip: req.ip,
+    }).catch(() => {});
+  }
 
   res.status(204).end();
 });
 
-app.get('/api/analytics/stats', (_req, res) => {
-  const stats = {
-    totalPageViews: Array.from(pageViews.values()).reduce((a, b) => a + b, 0),
-    pages: Object.fromEntries(pageViews),
-  };
-  res.json(stats);
+app.get('/api/analytics/stats', async (_req, res) => {
+  const sb = getSupabase();
+  if (sb) {
+    const { data: views } = await sb.from('page_views').select('path, created_at');
+    const pages = {};
+    (views || []).forEach(v => { pages[v.path] = (pages[v.path] || 0) + 1; });
+    return res.json({
+      totalPageViews: views?.length || 0,
+      pages,
+    });
+  }
+  res.json({ totalPageViews: 0, pages: {} });
 });
 
 // Contact form endpoint
@@ -188,6 +200,15 @@ app.post('/api/chat', chatLimiter, async (req, res) => {
 
     const data = await response.json();
     const reply = data.content?.[0]?.text || 'Sorry, I could not generate a response.';
+
+    // Log chat to Supabase
+    const sb = getSupabase();
+    if (sb) {
+      await sb.from('chat_logs').insert({
+        user_message: message.slice(0, 1000),
+        ai_reply: reply.slice(0, 5000),
+      }).catch(() => {});
+    }
 
     res.json({ reply });
   } catch (error) {
@@ -290,6 +311,16 @@ app.post('/api/roast', roastLimiter, async (req, res) => {
     const data = await response.json();
     const roast = data.content?.[0]?.text || 'Your stack is so mid, even AI refuses to roast it.';
 
+    // Log roast to Supabase
+    const sb = getSupabase();
+    if (sb) {
+      await sb.from('roast_logs').insert({
+        stack: stack.slice(0, 500),
+        intensity: level,
+        roast: roast.slice(0, 5000),
+      }).catch(() => {});
+    }
+
     res.json({ roast });
   } catch (error) {
     console.error('Roast error:', error.message);
@@ -297,7 +328,7 @@ app.post('/api/roast', roastLimiter, async (req, res) => {
   }
 });
 
-app.post('/api/contact', contactLimiter, (req, res) => {
+app.post('/api/contact', contactLimiter, async (req, res) => {
   const { name, email, subject, message } = req.body;
 
   if (!name || !email || !subject || !message) {
@@ -310,10 +341,76 @@ app.post('/api/contact', contactLimiter, (req, res) => {
     return res.status(400).json({ error: 'Invalid email format' });
   }
 
-  // TODO: Integrate with EmailJS, SendGrid, or similar service
   console.log('Contact form submission:', { name, email, subject, message: message.substring(0, 500) });
 
+  const sb = getSupabase();
+  if (sb) {
+    await sb.from('contacts').insert({
+      name: name.substring(0, 200),
+      email: email.substring(0, 200),
+      subject: subject.substring(0, 500),
+      message: message.substring(0, 5000),
+      ip: req.ip,
+    }).catch(err => console.error('Supabase contact insert error:', err.message));
+  }
+
   res.json({ success: true, message: 'Message received!' });
+});
+
+// ── Guestbook endpoints ──
+const guestbookLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: { error: 'Too many guestbook submissions. Try again later.' },
+});
+
+app.get('/api/guestbook', async (_req, res) => {
+  const sb = getSupabase();
+  if (!sb) return res.json([]);
+  const { data, error } = await sb.from('guestbook').select('*').order('created_at', { ascending: false }).limit(100);
+  if (error) return res.status(500).json({ error: 'Failed to fetch guestbook' });
+  res.json(data);
+});
+
+app.post('/api/guestbook', guestbookLimiter, async (req, res) => {
+  const { name, message, emoji } = req.body;
+  if (!name || !message || typeof name !== 'string' || typeof message !== 'string') {
+    return res.status(400).json({ error: 'Name and message are required' });
+  }
+  const sb = getSupabase();
+  if (!sb) return res.status(503).json({ error: 'Guestbook unavailable' });
+  const { data, error } = await sb.from('guestbook').insert({
+    name: name.substring(0, 100),
+    message: message.substring(0, 1000),
+    emoji: (emoji || '👍').substring(0, 10),
+  }).select().single();
+  if (error) return res.status(500).json({ error: 'Failed to save entry' });
+  res.json(data);
+});
+
+// ── Admin: view all data ──
+app.get('/api/admin/contacts', async (req, res) => {
+  if (req.query.key !== process.env.ADMIN_KEY) return res.status(401).json({ error: 'Unauthorized' });
+  const sb = getSupabase();
+  if (!sb) return res.json([]);
+  const { data } = await sb.from('contacts').select('*').order('created_at', { ascending: false });
+  res.json(data || []);
+});
+
+app.get('/api/admin/chat-logs', async (req, res) => {
+  if (req.query.key !== process.env.ADMIN_KEY) return res.status(401).json({ error: 'Unauthorized' });
+  const sb = getSupabase();
+  if (!sb) return res.json([]);
+  const { data } = await sb.from('chat_logs').select('*').order('created_at', { ascending: false }).limit(200);
+  res.json(data || []);
+});
+
+app.get('/api/admin/roast-logs', async (req, res) => {
+  if (req.query.key !== process.env.ADMIN_KEY) return res.status(401).json({ error: 'Unauthorized' });
+  const sb = getSupabase();
+  if (!sb) return res.json([]);
+  const { data } = await sb.from('roast_logs').select('*').order('created_at', { ascending: false }).limit(200);
+  res.json(data || []);
 });
 
 app.listen(PORT, () => {
