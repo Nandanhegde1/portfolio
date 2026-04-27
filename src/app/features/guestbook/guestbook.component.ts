@@ -26,7 +26,7 @@ import { GuestbookService } from './guestbook.service';
       <form class="guestbook__form" (ngSubmit)="submit()">
         <div class="guestbook__form-header">
           <div class="guestbook__form-avatar">
-            {{ name.trim() ? name.trim().charAt(0).toUpperCase() : '?' }}
+            <img [src]="getAvatar(name.trim() || 'guest')" [alt]="name.trim() || 'Avatar preview'" loading="lazy" width="48" height="48" />
           </div>
           <input
             type="text"
@@ -68,10 +68,9 @@ import { GuestbookService } from './guestbook.service';
         @for (entry of guestbook.entries(); track entry.id; let i = $index) {
           <div class="guestbook__card" [style.animation-delay]="i * 60 + 'ms'">
             <div class="guestbook__card-top">
-              <div
-                class="guestbook__avatar"
-                [style.background]="getAvatarColor(entry.name)"
-              >{{ entry.name.charAt(0).toUpperCase() }}</div>
+              <div class="guestbook__avatar">
+                <img [src]="getAvatar(entry.name)" [alt]="entry.name" loading="lazy" width="48" height="48" />
+              </div>
               <div class="guestbook__meta">
                 <span class="guestbook__name">{{ entry.name }}</span>
                 <span class="guestbook__date">{{ formatDate(entry.timestamp) }}</span>
@@ -139,6 +138,11 @@ export class GuestbookComponent {
 
   react(entryId: string, emoji: string): void {
     this.guestbook.addReaction(entryId, emoji);
+  }
+
+  getAvatar(name: string): string {
+    const seed = encodeURIComponent(name.toLowerCase().trim() || 'guest');
+    return `https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf`;
   }
 
   getAvatarColor(name: string): string {
