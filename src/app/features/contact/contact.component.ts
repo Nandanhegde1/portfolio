@@ -1,6 +1,8 @@
 import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 import { SectionHeaderComponent } from '../../shared/components';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-contact',
@@ -67,8 +69,14 @@ import { SectionHeaderComponent } from '../../shared/components';
               </div>
             }
 
-            <button type="submit" class="btn btn--primary" [disabled]="form.invalid">
-              Send Message
+            @if (errorMessage()) {
+              <div class="contact__toast contact__toast--error">
+                {{ errorMessage() }}
+              </div>
+            }
+
+            <button type="submit" class="btn btn--primary" [disabled]="form.invalid || submitting()">
+              {{ submitting() ? 'Sending...' : 'Send Message' }}
             </button>
           </form>
         </div>
@@ -79,7 +87,10 @@ import { SectionHeaderComponent } from '../../shared/components';
 })
 export class ContactComponent {
   private readonly fb = inject(FormBuilder);
+  private readonly http = inject(HttpClient);
   readonly submitted = signal(false);
+  readonly submitting = signal(false);
+  readonly errorMessage = signal<string | null>(null);
 
   readonly form = this.fb.nonNullable.group({
     name: ['', [Validators.required, Validators.minLength(2)]],
@@ -89,12 +100,29 @@ export class ContactComponent {
   });
 
   onSubmit(): void {
-    if (this.form.valid) {
-      // Will integrate with EmailJS or backend endpoint
-      console.log('Contact form:', this.form.getRawValue());
-      this.submitted.set(true);
-      this.form.reset();
-      setTimeout(() => this.submitted.set(false), 3000);
+    if (this.form.invalid || this.submitting()) {
+      this.form.markAllAsTouched();
+      return;
     }
+
+    this.submitting.set(true);
+    this.errorMessage.set(null);
+
+    this.http.post<{ success: boolean; message: string }>(
+      `${environment.apiUrl}/api/contact`,
+      this.form.getRawValue()
+    ).subscribe({
+      next: () => {
+        this.submitted.set(true);
+        this.submitting.set(false);
+        this.form.reset();
+        setTimeout(() => this.submitted.set(false), 5000);
+      },
+      error: (err) => {
+        this.submitting.set(false);
+        this.errorMessage.set(err.error?.error || 'Failed to send message. Please try again or email me directly.');
+        setTimeout(() => this.errorMessage.set(null), 5000);
+      },
+    });
   }
 }
