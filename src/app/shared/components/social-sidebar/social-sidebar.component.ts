@@ -1,4 +1,5 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { TooltipDirective } from '../../directives/tooltip.directive';
 
 interface SocialLink {
   label: string;
@@ -9,6 +10,7 @@ interface SocialLink {
 @Component({
   selector: 'app-social-sidebar',
   standalone: true,
+  imports: [TooltipDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <aside class="social-sidebar" aria-label="Social links">
@@ -16,6 +18,8 @@ interface SocialLink {
         <a
           [href]="link.url"
           [attr.aria-label]="link.label"
+          [appTooltip]="link.label"
+          tooltipPosition="right"
           [target]="link.url.startsWith('mailto') ? '_self' : '_blank'"
           rel="noopener noreferrer"
           class="social-sidebar__link"

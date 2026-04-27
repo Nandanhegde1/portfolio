@@ -1,11 +1,12 @@
 import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { ThemeService } from '../../../core/services';
+import { TooltipDirective } from '../../directives/tooltip.directive';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, TooltipDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <nav class="navbar">
@@ -51,6 +52,7 @@ import { ThemeService } from '../../../core/services';
             class="navbar__theme-toggle"
             [class.navbar__theme-toggle--spin]="themeSpinning"
             (click)="toggleTheme()"
+            [appTooltip]="themeService.currentTheme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
             aria-label="Toggle theme"
           >
             @if (themeService.currentTheme() === 'dark') {
@@ -65,7 +67,7 @@ import { ThemeService } from '../../../core/services';
             }
           </button>
 
-          <button class="navbar__mobile-toggle" [class.navbar__mobile-toggle--open]="mobileOpen" (click)="toggleMobile()" aria-label="Menu">
+          <button class="navbar__mobile-toggle" [class.navbar__mobile-toggle--open]="mobileOpen" (click)="toggleMobile()" appTooltip="Open menu" aria-label="Menu">
             <span></span><span></span><span></span>
           </button>
         </div>
