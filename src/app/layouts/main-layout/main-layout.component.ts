@@ -6,11 +6,12 @@ import { CursorGlowComponent } from '../../shared/components/cursor-glow/cursor-
 import { ChatbotComponent } from '../../features/chatbot/chatbot.component';
 import { TerminalShellComponent } from '../../features/terminal/terminal-shell.component';
 import { SpotifyWidgetComponent } from '../../features/spotify/spotify-widget.component';
+import { ToastHostComponent } from '../../shared/components/toast-host/toast-host.component';
 
 @Component({
   selector: 'app-main-layout',
   standalone: true,
-  imports: [RouterOutlet, NavbarComponent, FooterComponent, SocialSidebarComponent, CursorGlowComponent, ChatbotComponent, TerminalShellComponent, SpotifyWidgetComponent],
+  imports: [RouterOutlet, NavbarComponent, FooterComponent, SocialSidebarComponent, CursorGlowComponent, ChatbotComponent, TerminalShellComponent, SpotifyWidgetComponent, ToastHostComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <a href="#main-content" class="skip-to-content">Skip to main content</a>
@@ -31,6 +32,7 @@ import { SpotifyWidgetComponent } from '../../features/spotify/spotify-widget.co
     <!-- Global overlays -->
     <app-chatbot />
     <app-terminal-shell />
+    <app-toast-host />
 
     <!-- Spotify widget fixed bottom-left -->
     <div class="spotify-fixed">

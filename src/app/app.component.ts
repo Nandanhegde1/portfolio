@@ -2,6 +2,7 @@ import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { SeoService } from './core/services/seo.service';
 import { EngagementService } from './core/services/engagement.service';
+import { BackendWarmupService } from './core/services/backend-warmup.service';
 
 @Component({
   selector: 'app-root',
@@ -14,10 +15,12 @@ import { EngagementService } from './core/services/engagement.service';
 export class AppComponent {
   private readonly seo = inject(SeoService);
   private readonly engagement = inject(EngagementService);
+  private readonly warmup = inject(BackendWarmupService);
 
   constructor() {
     this.seo.init();
     this.engagement.init();
+    this.warmup.init();
     this.registerServiceWorker();
   }
 

@@ -185,8 +185,8 @@ app.post('/api/chat', chatLimiter, async (req, res) => {
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 300,
+        model: 'claude-opus-4-20250514',
+        max_tokens: 1024,
         system: SYSTEM_PROMPT,
         messages,
       }),
@@ -296,9 +296,10 @@ app.post('/api/roast', roastLimiter, async (req, res) => {
       },
       body: JSON.stringify({
         model: 'claude-opus-4-20250514',
-        max_tokens: 300,
+        max_tokens: 1500,
+        temperature: 1,
         system: ROAST_PROMPTS[level],
-        messages: [{ role: 'user', content: `Roast this tech stack (${level} intensity): ${stack.slice(0, 500)}` }],
+        messages: [{ role: 'user', content: `Roast this tech stack (${level} intensity, go ALL IN): ${stack.slice(0, 500)}` }],
       }),
     });
 
