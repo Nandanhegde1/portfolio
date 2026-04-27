@@ -1,8 +1,9 @@
-import { Component, inject, OnInit, OnDestroy, ChangeDetectionStrategy, signal } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, ChangeDetectionStrategy, signal, computed } from '@angular/core';
 import { AnimatedCounterComponent, LoadingSkeletonComponent } from '../../shared/components';
 import { GitHubService } from '../../core/services';
 import { ScrollRevealDirective } from '../../shared/directives/scroll-reveal.directive';
 import { LiveStatsWidgetComponent } from './live-stats-widget.component';
+import { StatsService } from '../../core/services/stats.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -22,7 +23,7 @@ import { LiveStatsWidgetComponent } from './live-stats-widget.component';
         <!-- Visitor Counter — Hero -->
         <div class="dash__visitors" appScrollReveal>
           <div class="dash__visitors-glow"></div>
-          <app-animated-counter [targetValue]="visitorCount" size="lg" label="visitors & counting" />
+          <app-animated-counter [targetValue]="visitorCount()" size="lg" label="visitors & counting" />
           <p class="dash__visitors-sub">People who've checked out this portfolio</p>
         </div>
 
@@ -139,8 +140,10 @@ import { LiveStatsWidgetComponent } from './live-stats-widget.component';
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   readonly github = inject(GitHubService);
+  private readonly statsService = inject(StatsService);
 
-  readonly visitorCount = 250;
+  // Real visitor count from backend, falls back to a tasteful baseline while loading
+  readonly visitorCount = computed(() => this.statsService.visitor()?.totalPageViews ?? 0);
 
   readonly codeVitals = [
     { icon: '⌨️', value: 127843, label: 'Lines Written', subtext: 'and counting...' },

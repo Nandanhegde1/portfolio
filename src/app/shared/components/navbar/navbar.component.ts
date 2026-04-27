@@ -16,6 +16,16 @@ import { ThemeService } from '../../../core/services';
           <span class="navbar__logo-bracket">/&gt;</span>
         </a>
 
+        <a
+          routerLink="/contact"
+          class="navbar__status"
+          title="Currently open to senior frontend, full-stack & lead roles"
+          aria-label="Open to opportunities — click to contact"
+        >
+          <span class="navbar__status-dot" aria-hidden="true"></span>
+          <span class="navbar__status-text">Open to work</span>
+        </a>
+
         <ul class="navbar__links">
           <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a></li>
           <li><a routerLink="/about" routerLinkActive="active">About</a></li>
