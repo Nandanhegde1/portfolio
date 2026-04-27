@@ -12,7 +12,7 @@ export class PortfolioDataService {
 
   loadData(): void {
     this.loading.set(true);
-    this.http.get<PortfolioData>('/assets/data/portfolio.json').subscribe({
+    this.http.get<PortfolioData>('assets/data/portfolio.json').subscribe({
       next: (data) => {
         this.data.set(data);
         this.loading.set(false);
