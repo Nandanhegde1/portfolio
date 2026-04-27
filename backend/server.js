@@ -7,6 +7,11 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Root route (before middleware)
+app.get('/', (_req, res) => {
+  res.json({ message: 'Portfolio API', endpoints: ['/api/health', '/api/chat', '/api/roast', '/api/github/user/:username'] });
+});
+
 // Security middleware
 app.use(helmet());
 app.use(cors({
@@ -14,6 +19,12 @@ app.use(cors({
   methods: ['GET', 'POST'],
 }));
 app.use(express.json({ limit: '10kb' }));
+
+// Debug: log every request
+app.use((req, _res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+  next();
+});
 
 // Rate limiting
 const limiter = rateLimit({
