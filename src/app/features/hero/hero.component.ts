@@ -1,12 +1,13 @@
 import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { PortfolioDataService } from '../../core/services';
+import { PortfolioDataService, GitHubService } from '../../core/services';
 import { ThreeSceneComponent } from './three-scene/three-scene.component';
+import { TimeAgoPipe } from '../../shared/pipes/time-ago.pipe';
 
 @Component({
   selector: 'app-hero',
   standalone: true,
-  imports: [ThreeSceneComponent, RouterLink],
+  imports: [ThreeSceneComponent, RouterLink, TimeAgoPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="hero">
@@ -26,13 +27,23 @@ import { ThreeSceneComponent } from './three-scene/three-scene.component';
         <div class="hero__actions">
           <a routerLink="/about" class="btn btn--primary">About Me</a>
           <a routerLink="/contact" class="btn btn--outline">Get in Touch</a>
-          <a href="/assets/resume.pdf" target="_blank" rel="noopener" class="btn btn--ghost">
+          <a routerLink="/about" fragment="resume" class="btn btn--ghost">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
             </svg>
             Resume
           </a>
         </div>
+
+        @if (github.mostRecentRepo(); as r) {
+          <a [href]="r.html_url" target="_blank" rel="noopener" class="hero__activity">
+            <span class="hero__activity-pulse" aria-hidden="true"></span>
+            <span class="hero__activity-text">
+              Currently shipping <strong>{{ r.name }}</strong>
+              <span class="hero__activity-meta">· updated {{ r.updated_at | timeAgo }}</span>
+            </span>
+          </a>
+        }
       </div>
       <div class="hero__scroll-hint">
         <span class="hero__scroll-label">Scroll</span>
@@ -46,10 +57,14 @@ import { ThreeSceneComponent } from './three-scene/three-scene.component';
 })
 export class HeroComponent implements OnInit {
   readonly portfolioData = inject(PortfolioDataService);
+  readonly github = inject(GitHubService);
 
   ngOnInit(): void {
     if (!this.portfolioData.data()) {
       this.portfolioData.loadData();
+    }
+    if (!this.github.repos().length) {
+      this.github.fetchAll('Nandanhegde1');
     }
   }
 }

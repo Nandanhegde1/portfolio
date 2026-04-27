@@ -5,6 +5,7 @@ import {
   viewChild,
   ElementRef,
   ChangeDetectionStrategy,
+  OnInit,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ChatbotService } from './chatbot.service';
@@ -17,11 +18,14 @@ import { ChatbotService } from './chatbot.service';
   template: `
     <!-- Floating bubble -->
     @if (!isOpen()) {
-      <button class="chat-bubble" (click)="open()" aria-label="Open chat">
+      <button class="chat-bubble" [class.chat-bubble--attention]="showAttention()" (click)="open()" aria-label="Open chat">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
         </svg>
         <span class="chat-bubble__badge">Ask me</span>
+        @if (showAttention()) {
+          <span class="chat-bubble__tooltip">👋 New here? Ask me anything!</span>
+        }
       </button>
     }
 
@@ -107,15 +111,27 @@ import { ChatbotService } from './chatbot.service';
   `,
   styleUrl: './chatbot.component.scss',
 })
-export class ChatbotComponent {
+export class ChatbotComponent implements OnInit {
   readonly chatService = inject(ChatbotService);
   private readonly chatBodyRef = viewChild<ElementRef<HTMLDivElement>>('chatBody');
 
   readonly isOpen = signal(false);
+  readonly showAttention = signal(false);
   inputText = '';
+
+  ngOnInit(): void {
+    if (typeof window === 'undefined') return;
+    if (!localStorage.getItem('chat_seen')) {
+      // After 8 seconds on the page, gently ping new visitors
+      setTimeout(() => this.showAttention.set(true), 8000);
+      setTimeout(() => this.showAttention.set(false), 18000);
+    }
+  }
 
   open(): void {
     this.isOpen.set(true);
+    this.showAttention.set(false);
+    if (typeof window !== 'undefined') localStorage.setItem('chat_seen', '1');
   }
 
   close(): void {

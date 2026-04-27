@@ -7,11 +7,12 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { GuestbookService } from './guestbook.service';
+import { TooltipDirective } from '../../shared/directives/tooltip.directive';
 
 @Component({
   selector: 'app-guestbook',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, TooltipDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="guestbook">
@@ -21,6 +22,17 @@ import { GuestbookService } from './guestbook.service';
         <h2>Sign the Guestbook</h2>
         <p>Drop a note, share your thoughts, or just say hi. {{ entryCount() }} people have signed so far.</p>
       </div>
+
+      @if (guestbook.error()) {
+        <div class="guestbook__offline" role="alert">
+          <span class="guestbook__offline-icon">⚡</span>
+          <div>
+            <strong>Backend snoozing</strong>
+            <p>The Render free-tier server is waking up (or offline). Try refreshing in 30s — your message will still send.</p>
+          </div>
+          <button class="guestbook__offline-retry" (click)="guestbook.loadEntries()" appTooltip="Retry connection">↻ Retry</button>
+        </div>
+      }
 
       <!-- Form -->
       <form class="guestbook__form" (ngSubmit)="submit()">
@@ -83,7 +95,8 @@ import { GuestbookService } from './guestbook.service';
                   class="guestbook__reaction"
                   [class.active]="entry.reactions[emoji] > 0"
                   (click)="react(entry.id, emoji)"
-                  [title]="emoji"
+                  [appTooltip]="reactionLabels[emoji]"
+                  [attr.aria-label]="reactionLabels[emoji]"
                 >
                   <span class="guestbook__reaction-emoji">{{ emoji }}</span>
                   @if (entry.reactions[emoji] > 0) {
@@ -107,6 +120,13 @@ import { GuestbookService } from './guestbook.service';
 export class GuestbookComponent {
   readonly guestbook = inject(GuestbookService);
   readonly reactionEmojis = ['👍', '🎉', '🚀', '❤️', '💡'];
+  readonly reactionLabels: Record<string, string> = {
+    '👍': 'Like',
+    '🎉': 'Celebrate',
+    '🚀': 'Inspiring',
+    '❤️': 'Love',
+    '💡': 'Insightful',
+  };
 
   readonly entryCount = computed(() => this.guestbook.entries().length);
 

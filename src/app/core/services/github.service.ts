@@ -22,6 +22,15 @@ export class GitHubService {
       .slice(0, 6)
   );
 
+  // Most recently updated repo — for "Currently working on" hero indicator
+  readonly mostRecentRepo = computed(() => {
+    const r = this.repos();
+    if (!r.length) return null;
+    return [...r].sort((a, b) =>
+      new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
+    )[0];
+  });
+
   fetchUser(username: string): void {
     this.loading.set(true);
     this.error.set(null);
