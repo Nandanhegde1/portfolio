@@ -1,14 +1,15 @@
-import {
-  Component,
-  inject,
-  signal,
-  ChangeDetectionStrategy,
-  computed,
-} from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy, computed } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { GuestbookService } from './guestbook.service';
 import { TooltipDirective } from '../../shared/directives/tooltip.directive';
 import { burstConfetti } from '../../shared/utils/confetti';
+
+interface NoteStyle {
+  rotation: number;
+  paper: 'yellow' | 'pink' | 'mint' | 'sky' | 'lilac' | 'peach';
+  pin: 'red' | 'blue' | 'green' | 'amber';
+  offsetY: number;
+}
 
 @Component({
   selector: 'app-guestbook',
@@ -16,103 +17,102 @@ import { burstConfetti } from '../../shared/utils/confetti';
   imports: [FormsModule, TooltipDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <section class="guestbook">
-      <!-- Header -->
-      <div class="guestbook__hero">
-        <span class="guestbook__icon">📝</span>
-        <h2>Sign the Guestbook</h2>
-        <p>Drop a note, share your thoughts, or just say hi. {{ entryCount() }} people have signed so far.</p>
-      </div>
+    <section class="board">
+      <div class="board__inner">
+        <header class="board__header">
+          <span class="board__tape board__tape--a"></span>
+          <span class="board__tape board__tape--b"></span>
+          <h1 class="board__title">The Wall</h1>
+          <p class="board__sub">
+            A corkboard for whoever stops by.
+            <strong>{{ entryCount() }}</strong> notes pinned so far.
+          </p>
+        </header>
 
-      @if (guestbook.error()) {
-        <div class="guestbook__offline" role="alert">
-          <span class="guestbook__offline-icon">⚡</span>
-          <div>
-            <strong>Backend snoozing</strong>
-            <p>The Render free-tier server is waking up (or offline). Try refreshing in 30s — your message will still send.</p>
+        @if (guestbook.error()) {
+          <div class="board__alert" role="alert">
+            <span>⚡ Backend snoozing — Render free-tier server is waking up. Your note will still send.</span>
+            <button (click)="guestbook.loadEntries()">retry</button>
           </div>
-          <button class="guestbook__offline-retry" (click)="guestbook.loadEntries()" appTooltip="Retry connection">↻ Retry</button>
-        </div>
-      }
+        }
 
-      <!-- Form -->
-      <form class="guestbook__form" (ngSubmit)="submit()">
-        <div class="guestbook__form-header">
-          <div class="guestbook__form-avatar">
-            <img [src]="getAvatar(name.trim() || 'guest')" [alt]="name.trim() || 'Avatar preview'" loading="lazy" width="48" height="48" />
-          </div>
+        <form class="board__composer" (ngSubmit)="submit()">
+          <span class="board__pin board__pin--blue board__pin--composer" aria-hidden="true"></span>
+          <span class="board__composer-label">// pin a new note</span>
           <input
             type="text"
-            class="guestbook__input"
+            class="board__composer-name"
             [(ngModel)]="name"
             name="name"
-            placeholder="Your name"
+            placeholder="signed,"
             maxlength="50"
             required
           />
-        </div>
-        <textarea
-          class="guestbook__textarea"
-          [(ngModel)]="message"
-          name="message"
-          placeholder="Leave a message..."
-          maxlength="500"
-          rows="3"
-          required
-        ></textarea>
-        <div class="guestbook__form-footer">
-          <span class="guestbook__char-count">{{ message.length }}/500</span>
-          <button
-            type="submit"
-            class="guestbook__submit"
-            [disabled]="!name.trim() || !message.trim() || cooldown()"
-          >
-            @if (cooldown()) {
-              <span class="guestbook__submit-cooldown">Sent! ✓</span>
-            } @else {
-              Sign Guestbook
-            }
-          </button>
-        </div>
-      </form>
-
-      <!-- Entries -->
-      <div class="guestbook__entries">
-        @for (entry of guestbook.entries(); track entry.id; let i = $index) {
-          <div class="guestbook__card" [style.animation-delay]="i * 60 + 'ms'">
-            <div class="guestbook__card-top">
-              <div class="guestbook__avatar">
-                <img [src]="getAvatar(entry.name)" [alt]="entry.name" loading="lazy" width="48" height="48" />
-              </div>
-              <div class="guestbook__meta">
-                <span class="guestbook__name">{{ entry.name }}</span>
-                <span class="guestbook__date">{{ formatDate(entry.timestamp) }}</span>
-              </div>
-            </div>
-            <p class="guestbook__message">{{ entry.message }}</p>
-            <div class="guestbook__reactions">
-              @for (emoji of reactionEmojis; track emoji) {
-                <button
-                  class="guestbook__reaction"
-                  [class.active]="entry.reactions[emoji] > 0"
-                  (click)="react(entry.id, emoji)"
-                  [appTooltip]="reactionLabels[emoji]"
-                  [attr.aria-label]="reactionLabels[emoji]"
-                >
-                  <span class="guestbook__reaction-emoji">{{ emoji }}</span>
-                  @if (entry.reactions[emoji] > 0) {
-                    <span class="guestbook__reaction-count">{{ entry.reactions[emoji] }}</span>
-                  }
-                </button>
+          <textarea
+            class="board__composer-msg"
+            [(ngModel)]="message"
+            name="message"
+            placeholder="Leave anything — a thought, a thanks, a roast, a recipe."
+            maxlength="500"
+            rows="3"
+            required
+          ></textarea>
+          <div class="board__composer-foot">
+            <span class="board__composer-count">{{ message.length }}/500</span>
+            <button
+              type="submit"
+              class="board__composer-btn"
+              [disabled]="!name.trim() || !message.trim() || cooldown()"
+            >
+              @if (cooldown()) {
+                <span>pinned ✓</span>
+              } @else {
+                pin it &uarr;
               }
+            </button>
+          </div>
+        </form>
+
+        <div class="board__wall">
+          @for (entry of guestbook.entries(); track entry.id; let i = $index) {
+            @let style = styleFor(entry.id, i);
+            <article
+              class="board__note"
+              [class]="'board__note--' + style.paper"
+              [style.--rot]="style.rotation + 'deg'"
+              [style.--y]="style.offsetY + 'px'"
+              [style.animation-delay]="(i * 50) + 'ms'"
+            >
+              <span class="board__pin" [class]="'board__pin--' + style.pin" aria-hidden="true"></span>
+              <p class="board__note-msg">{{ entry.message }}</p>
+              <footer class="board__note-foot">
+                <span class="board__note-name">— {{ entry.name }}</span>
+                <span class="board__note-date">{{ formatDate(entry.timestamp) }}</span>
+              </footer>
+              <div class="board__note-reactions">
+                @for (emoji of reactionEmojis; track emoji) {
+                  <button
+                    class="board__reaction"
+                    [class.board__reaction--active]="entry.reactions[emoji] > 0"
+                    (click)="react(entry.id, emoji)"
+                    [appTooltip]="reactionLabels[emoji]"
+                    [attr.aria-label]="reactionLabels[emoji]"
+                  >
+                    <span>{{ emoji }}</span>
+                    @if (entry.reactions[emoji] > 0) {
+                      <span class="board__reaction-n">{{ entry.reactions[emoji] }}</span>
+                    }
+                  </button>
+                }
+              </div>
+            </article>
+          } @empty {
+            <div class="board__empty">
+              <span>📌</span>
+              <p>Nothing pinned yet. Be the first.</p>
             </div>
-          </div>
-        } @empty {
-          <div class="guestbook__empty">
-            <span>✨</span>
-            <p>Be the first to sign the guestbook!</p>
-          </div>
-        }
+          }
+        </div>
       </div>
     </section>
   `,
@@ -135,69 +135,59 @@ export class GuestbookComponent {
   message = '';
   readonly cooldown = signal(false);
 
-  private readonly avatarColors = [
-    'linear-gradient(135deg, #6c63ff, #3b82f6)',
-    'linear-gradient(135deg, #f43f5e, #ec4899)',
-    'linear-gradient(135deg, #10b981, #06b6d4)',
-    'linear-gradient(135deg, #f59e0b, #ef4444)',
-    'linear-gradient(135deg, #8b5cf6, #d946ef)',
-    'linear-gradient(135deg, #14b8a6, #22d3ee)',
-    'linear-gradient(135deg, #f97316, #eab308)',
-  ];
+  private readonly papers: NoteStyle['paper'][] = ['yellow', 'pink', 'mint', 'sky', 'lilac', 'peach'];
+  private readonly pins: NoteStyle['pin'][] = ['red', 'blue', 'green', 'amber'];
+
+  styleFor(id: string, index: number): NoteStyle {
+    const hash = this.hash(id || String(index));
+    const rotation = ((hash % 11) - 5);
+    const offsetY = (((hash >> 3) % 13) - 6);
+    const paper = this.papers[hash % this.papers.length];
+    const pin = this.pins[(hash >> 5) % this.pins.length];
+    return { rotation, paper, pin, offsetY };
+  }
+
+  private hash(s: string): number {
+    let h = 0;
+    for (let i = 0; i < s.length; i++) h = ((h << 5) - h + s.charCodeAt(i)) | 0;
+    return Math.abs(h);
+  }
 
   submit(): void {
     const n = this.name.trim();
     const m = this.message.trim();
     if (!n || !m) return;
-
     this.guestbook.addEntry(n, m);
     this.message = '';
 
-    // 🎉 Reward the user with confetti
     if (typeof window !== 'undefined') {
-      const submitBtn = document.querySelector<HTMLElement>('.guestbook__submit');
-      const rect = submitBtn?.getBoundingClientRect();
+      const btn = document.querySelector<HTMLElement>('.board__composer-btn');
+      const r = btn?.getBoundingClientRect();
       burstConfetti({
-        x: rect ? rect.left + rect.width / 2 : window.innerWidth / 2,
-        y: rect ? rect.top : window.innerHeight / 2,
-        count: 70,
+        x: r ? r.left + r.width / 2 : window.innerWidth / 2,
+        y: r ? r.top : window.innerHeight / 2,
+        count: 60,
       });
     }
-
     this.cooldown.set(true);
-    setTimeout(() => this.cooldown.set(false), 5000);
+    setTimeout(() => this.cooldown.set(false), 4000);
   }
 
-  react(entryId: string, emoji: string): void {
-    this.guestbook.addReaction(entryId, emoji);
-  }
-
-  getAvatar(name: string): string {
-    const seed = encodeURIComponent(name.toLowerCase().trim() || 'guest');
-    return `https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf`;
-  }
-
-  getAvatarColor(name: string): string {
-    let hash = 0;
-    for (let i = 0; i < name.length; i++) {
-      hash = name.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    return this.avatarColors[Math.abs(hash) % this.avatarColors.length];
+  react(id: string, emoji: string): void {
+    this.guestbook.addReaction(id, emoji);
   }
 
   formatDate(date: Date | string): string {
     const d = new Date(date);
-    const now = new Date();
-    const diffMs = now.getTime() - d.getTime();
-    const diffMin = Math.floor(diffMs / 60000);
-
-    if (diffMin < 1) return 'just now';
-    if (diffMin < 60) return `${diffMin}m ago`;
-    const diffH = Math.floor(diffMin / 60);
-    if (diffH < 24) return `${diffH}h ago`;
-    const diffD = Math.floor(diffH / 24);
-    if (diffD < 7) return `${diffD}d ago`;
-    if (diffD < 30) return `${Math.floor(diffD / 7)}w ago`;
-    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    const diff = Date.now() - d.getTime();
+    const m = Math.floor(diff / 60000);
+    if (m < 1) return 'just now';
+    if (m < 60) return `${m}m ago`;
+    const h = Math.floor(m / 60);
+    if (h < 24) return `${h}h ago`;
+    const days = Math.floor(h / 24);
+    if (days < 7) return `${days}d ago`;
+    if (days < 30) return `${Math.floor(days / 7)}w ago`;
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   }
 }

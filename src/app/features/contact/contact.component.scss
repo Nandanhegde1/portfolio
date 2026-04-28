@@ -1,139 +1,345 @@
 @use 'variables' as *;
 @use 'mixins' as *;
 
-.contact {
-  &__grid {
+$cli-bg:        #0c0d12;
+$cli-bg-soft:   #14161d;
+$cli-border:    #2a2d3a;
+$cli-fg:        #d6dceb;
+$cli-muted:     #6c7393;
+$cli-green:     #5af787;
+$cli-cyan:      #6ad9ff;
+$cli-yellow:    #ffd166;
+$cli-red:       #ff6b6b;
+$cli-magenta:   #c896ff;
+
+.cli {
+  background: var(--bg-primary);
+  padding: $space-2xl 0 $space-4xl;
+  color: var(--text-primary);
+
+  &__inner {
+    @include container;
+    max-width: 1240px;
+  }
+
+  &__chrome {
     display: grid;
-    grid-template-columns: 1fr 1.2fr;
-    gap: $space-2xl;
-
-    @include tablet {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  &__info {
-    @include flex-col;
-    gap: $space-xl;
-  }
-
-  &__info-item {
-    display: flex;
-    align-items: flex-start;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
     gap: $space-md;
+    padding: 10px 14px;
+    background: $cli-bg-soft;
+    border: 1px solid $cli-border;
+    border-bottom: 0;
+    border-radius: $radius-lg $radius-lg 0 0;
+    color: $cli-muted;
+    font-family: $font-mono;
+    font-size: 0.78rem;
 
-    svg {
-      color: var(--accent);
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-
-    h4 {
-      font-size: $fs-sm;
-      font-weight: $fw-semibold;
-      color: var(--text-primary);
-      margin-bottom: $space-xs;
-    }
-
-    a, p {
-      font-size: $fs-sm;
-      color: var(--text-secondary);
-    }
-
-    a:hover {
-      color: var(--accent);
-    }
+    @include mobile { grid-template-columns: auto 1fr; }
   }
 
-  &__social {
+  &__chrome-dots { display: flex; gap: 6px; }
+
+  &__dot {
+    width: 12px; height: 12px; border-radius: 50%;
+    &--r { background: #ff5f56; }
+    &--y { background: #ffbd2e; }
+    &--g { background: #27c93f; }
+  }
+
+  &__chrome-title {
+    text-align: center;
+    color: $cli-muted;
+    letter-spacing: 0.04em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__chrome-shell { color: $cli-cyan; }
+
+  &__chrome-actions {
+    display: flex; gap: 6px;
+    @include mobile { grid-column: 1 / -1; justify-content: flex-end; }
+  }
+
+  &__chrome-btn {
+    padding: 4px 10px;
+    background: transparent;
+    border: 1px solid $cli-border;
+    color: $cli-muted;
+    border-radius: 6px;
+    font-family: $font-mono;
+    font-size: 0.72rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s ease;
+
+    &:hover { color: $cli-fg; border-color: $cli-fg; }
+    &--alt { color: $cli-green; border-color: color-mix(in srgb, #{$cli-green} 30%, $cli-border); }
+    &--alt:hover { color: $cli-green; border-color: $cli-green; background: color-mix(in srgb, #{$cli-green} 12%, transparent); }
+  }
+
+  &__layout {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 0;
+    border: 1px solid $cli-border;
+    border-radius: 0 0 $radius-lg $radius-lg;
+    overflow: hidden;
+    background: $cli-bg;
+
+    @include tablet { grid-template-columns: 1fr; }
+  }
+
+  &__terminal {
+    background:
+      radial-gradient(ellipse at top, color-mix(in srgb, #{$cli-cyan} 6%, transparent), transparent 60%),
+      $cli-bg;
+    color: $cli-fg;
+    font-family: $font-mono;
+    font-size: 0.92rem;
+    line-height: 1.65;
+    padding: $space-lg;
+    min-height: 520px;
+    max-height: 70vh;
+    overflow-y: auto;
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        to bottom, transparent 0, transparent 2px,
+        rgba(255,255,255,0.015) 2px, rgba(255,255,255,0.015) 3px);
+      pointer-events: none;
+    }
+
+    &::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(circle at 30% 0%, color-mix(in srgb, #{$cli-magenta} 10%, transparent), transparent 50%);
+      pointer-events: none;
+    }
+
+    &::-webkit-scrollbar { width: 8px; }
+    &::-webkit-scrollbar-track { background: transparent; }
+    &::-webkit-scrollbar-thumb { background: $cli-border; border-radius: 4px; }
+  }
+
+  &__line {
     display: flex;
-    gap: $space-md;
-    margin-top: $space-md;
+    gap: 10px;
+    align-items: baseline;
+    position: relative;
+    z-index: 1;
+    padding: 1px 0;
+
+    &--sys   { color: $cli-muted; }
+    &--hint  { color: $cli-yellow; }
+    &--prompt{ color: $cli-cyan; }
+    &--user  { color: $cli-fg; }
+    &--ok    { color: $cli-green; }
+    &--err   { color: $cli-red; }
   }
 
-  &__form {
-    @include flex-col;
-    gap: $space-lg;
+  &__sigil {
+    flex-shrink: 0;
+    width: 40px;
+    color: $cli-muted;
+    font-weight: 700;
+
+    &--ok    { color: $cli-green; }
+    &--err   { color: $cli-red; }
+    &--sys   { color: $cli-muted; }
+    &--hint  { color: $cli-yellow; }
   }
 
-  &__field {
-    @include flex-col;
-    gap: $space-xs;
+  &__text { flex: 1; word-break: break-word; }
 
-    label {
-      font-size: $fs-sm;
-      font-weight: $fw-medium;
-      color: var(--text-primary);
-    }
-
-    input, textarea {
-      width: 100%;
-      padding: $space-sm $space-md;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: $radius-md;
-      color: var(--text-primary);
-      font-size: $fs-base;
-      transition: border-color $transition-fast;
-
-      &::placeholder {
-        color: var(--text-muted);
-      }
-
-      &:focus {
-        outline: none;
-        border-color: var(--accent);
-        box-shadow: 0 0 0 3px var(--accent-light);
-      }
-    }
-
-    textarea {
-      resize: vertical;
-      min-height: 120px;
-    }
-  }
-
-  &__toast {
-    padding: $space-sm $space-md;
-    border-radius: $radius-md;
-    font-size: $fs-sm;
-    font-weight: $fw-medium;
+  &__active {
     display: flex;
     align-items: center;
-    gap: $space-sm;
-    animation: toastSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    gap: 10px;
+    margin-top: $space-sm;
+    position: relative;
+    z-index: 1;
+    flex-wrap: wrap;
+  }
 
-    &--success {
-      background: rgba(40, 167, 69, 0.1);
-      color: var(--success);
-      border: 1px solid var(--success);
+  &__active-sigil { color: $cli-green; font-weight: 700; font-size: 1.1rem; }
+  &__active-label { color: $cli-cyan; margin-right: 4px; flex-shrink: 0; }
+
+  &__input {
+    flex: 1;
+    min-width: 220px;
+    background: transparent;
+    border: 0;
+    color: $cli-fg;
+    font-family: $font-mono;
+    font-size: 0.95rem;
+    padding: 4px 0;
+    outline: none;
+    caret-color: transparent;
+
+    &::placeholder { color: $cli-muted; opacity: 0.6; }
+
+    &--multi {
+      flex: 1 0 100%;
+      resize: vertical;
+      min-height: 70px;
+      padding: 8px 10px;
+      background: rgba(255,255,255,0.02);
+      border: 1px dashed $cli-border;
+      border-radius: 6px;
+      caret-color: $cli-green;
     }
   }
 
-  &__toast-check {
+  &__caret {
+    width: 9px;
+    height: 18px;
+    background: $cli-green;
+    box-shadow: 0 0 8px color-mix(in srgb, #{$cli-green} 60%, transparent);
+    animation: cliBlink 1s steps(2, start) infinite;
     flex-shrink: 0;
-    animation: checkDraw 0.5s ease 0.2s both;
+  }
+
+  &__send {
+    background: transparent;
+    border: 1px solid $cli-green;
+    color: $cli-green;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-family: $font-mono;
+    font-size: 0.86rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    kbd {
+      display: inline-block;
+      padding: 1px 6px;
+      background: color-mix(in srgb, #{$cli-green} 15%, transparent);
+      border: 1px solid color-mix(in srgb, #{$cli-green} 35%, transparent);
+      border-radius: 3px;
+      font-size: 0.78em;
+      margin: 0 2px;
+    }
+
+    &:hover:not([disabled]) {
+      background: color-mix(in srgb, #{$cli-green} 18%, transparent);
+      box-shadow: 0 0 16px color-mix(in srgb, #{$cli-green} 35%, transparent);
+    }
+    &[disabled] { opacity: 0.4; cursor: not-allowed; }
+  }
+
+  &__sending {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: $space-md;
+    color: $cli-yellow;
+    position: relative;
+    z-index: 1;
+  }
+
+  &__spinner {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    border: 2px solid color-mix(in srgb, #{$cli-yellow} 25%, transparent);
+    border-top-color: $cli-yellow;
+    animation: cliSpin 0.8s linear infinite;
+  }
+
+  &__done { margin-top: $space-md; position: relative; z-index: 1; }
+
+  &__sidecard {
+    display: flex;
+    flex-direction: column;
+    background: $cli-bg-soft;
+    border-left: 1px solid $cli-border;
+    color: $cli-fg;
+    font-family: $font-mono;
+    font-size: 0.82rem;
+
+    @include tablet { border-left: 0; border-top: 1px solid $cli-border; }
+  }
+
+  &__sidecard-block {
+    padding: $space-md;
+    border-bottom: 1px solid $cli-border;
+
+    &:last-child { border-bottom: 0; }
+
+    &--alt {
+      background: color-mix(in srgb, #{$cli-cyan} 6%, transparent);
+
+      a {
+        display: block;
+        color: $cli-cyan;
+        text-decoration: none;
+        padding: 4px 0;
+        font-size: 0.82rem;
+        transition: transform 0.2s ease, color 0.2s ease;
+        &:hover { color: $cli-green; transform: translateX(3px); }
+      }
+    }
+  }
+
+  &__sidecard-label {
+    font-size: 0.7rem;
+    color: $cli-muted;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: $space-sm;
+  }
+
+  &__sidecard-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 3px 0;
+    font-size: 0.82rem;
+
+    span { color: $cli-muted; }
+    strong { color: $cli-fg; font-weight: 600; }
+  }
+
+  &__captured {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 4px 12px;
+    margin: 0;
+    font-size: 0.8rem;
+
+    dt { color: $cli-muted; }
+    dd { margin: 0; color: $cli-green; word-break: break-word; }
+  }
+
+  &__shortcut {
+    font-size: 0.78rem;
+    color: $cli-fg;
+    padding: 3px 0;
+
+    kbd {
+      display: inline-block;
+      padding: 1px 6px;
+      background: $cli-bg;
+      border: 1px solid $cli-border;
+      border-radius: 3px;
+      font-size: 0.78em;
+      color: $cli-cyan;
+      margin: 0 2px;
+    }
+
+    code {
+      color: $cli-yellow;
+      background: rgba(255, 209, 102, 0.08);
+      padding: 1px 4px;
+      border-radius: 3px;
+    }
   }
 }
 
-@keyframes toastSlideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-@keyframes checkDraw {
-  from {
-    stroke-dasharray: 30;
-    stroke-dashoffset: 30;
-  }
-  to {
-    stroke-dasharray: 30;
-    stroke-dashoffset: 0;
-  }
-}
+@keyframes cliBlink { to { opacity: 0; } }
+@keyframes cliSpin  { to { transform: rotate(360deg); } }

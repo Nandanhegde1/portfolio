@@ -1,134 +1,301 @@
-import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
-import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { Component, inject, signal, ChangeDetectionStrategy, ElementRef, viewChild, AfterViewInit, computed } from '@angular/core';
+import { ReactiveFormsModule, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { SectionHeaderComponent } from '../../shared/components';
 import { environment } from '../../../environments/environment';
 import { burstConfetti } from '../../shared/utils/confetti';
 import { SoundService } from '../../core/services/sound.service';
 
+type Step = 'name' | 'email' | 'subject' | 'message' | 'review' | 'sending' | 'done';
+
+interface LogLine {
+  kind: 'sys' | 'prompt' | 'user' | 'ok' | 'err' | 'hint';
+  text: string;
+}
+
 @Component({
   selector: 'app-contact',
   standalone: true,
-  imports: [SectionHeaderComponent, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <section class="section contact">
-      <div class="container">
-        <app-section-header tag="// contact" title="Get in Touch" subtitle="Have a project idea, question, or just want to say hi?" />
+    <section class="cli">
+      <div class="cli__inner">
+        <header class="cli__chrome">
+          <div class="cli__chrome-dots">
+            <span class="cli__dot cli__dot--r"></span>
+            <span class="cli__dot cli__dot--y"></span>
+            <span class="cli__dot cli__dot--g"></span>
+          </div>
+          <div class="cli__chrome-title">
+            guest&#64;portfolio &mdash; ~/contact &mdash; <span class="cli__chrome-shell">zsh</span>
+          </div>
+          <div class="cli__chrome-actions">
+            <button type="button" class="cli__chrome-btn" (click)="reset()" title="Restart session">restart</button>
+            <a href="mailto:nandanhegde1096&#64;gmail.com" class="cli__chrome-btn cli__chrome-btn--alt" title="Open email client">
+              fallback &rarr; email
+            </a>
+          </div>
+        </header>
 
-        <div class="contact__grid">
-          <div class="contact__info">
-            <div class="contact__info-item">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="2" y="4" width="20" height="16" rx="2"/>
-                <path d="M22 4l-10 8L2 4"/>
-              </svg>
-              <div>
-                <h4>Email</h4>
-                <a href="mailto:nandanhegde1096@gmail.com">nandanhegde1096&#64;gmail.com</a>
+        <div class="cli__layout">
+          <div class="cli__terminal" #scroller>
+            @for (line of log(); track $index) {
+              <div class="cli__line cli__line--{{ line.kind }}">
+                @if (line.kind === 'prompt' || line.kind === 'user') {
+                  <span class="cli__sigil">{{ line.kind === 'prompt' ? '?' : '$' }}</span>
+                }
+                @if (line.kind === 'ok') {
+                  <span class="cli__sigil cli__sigil--ok">[ok]</span>
+                }
+                @if (line.kind === 'err') {
+                  <span class="cli__sigil cli__sigil--err">[err]</span>
+                }
+                @if (line.kind === 'sys') {
+                  <span class="cli__sigil cli__sigil--sys">::</span>
+                }
+                @if (line.kind === 'hint') {
+                  <span class="cli__sigil cli__sigil--hint">&rarr;</span>
+                }
+                <span class="cli__text">{{ line.text }}</span>
               </div>
-            </div>
-            <div class="contact__info-item">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                <circle cx="12" cy="10" r="3"/>
-              </svg>
-              <div>
-                <h4>Location</h4>
-                <p>Bangalore, India</p>
+            }
+
+            @if (step() !== 'sending' && step() !== 'done') {
+              <form class="cli__active" [formGroup]="form" (ngSubmit)="advance()">
+                <span class="cli__active-sigil">&gt;</span>
+                <span class="cli__active-label">{{ promptFor(step()) }}</span>
+
+                @if (step() === 'message') {
+                  <textarea
+                    #activeInput
+                    class="cli__input cli__input--multi"
+                    formControlName="message"
+                    rows="3"
+                    placeholder="type your message, then press Ctrl+Enter"
+                    (keydown.control.enter)="advance()"
+                    (keydown.meta.enter)="advance()"
+                  ></textarea>
+                } @else if (step() === 'review') {
+                  <button type="submit" class="cli__send" [disabled]="form.invalid || submitting()">
+                    press <kbd>Enter</kbd> to send &uarr;
+                  </button>
+                } @else if (step() === 'name') {
+                  <input #activeInput type="text" class="cli__input" formControlName="name" placeholder="e.g. Ada Lovelace" autocomplete="off" spellcheck="false" />
+                } @else if (step() === 'email') {
+                  <input #activeInput type="email" class="cli__input" formControlName="email" placeholder="you&#64;company.com" autocomplete="off" spellcheck="false" />
+                } @else if (step() === 'subject') {
+                  <input #activeInput type="text" class="cli__input" formControlName="subject" placeholder="collab / role / question" autocomplete="off" spellcheck="false" />
+                }
+                <span class="cli__caret" aria-hidden="true"></span>
+              </form>
+
+              @if (currentError(); as e) {
+                <div class="cli__line cli__line--err">
+                  <span class="cli__sigil cli__sigil--err">[err]</span>
+                  <span class="cli__text">{{ e }}</span>
+                </div>
+              }
+            }
+
+            @if (step() === 'sending') {
+              <div class="cli__sending">
+                <span class="cli__spinner" aria-hidden="true"></span>
+                <span>POST /api/contact &mdash; awaiting response&hellip;</span>
               </div>
-            </div>
-            <div class="contact__social">
-              <a href="https://github.com/nandanhegde" target="_blank" rel="noopener" class="btn btn--outline">GitHub</a>
-              <a href="https://linkedin.com/in/nandan-hegde-195020168" target="_blank" rel="noopener" class="btn btn--outline">LinkedIn</a>
-            </div>
+            }
+
+            @if (step() === 'done') {
+              <div class="cli__done">
+                <button type="button" class="cli__send" (click)="reset()">
+                  &uarr; new session
+                </button>
+              </div>
+            }
           </div>
 
-          <form class="contact__form card" [formGroup]="form" (ngSubmit)="onSubmit()">
-            <div class="contact__field">
-              <label for="name">Name</label>
-              <input id="name" type="text" formControlName="name" placeholder="Your name" />
-            </div>
-            <div class="contact__field">
-              <label for="email">Email</label>
-              <input id="email" type="email" formControlName="email" placeholder="you@example.com" />
-            </div>
-            <div class="contact__field">
-              <label for="subject">Subject</label>
-              <input id="subject" type="text" formControlName="subject" placeholder="What's this about?" />
-            </div>
-            <div class="contact__field">
-              <label for="message">Message</label>
-              <textarea id="message" formControlName="message" rows="5" placeholder="Your message..."></textarea>
+          <aside class="cli__sidecard">
+            <div class="cli__sidecard-block">
+              <div class="cli__sidecard-label">// session</div>
+              <div class="cli__sidecard-row"><span>step</span><strong>{{ stepNumber() }}/4</strong></div>
+              <div class="cli__sidecard-row"><span>started</span><strong>{{ startedAt }}</strong></div>
+              <div class="cli__sidecard-row"><span>shell</span><strong>zsh 5.9</strong></div>
             </div>
 
-            @if (submitted()) {
-              <div class="contact__toast contact__toast--success">
-                <svg class="contact__toast-check" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                  <path d="M20 6L9 17l-5-5"/>
-                </svg>
-                Message sent! I usually respond within 24 hours.
-              </div>
-            }
+            <div class="cli__sidecard-block">
+              <div class="cli__sidecard-label">// captured</div>
+              <dl class="cli__captured">
+                <dt>name</dt><dd>{{ form.value.name || '_' }}</dd>
+                <dt>email</dt><dd>{{ form.value.email || '_' }}</dd>
+                <dt>subject</dt><dd>{{ form.value.subject || '_' }}</dd>
+                <dt>message</dt><dd>{{ form.value.message ? truncate(form.value.message, 40) : '_' }}</dd>
+              </dl>
+            </div>
 
-            @if (errorMessage()) {
-              <div class="contact__toast contact__toast--error">
-                {{ errorMessage() }}
-              </div>
-            }
+            <div class="cli__sidecard-block">
+              <div class="cli__sidecard-label">// shortcuts</div>
+              <div class="cli__shortcut"><kbd>Enter</kbd> next field</div>
+              <div class="cli__shortcut"><kbd>Ctrl</kbd> + <kbd>Enter</kbd> send (multi-line)</div>
+              <div class="cli__shortcut">click <code>restart</code> to reset</div>
+            </div>
 
-            <button type="submit" class="btn btn--primary" [disabled]="form.invalid || submitting()">
-              {{ submitting() ? 'Sending...' : 'Send Message' }}
-            </button>
-          </form>
+            <div class="cli__sidecard-block cli__sidecard-block--alt">
+              <div class="cli__sidecard-label">// elsewhere</div>
+              <a href="mailto:nandanhegde1096&#64;gmail.com">email me directly &rarr;</a>
+              <a href="https://github.com/nandanhegde1" target="_blank" rel="noopener">github.com/nandanhegde1 &rarr;</a>
+              <a href="https://www.linkedin.com/in/nandan-hegde-3a7370166/" target="_blank" rel="noopener">linkedin &rarr;</a>
+            </div>
+          </aside>
         </div>
       </div>
     </section>
   `,
   styleUrl: './contact.component.scss',
 })
-export class ContactComponent {
+export class ContactComponent implements AfterViewInit {
   private readonly fb = inject(FormBuilder);
   private readonly http = inject(HttpClient);
   private readonly sound = inject(SoundService);
-  readonly submitted = signal(false);
+
+  readonly scroller = viewChild<ElementRef<HTMLElement>>('scroller');
+  readonly activeInput = viewChild<ElementRef<HTMLInputElement | HTMLTextAreaElement>>('activeInput');
+
+  readonly step = signal<Step>('name');
   readonly submitting = signal(false);
-  readonly errorMessage = signal<string | null>(null);
+  readonly currentError = signal<string | null>(null);
+  readonly log = signal<LogLine[]>([
+    { kind: 'sys', text: 'session opened â€” fastest way to reach me. answers usually in <24h.' },
+    { kind: 'hint', text: 'press Enter after each field. type your message, then Ctrl+Enter to send.' },
+  ]);
 
   readonly form = this.fb.nonNullable.group({
-    name: ['', [Validators.required, Validators.minLength(2)]],
-    email: ['', [Validators.required, Validators.email]],
-    subject: ['', Validators.required],
+    name:    ['', [Validators.required, Validators.minLength(2)]],
+    email:   ['', [Validators.required, Validators.email]],
+    subject: ['', [Validators.required, Validators.minLength(2)]],
     message: ['', [Validators.required, Validators.minLength(10)]],
   });
 
-  onSubmit(): void {
-    if (this.form.invalid || this.submitting()) {
-      this.form.markAllAsTouched();
+  readonly startedAt = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+
+  readonly stepNumber = computed(() => {
+    const s = this.step();
+    if (s === 'name') return 1;
+    if (s === 'email') return 2;
+    if (s === 'subject') return 3;
+    return 4;
+  });
+
+  ngAfterViewInit(): void {
+    queueMicrotask(() => this.focusInput());
+  }
+
+  promptFor(s: Step): string {
+    switch (s) {
+      case 'name':    return 'who is this?';
+      case 'email':   return 'where do I reply?';
+      case 'subject': return 'topic in 4-6 words?';
+      case 'message': return 'what do you want to say?';
+      case 'review':  return 'send the message?';
+      default:        return '';
+    }
+  }
+
+  truncate(s: string, n: number): string {
+    return s.length > n ? s.slice(0, n - 1).trim() + 'â€¦' : s;
+  }
+
+  advance(): void {
+    const s = this.step();
+    if (s === 'sending' || s === 'done') return;
+
+    if (s === 'review') { this.send(); return; }
+
+    const ctrl: AbstractControl | null = this.form.get(s);
+    if (!ctrl || ctrl.invalid) {
+      this.currentError.set(this.errorFor(s));
+      this.sound.play('error');
       return;
     }
+    this.currentError.set(null);
 
+    this.log.update(l => [
+      ...l,
+      { kind: 'prompt', text: this.promptFor(s) },
+      { kind: 'user', text: s === 'message' ? this.truncate(String(ctrl.value), 80) : String(ctrl.value) },
+    ]);
+    this.sound.play('click');
+
+    const next: Step =
+      s === 'name'    ? 'email'   :
+      s === 'email'   ? 'subject' :
+      s === 'subject' ? 'message' :
+                        'review';
+    this.step.set(next);
+    queueMicrotask(() => { this.scrollToBottom(); this.focusInput(); });
+  }
+
+  private errorFor(s: Step): string {
+    const ctrl = this.form.get(s);
+    if (!ctrl) return 'invalid input';
+    if (ctrl.hasError('required')) return `${s} is required.`;
+    if (ctrl.hasError('email')) return `that email doesn't look right.`;
+    if (ctrl.hasError('minlength')) {
+      const need = ctrl.getError('minlength').requiredLength;
+      return `${s} needs at least ${need} characters.`;
+    }
+    return `invalid ${s}.`;
+  }
+
+  private send(): void {
+    if (this.form.invalid) return;
     this.submitting.set(true);
-    this.errorMessage.set(null);
+    this.step.set('sending');
+    const t0 = performance.now();
 
     this.http.post<{ success: boolean; message: string }>(
       `${environment.apiUrl}/api/contact`,
-      this.form.getRawValue()
+      this.form.getRawValue(),
     ).subscribe({
       next: () => {
-        this.submitted.set(true);
+        const ms = Math.round(performance.now() - t0);
+        this.log.update(l => [...l, { kind: 'ok', text: `message delivered in ${ms}ms â€” talk soon.` }]);
         this.submitting.set(false);
-        this.form.reset();
+        this.step.set('done');
         this.sound.play('unlock');
         burstConfetti({ count: 90, spread: 90 });
-        setTimeout(() => this.submitted.set(false), 5000);
+        queueMicrotask(() => this.scrollToBottom());
       },
       error: (err) => {
+        const ms = Math.round(performance.now() - t0);
+        this.log.update(l => [
+          ...l,
+          { kind: 'err', text: `request failed after ${ms}ms â€” ${err?.error?.error || 'backend offline'}.` },
+          { kind: 'hint', text: 'fallback: email me directly via the link in the chrome bar.' },
+        ]);
         this.submitting.set(false);
-        this.errorMessage.set(err.error?.error || 'Failed to send message. Please try again or email me directly.');
+        this.step.set('review');
         this.sound.play('error');
-        setTimeout(() => this.errorMessage.set(null), 5000);
+        queueMicrotask(() => this.scrollToBottom());
       },
     });
+  }
+
+  reset(): void {
+    this.form.reset({ name: '', email: '', subject: '', message: '' });
+    this.currentError.set(null);
+    this.step.set('name');
+    this.log.set([
+      { kind: 'sys', text: 'session reset.' },
+      { kind: 'hint', text: 'press Enter after each field. type your message, then Ctrl+Enter to send.' },
+    ]);
+    queueMicrotask(() => this.focusInput());
+  }
+
+  private scrollToBottom(): void {
+    const el = this.scroller()?.nativeElement;
+    if (el) el.scrollTop = el.scrollHeight;
+  }
+
+  private focusInput(): void {
+    this.activeInput()?.nativeElement.focus();
   }
 }
