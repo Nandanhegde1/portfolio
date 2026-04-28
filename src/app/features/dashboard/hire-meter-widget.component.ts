@@ -318,9 +318,9 @@ export class HireMeterWidgetComponent {
     { path: '/about',     label: 'About',      icon: '👤', points: 20 },
     { path: '/dashboard', label: 'Dashboard',  icon: '📊', points: 20 },
     { path: '/blog',      label: 'Blog',       icon: '✍️', points: 15 },
-    { path: '/roast',     label: 'Roast',      icon: '🔥', points: 10 },
-    { path: '/quiz',      label: 'Quiz',       icon: '🎯', points: 10 },
-    { path: '/guestbook', label: 'Guestbook',  icon: '📖', points: 8  },
+    { path: '/lab',       label: 'The Lab',          icon: '🧪', points: 10 },
+    { path: '/quiz',      label: 'Quiz',             icon: '🎯', points: 10 },
+    { path: '/roast-me-back', label: 'Roast Me Back', icon: '🔥', points: 8  },
     { path: '/contact',   label: 'Contact',    icon: '📬', points: 7  },
   ];
 

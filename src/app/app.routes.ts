@@ -73,27 +73,29 @@ export const routes: Routes = [
         },
       },
       {
-        path: 'guestbook',
-        loadComponent: () => import('./features/guestbook/guestbook.component').then(m => m.GuestbookComponent),
+        path: 'roast-me-back',
+        loadComponent: () => import('./features/roast-me-back/roast-me-back.component').then(m => m.RoastMeBackComponent),
         data: {
           seo: {
-            title: 'Guestbook — Sign In',
-            description: 'Drop a note, share your thoughts, or just say hi.',
-            url: 'https://nandanhegde1.github.io/portfolio/guestbook',
+            title: 'Roast Me Back — The Honest Wall',
+            description: 'The AI on /lab roasts your stack. This page flips it. Leave a one-line roast of this portfolio. I read every one and reply to the sharp ones.',
+            url: 'https://nandanhegde1.github.io/portfolio/roast-me-back',
           },
         },
       },
+      { path: 'guestbook', redirectTo: 'roast-me-back', pathMatch: 'full' },
       {
-        path: 'roast',
+        path: 'lab',
         loadComponent: () => import('./features/roast/roast.component').then(m => m.RoastComponent),
         data: {
           seo: {
-            title: 'Roast Me — AI Code Roaster',
-            description: 'Get your code or resume roasted by AI. Constructive feedback with a side of humor.',
-            url: 'https://nandanhegde1.github.io/portfolio/roast',
+            title: 'The Lab — AI Experiments',
+            description: 'A weekend experiment. Claude wired to a streaming endpoint, given permission to roast your tech stack. Source linked.',
+            url: 'https://nandanhegde1.github.io/portfolio/lab',
           },
         },
       },
+      { path: 'roast', redirectTo: 'lab', pathMatch: 'full' },
       {
         path: 'quiz',
         loadComponent: () => import('./features/quiz/quiz.component').then(m => m.QuizComponent),

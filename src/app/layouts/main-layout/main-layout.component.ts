@@ -3,7 +3,6 @@ import { isPlatformBrowser } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent, FooterComponent, SocialSidebarComponent } from '../../shared/components';
 import { CursorGlowComponent } from '../../shared/components/cursor-glow/cursor-glow.component';
-import { ChatbotComponent } from '../../features/chatbot/chatbot.component';
 import { TerminalShellComponent } from '../../features/terminal/terminal-shell.component';
 import { SpotifyWidgetComponent } from '../../features/spotify/spotify-widget.component';
 import { ToastHostComponent } from '../../shared/components/toast-host/toast-host.component';
@@ -11,7 +10,7 @@ import { ToastHostComponent } from '../../shared/components/toast-host/toast-hos
 @Component({
   selector: 'app-main-layout',
   standalone: true,
-  imports: [RouterOutlet, NavbarComponent, FooterComponent, SocialSidebarComponent, CursorGlowComponent, ChatbotComponent, TerminalShellComponent, SpotifyWidgetComponent, ToastHostComponent],
+  imports: [RouterOutlet, NavbarComponent, FooterComponent, SocialSidebarComponent, CursorGlowComponent, TerminalShellComponent, SpotifyWidgetComponent, ToastHostComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <a href="#main-content" class="skip-to-content">Skip to main content</a>
@@ -30,7 +29,6 @@ import { ToastHostComponent } from '../../shared/components/toast-host/toast-hos
     <app-footer />
 
     <!-- Global overlays -->
-    <app-chatbot />
     <app-terminal-shell />
     <app-toast-host />
 

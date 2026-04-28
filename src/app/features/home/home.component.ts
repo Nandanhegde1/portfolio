@@ -108,21 +108,21 @@ interface JourneyNode {
         </div>
 
         <!-- Row 3: Featured Roast CTA (the wow CTA) -->
-        <a routerLink="/roast" class="bento__card bento__card--roast-hero" appScrollReveal [delay]="200">
+        <a routerLink="/lab" class="bento__card bento__card--roast-hero" appScrollReveal [delay]="200">
           <div class="bento__roast-hero-bg" aria-hidden="true">
             <span></span><span></span><span></span><span></span>
           </div>
           <div class="bento__roast-hero-content">
-            <span class="bento__roast-hero-eyebrow">// AI &middot; viral</span>
+            <span class="bento__roast-hero-eyebrow">// the lab · ai experiment</span>
             <h3 class="bento__roast-hero-title">
               <span class="bento__roast-hero-emoji">🔥</span>
               Roast My Tech Stack
             </h3>
             <p class="bento__roast-hero-desc">
-              Paste your stack. Claude AI roasts it in three intensities — mild, medium, savage.
-              Surprisingly accurate. Always shareable.
+              A weekend experiment. Claude, a streaming endpoint, and three intensities of mean.
+              Source linked. The system prompt took 3 rewrites — the first version only generated compliments.
             </p>
-            <span class="bento__roast-hero-cta">Try the roast →</span>
+            <span class="bento__roast-hero-cta">Open the lab →</span>
           </div>
         </a>
 

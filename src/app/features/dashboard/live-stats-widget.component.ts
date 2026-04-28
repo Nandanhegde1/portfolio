@@ -42,9 +42,9 @@ import { StatsService } from '../../core/services/stats.service';
         </div>
 
         <!-- Recruiters -->
-        <div class="live-stats__card live-stats__card--recruiter">
-          <span class="live-stats__icon" aria-hidden="true">💼</span>
-          @if ((stats.recruiter()?.total ?? 0) > 0) {
+        @if ((stats.recruiter()?.total ?? 0) > 0) {
+          <div class="live-stats__card live-stats__card--recruiter">
+            <span class="live-stats__icon" aria-hidden="true">💼</span>
             <span class="live-stats__value">{{ stats.recruiter()?.total }}</span>
             <span class="live-stats__label">recruiter reach-outs</span>
             <span class="live-stats__delta">{{ stats.recruiter()?.last30Days ?? 0 }} in last 30 days</span>
@@ -58,17 +58,13 @@ import { StatsService } from '../../core/services/stats.service';
                 }
               </ul>
             }
-          } @else {
-            <span class="live-stats__value live-stats__value--soft">—</span>
-            <span class="live-stats__label">recruiter reach-outs</span>
-            <span class="live-stats__delta">No public outreach logged yet — be the first 👋</span>
-          }
-        </div>
+          </div>
+        }
 
         <!-- Interviews -->
-        <div class="live-stats__card live-stats__card--interview">
-          <span class="live-stats__icon" aria-hidden="true">🎯</span>
-          @if ((stats.interviews()?.total ?? 0) > 0) {
+        @if ((stats.interviews()?.total ?? 0) > 0) {
+          <div class="live-stats__card live-stats__card--interview">
+            <span class="live-stats__icon" aria-hidden="true">🎯</span>
             <span class="live-stats__value">{{ stats.interviews()?.total }}</span>
             <span class="live-stats__label">interviews logged</span>
             @if (interviewPipeline().length) {
@@ -81,15 +77,11 @@ import { StatsService } from '../../core/services/stats.service';
                 }
               </div>
             }
-          } @else {
-            <span class="live-stats__value live-stats__value--soft">—</span>
-            <span class="live-stats__label">interviews logged</span>
-            <span class="live-stats__delta">Pipeline starts here — ping me on /contact</span>
-          }
-        </div>
+          </div>
+        }
         }
       </div>
-      <p class="live-stats__footnote">All recruiter & interview data is real, logged from inbound contacts. Privacy-respected — no PII shown.</p>
+      <p class="live-stats__footnote">Real numbers, refreshed on load. Privacy-respected — no PII shown.</p>
     </div>
   `,
   styleUrl: './live-stats-widget.component.scss',

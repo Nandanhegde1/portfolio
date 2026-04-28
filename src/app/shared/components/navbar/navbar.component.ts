@@ -41,12 +41,12 @@ import { TooltipDirective } from '../../directives/tooltip.directive';
             </button>
             @if (dropdownOpen()) {
               <ul class="navbar__dropdown-menu">
-                <li><a routerLink="/roast" routerLinkActive="active" (click)="dropdownOpen.set(false)">\uD83D\uDD25 Roast My Stack</a></li>
-                <li><a routerLink="/quiz" routerLinkActive="active" (click)="dropdownOpen.set(false)">\uD83C\uDFAF Team Quiz</a></li>
+                <li><a routerLink="/lab" routerLinkActive="active" (click)="dropdownOpen.set(false)">🧪 The Lab · Roast My Stack</a></li>
+                <li><a routerLink="/roast-me-back" routerLinkActive="active" (click)="dropdownOpen.set(false)">🔥 Roast Me Back</a></li>
+                <li><a routerLink="/quiz" routerLinkActive="active" (click)="dropdownOpen.set(false)">🎯 Team Quiz</a></li>
               </ul>
             }
           </li>
-          <li><a routerLink="/guestbook" routerLinkActive="active">{{ 'nav.guestbook' | transloco }}</a></li>
           <li><a routerLink="/contact" routerLinkActive="active">{{ 'nav.contact' | transloco }}</a></li>
         </ul>
 
@@ -84,9 +84,9 @@ import { TooltipDirective } from '../../directives/tooltip.directive';
           <li><a routerLink="/dashboard" routerLinkActive="active" (click)="mobileOpen = false">{{ 'nav.dashboard' | transloco }}</a></li>
           <li><a routerLink="/blog" routerLinkActive="active" (click)="mobileOpen = false">{{ 'nav.blog' | transloco }}</a></li>
           <li><a routerLink="/under-the-hood" routerLinkActive="active" (click)="mobileOpen = false">{{ 'nav.underTheHood' | transloco }}</a></li>
-          <li><a routerLink="/roast" routerLinkActive="active" (click)="mobileOpen = false">\uD83D\uDD25 Roast My Stack</a></li>
-          <li><a routerLink="/quiz" routerLinkActive="active" (click)="mobileOpen = false">\uD83C\uDFAF Team Quiz</a></li>
-          <li><a routerLink="/guestbook" routerLinkActive="active" (click)="mobileOpen = false">{{ 'nav.guestbook' | transloco }}</a></li>
+          <li><a routerLink="/lab" routerLinkActive="active" (click)="mobileOpen = false">🧪 The Lab · Roast My Stack</a></li>
+          <li><a routerLink="/roast-me-back" routerLinkActive="active" (click)="mobileOpen = false">🔥 Roast Me Back</a></li>
+          <li><a routerLink="/quiz" routerLinkActive="active" (click)="mobileOpen = false">🎯 Team Quiz</a></li>
           <li><a routerLink="/contact" routerLinkActive="active" (click)="mobileOpen = false">{{ 'nav.contact' | transloco }}</a></li>
         </ul>
       }

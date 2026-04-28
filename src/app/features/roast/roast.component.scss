@@ -522,3 +522,43 @@
   &--hidden { display: none; }
 }
 @keyframes roastCaretBlink { to { opacity: 0; } }
+
+
+// === Lab reframe additions ===
+.roast__eyebrow {
+  display: inline-block;
+  font-family: $font-mono;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #ef4444;
+  margin-bottom: $space-sm;
+  text-transform: lowercase;
+}
+.roast__source-chips {
+  display: flex;
+  justify-content: center;
+  gap: $space-sm;
+  flex-wrap: wrap;
+  margin-top: $space-lg;
+}
+.roast__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text-secondary);
+  font-family: $font-mono;
+  font-size: 0.78rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  &:hover {
+    color: #ef4444;
+    border-color: #ef4444;
+    transform: translateY(-1px);
+  }
+  span { color: #ef4444; font-weight: 700; }
+}

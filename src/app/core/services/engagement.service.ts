@@ -24,9 +24,9 @@ export class EngagementService {
     '/about': 20,
     '/dashboard': 20,
     '/blog': 15,
-    '/roast': 10,
+    '/lab': 10,
     '/quiz': 10,
-    '/guestbook': 8,
+    '/roast-me-back': 8,
     '/contact': 7,
   };
   private readonly maxScore = Object.values(this.weights).reduce((a, b) => a + b, 0);

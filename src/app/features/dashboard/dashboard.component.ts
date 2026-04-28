@@ -33,12 +33,14 @@ import { StatsService } from '../../core/services/stats.service';
           <app-hire-meter-widget />
         </div>
 
-        <!-- Visitor Counter — Hero -->
-        <div class="dash__visitors" appScrollReveal>
-          <div class="dash__visitors-glow"></div>
-          <app-animated-counter [targetValue]="visitorCount()" size="lg" label="visitors & counting" />
-          <p class="dash__visitors-sub">People who've checked out this portfolio</p>
-        </div>
+        <!-- Visitor Counter — hero (only shown once we have real data) -->
+        @if (visitorCount() > 0) {
+          <div class="dash__visitors" appScrollReveal>
+            <div class="dash__visitors-glow"></div>
+            <app-animated-counter [targetValue]="visitorCount()" size="lg" label="page views & counting" />
+            <p class="dash__visitors-sub">Real traffic. No bots. No vanity multipliers.</p>
+          </div>
+        }
 
         <!-- Live Stats Widget (real backend data) -->
         <div appScrollReveal>
@@ -221,6 +223,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.github.fetchAll('Nandanhegde1');
+    this.statsService.loadAll();
     this.rollFortune();
     this.fortuneInterval = setInterval(() => this.rollFortune(), 30000);
   }

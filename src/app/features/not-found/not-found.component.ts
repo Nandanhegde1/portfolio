@@ -78,7 +78,7 @@ interface Cmd {
         <div class="nf__cta">
           <a routerLink="/" class="nf__btn nf__btn--primary">← Back home</a>
           <a routerLink="/under-the-hood" class="nf__btn nf__btn--ghost">See how this is built</a>
-          <a routerLink="/roast" class="nf__btn nf__btn--ghost">🔥 Roast me instead</a>
+          <a routerLink="/lab" class="nf__btn nf__btn--ghost">🧪 Open the lab instead</a>
         </div>
       </div>
     </section>
@@ -119,9 +119,9 @@ export class NotFoundComponent implements OnInit, OnDestroy {
     skills: () => ({ cmd: 'skills', out: 'Angular · TypeScript · RxJS · Node · AWS · Docker · K8s · Azure DevOps' }),
     contact: () => ({ cmd: 'contact', out: 'Form ready when you are.', href: '/contact' }),
     resume: () => ({ cmd: 'resume', out: '<a href="assets/Nandan_Hegde_Resume.pdf" target="_blank" class="nf__link">↳ Download resume.pdf</a>' }),
-    roast: () => ({ cmd: 'roast', out: 'Buckle up.', href: '/roast' }),
+      roast: () => ({ cmd: 'roast', out: 'Heading to the lab.', href: '/lab' }),
     dashboard: () => ({ cmd: 'dashboard', out: 'Loading metrics…', href: '/dashboard' }),
-    ls: () => ({ cmd: 'ls', out: '<span class="nf__dir">/about  /dashboard  /under-the-hood  /blog  /roast  /quiz  /pitch  /guestbook  /contact</span>' }),
+      ls: () => ({ cmd: 'ls', out: '<span class="nf__dir">/about  /dashboard  /under-the-hood  /blog  /lab  /quiz  /pitch  /roast-me-back  /contact</span>' }),
     whoami: () => ({ cmd: 'whoami', out: 'guest — but you could be on my team. Try <span class="nf__hl">sudo hire-me</span>.' }),
     date: () => ({ cmd: 'date', out: new Date().toString() }),
     clear: () => ({ cmd: '', out: '' }),

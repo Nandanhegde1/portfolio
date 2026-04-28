@@ -33,13 +33,12 @@ app.get('/', (_req, res) => {
     message: 'Portfolio API',
     endpoints: [
       '/api/health',
-      '/api/chat',
       '/api/roast',
+      '/api/roasts',
       '/api/github/user/:username',
       '/api/github/repos/:username',
       '/api/analytics',
       '/api/contact',
-      '/api/guestbook',
       '/api/recruiter/stats',
       '/api/interviews/stats',
       '/api/spotify/now-playing',
@@ -50,10 +49,9 @@ app.get('/', (_req, res) => {
 app.use('/api/health',     require('./routes/health'));
 app.use('/api/github',     require('./routes/github'));
 app.use('/api/analytics',  require('./routes/analytics'));
-app.use('/api/chat',       require('./routes/chat'));
 app.use('/api/roast',      require('./routes/roast'));
+app.use('/api/roasts',     require('./routes/roasts'));
 app.use('/api/contact',    require('./routes/contact'));
-app.use('/api/guestbook',  require('./routes/guestbook'));
 app.use('/api/blog',       require('./routes/blog'));
 app.use('/api/recruiter',  require('./routes/recruiter'));
 app.use('/api/interviews', require('./routes/interviews'));

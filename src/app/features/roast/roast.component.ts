@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy, signal, inject, ElementRef, viewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { ScrollRevealDirective } from '../../shared/directives/scroll-reveal.directive';
 import { environment } from '../../../environments/environment';
 import { SoundService } from '../../core/services/sound.service';
@@ -46,19 +47,32 @@ const FALLBACK_ROASTS: Record<string, string[]> = {
 @Component({
   selector: 'app-roast',
   standalone: true,
-  imports: [FormsModule, ScrollRevealDirective],
+  imports: [FormsModule, ScrollRevealDirective, RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="roast">
       <div class="roast__container">
         <!-- Header -->
         <div class="roast__header" appScrollReveal>
-          <div class="roast__icon">\uD83D\uDD25</div>
+          <span class="roast__eyebrow">// the lab · ai experiment #1</span>
+          <div class="roast__icon">🔥</div>
           <h1 class="roast__title">Roast My Stack</h1>
           <p class="roast__subtitle">
-            Drop your tech stack. Our AI will mercilessly (but lovingly) roast it.
-            <br>Then share the roast card to flex your thick skin.
+            A weekend experiment. I gave Claude permission to be mean about your tech stack,
+            wired it to a streaming endpoint, and put it on the internet.
+            The system prompt is 47 lines and took 3 rewrites &mdash; the first version only generated compliments.
           </p>
+          <div class="roast__source-chips">
+            <a href="https://github.com/Nandanhegde1/portfolio/blob/main/backend/routes/roast.js" target="_blank" rel="noopener" class="roast__chip">
+              <span>→</span> backend route
+            </a>
+            <a href="https://github.com/Nandanhegde1/portfolio/blob/main/backend/prompts/roast.js" target="_blank" rel="noopener" class="roast__chip">
+              <span>→</span> system prompt
+            </a>
+            <a routerLink="/under-the-hood" class="roast__chip">
+              <span>→</span> how it's built
+            </a>
+          </div>
         </div>
 
         <!-- Input Section -->

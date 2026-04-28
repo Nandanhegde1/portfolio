@@ -94,7 +94,7 @@ export class UnderTheHoodComponent {
     },
     {
       id: 'claude', label: 'Anthropic Claude', icon: '🧠', layer: 'ai',
-      desc: 'Sonnet 4.5 powers chatbot, roast, and AI features. 1500-token responses.',
+      desc: 'Sonnet 4.5 powers the lab roast experiment. Streaming SSE responses.',
       tech: ['claude-sonnet-4-5', 'System prompts', 'Streaming-ready'],
     },
     {
@@ -142,7 +142,7 @@ export class UnderTheHoodComponent {
     { step: 3, name: 'Bundle Audit', cmd: 'Built-in size budgets', desc: 'Fails build if initial > 500KB or component > 6KB. Keeps the site fast.', duration: '< 1s' },
     { step: 4, name: 'Deploy to GH Pages', cmd: 'npx angular-cli-ghpages', desc: 'Pushes built artifacts to gh-pages branch, served from edge CDN.', duration: '~30s' },
     { step: 5, name: 'Backend Deploy', cmd: 'Render auto-deploy', desc: 'Render picks up backend/ changes, runs npm install + node server.js, zero-downtime swap.', duration: '~90s' },
-    { step: 6, name: 'Health Check', cmd: 'GET /api/health', desc: 'Frontend pings backend on app load, warming the dyno before users click chat/roast.', duration: '< 100ms' },
+    { step: 6, name: 'Health Check', cmd: 'GET /api/health', desc: 'Frontend pings backend on app load, warming the dyno before users open the lab.', duration: '< 100ms' },
   ];
 
   readonly seoSignals = [
@@ -228,7 +228,7 @@ export class UnderTheHoodComponent {
     },
     {
       id: 'ai-chat',
-      label: 'Asking the chatbot',
+      label: 'Opening the lab',
       description: 'Your message goes to the API, which proxies to Claude with a system prompt and logs the conversation in Postgres.',
       hops: ['user', 'cdn', 'spa', 'api', 'claude', 'supa'],
       color: '#ec4899',
