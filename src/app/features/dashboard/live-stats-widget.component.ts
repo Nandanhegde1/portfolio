@@ -14,6 +14,19 @@ import { StatsService } from '../../core/services/stats.service';
       </div>
 
       <div class="live-stats__grid">
+        @if (stats.loading() && !stats.visitor()) {
+          <!-- Skeleton placeholders while first fetch is in flight -->
+          @for (n of [1,2,3]; track n) {
+            <div class="live-stats__card live-stats__card--skel" aria-busy="true" aria-label="Loading">
+              <span class="skeleton skeleton--circle" style="width:32px;height:32px;"></span>
+              <span class="skeleton skeleton--title" style="width:50%;height:2rem;"></span>
+              <span class="skeleton skeleton--text" style="width:70%;"></span>
+              <span class="skeleton skeleton--text" style="width:40%;"></span>
+              <span class="skeleton skeleton--text" style="width:85%;"></span>
+              <span class="skeleton skeleton--text" style="width:60%;"></span>
+            </div>
+          }
+        } @else {
         <!-- Visitors -->
         <div class="live-stats__card live-stats__card--visitor">
           <span class="live-stats__icon" aria-hidden="true">👁️</span>
@@ -62,6 +75,7 @@ import { StatsService } from '../../core/services/stats.service';
             </div>
           }
         </div>
+        }
       </div>
       <p class="live-stats__footnote">All recruiter & interview data is real, logged from inbound contacts. Privacy-respected — no PII shown.</p>
     </div>

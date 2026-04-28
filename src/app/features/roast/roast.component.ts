@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ScrollRevealDirective } from '../../shared/directives/scroll-reveal.directive';
 import { environment } from '../../../environments/environment';
+import { SoundService } from '../../core/services/sound.service';
 
 interface RoastResult {
   stack: string;
@@ -192,6 +193,7 @@ const FALLBACK_ROASTS: Record<string, string[]> = {
 })
 export class RoastComponent {
   private readonly http = inject(HttpClient);
+  private readonly sound = inject(SoundService);
   readonly roastCardRef = viewChild<ElementRef<HTMLDivElement>>('roastCard');
 
   readonly stackInput = signal('');
@@ -221,6 +223,7 @@ export class RoastComponent {
     const stack = this.stackInput().trim();
     if (stack.length < 3) return;
 
+    this.sound.play('click');
     this.loading.set(true);
     this.error.set(null);
     this.result.set(null);
@@ -230,6 +233,7 @@ export class RoastComponent {
         this.result.set({ stack, roast: res.roast, intensity: this.intensity(), timestamp: Date.now() });
         this.incrementCount();
         this.loading.set(false);
+        this.sound.play('success');
       },
       error: () => {
         // Fallback to local roasts
@@ -237,6 +241,7 @@ export class RoastComponent {
         this.result.set({ stack, roast, intensity: this.intensity(), timestamp: Date.now() });
         this.incrementCount();
         this.loading.set(false);
+        this.sound.play('error');
       },
     });
   }

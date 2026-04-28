@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { ChatbotService } from './chatbot.service';
+import { SoundService } from '../../core/services/sound.service';
 
 @Component({
   selector: 'app-chatbot',
@@ -117,6 +118,7 @@ import { ChatbotService } from './chatbot.service';
 export class ChatbotComponent implements OnInit {
   readonly chatService = inject(ChatbotService);
   private readonly router = inject(Router);
+  private readonly sound = inject(SoundService);
   private readonly chatBodyRef = viewChild<ElementRef<HTMLDivElement>>('chatBody');
 
   readonly isOpen = signal(false);
@@ -140,22 +142,26 @@ export class ChatbotComponent implements OnInit {
   open(): void {
     this.isOpen.set(true);
     this.showAttention.set(false);
+    this.sound.play('pop');
     if (typeof window !== 'undefined') localStorage.setItem('chat_seen', '1');
   }
 
   close(): void {
     this.isOpen.set(false);
+    this.sound.play('click');
   }
 
   send(): void {
     const text = this.inputText.trim();
     if (!text) return;
     this.inputText = '';
+    this.sound.play('click');
     this.chatService.sendMessage(text);
     this.scrollToBottom();
   }
 
   sendQuick(question: string): void {
+    this.sound.play('click');
     this.chatService.sendMessage(question);
     this.scrollToBottom();
   }

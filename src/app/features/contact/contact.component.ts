@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { SectionHeaderComponent } from '../../shared/components';
 import { environment } from '../../../environments/environment';
 import { burstConfetti } from '../../shared/utils/confetti';
+import { SoundService } from '../../core/services/sound.service';
 
 @Component({
   selector: 'app-contact',
@@ -89,6 +90,7 @@ import { burstConfetti } from '../../shared/utils/confetti';
 export class ContactComponent {
   private readonly fb = inject(FormBuilder);
   private readonly http = inject(HttpClient);
+  private readonly sound = inject(SoundService);
   readonly submitted = signal(false);
   readonly submitting = signal(false);
   readonly errorMessage = signal<string | null>(null);
@@ -117,12 +119,14 @@ export class ContactComponent {
         this.submitted.set(true);
         this.submitting.set(false);
         this.form.reset();
+        this.sound.play('unlock');
         burstConfetti({ count: 90, spread: 90 });
         setTimeout(() => this.submitted.set(false), 5000);
       },
       error: (err) => {
         this.submitting.set(false);
         this.errorMessage.set(err.error?.error || 'Failed to send message. Please try again or email me directly.');
+        this.sound.play('error');
         setTimeout(() => this.errorMessage.set(null), 5000);
       },
     });
