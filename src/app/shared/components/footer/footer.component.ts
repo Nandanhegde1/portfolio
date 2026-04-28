@@ -1,10 +1,11 @@
 import { Component, ChangeDetectionStrategy, signal, HostListener, OnInit } from '@angular/core';
 import { TooltipDirective } from '../../directives/tooltip.directive';
+import { SoundToggleComponent } from '../sound-toggle/sound-toggle.component';
 
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [TooltipDirective],
+  imports: [TooltipDirective, SoundToggleComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <footer class="footer">
@@ -41,6 +42,7 @@ import { TooltipDirective } from '../../directives/tooltip.directive';
               <path d="M22 4l-10 8L2 4"/>
             </svg>
           </a>
+          <app-sound-toggle />
         </div>
 
         <div class="footer__bottom">

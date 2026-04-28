@@ -4,12 +4,13 @@ import { GitHubService } from '../../core/services';
 import { ScrollRevealDirective } from '../../shared/directives/scroll-reveal.directive';
 import { LiveStatsWidgetComponent } from './live-stats-widget.component';
 import { GithubTickerComponent } from './github-ticker/github-ticker.component';
+import { HireMeterWidgetComponent } from './hire-meter-widget.component';
 import { StatsService } from '../../core/services/stats.service';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [AnimatedCounterComponent, LoadingSkeletonComponent, ScrollRevealDirective, LiveStatsWidgetComponent, GithubTickerComponent],
+  imports: [AnimatedCounterComponent, LoadingSkeletonComponent, ScrollRevealDirective, LiveStatsWidgetComponent, GithubTickerComponent, HireMeterWidgetComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="dash">
@@ -24,6 +25,11 @@ import { StatsService } from '../../core/services/stats.service';
         <!-- Live GitHub Activity Ticker -->
         <div appScrollReveal>
           <app-github-ticker />
+        </div>
+
+        <!-- Hire-O-Meter (moved here from navbar) -->
+        <div appScrollReveal>
+          <app-hire-meter-widget />
         </div>
 
         <!-- Visitor Counter — Hero -->

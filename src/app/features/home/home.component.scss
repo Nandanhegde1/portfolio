@@ -669,3 +669,321 @@
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
+
+// -----------------------------------------------
+// FEATURED ROAST HERO + WALL OF WOW
+// -----------------------------------------------
+.bento__card--roast-hero {
+  grid-column: span 3;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  color: var(--text-primary);
+  background: linear-gradient(135deg,
+    color-mix(in srgb, #ef4444 18%, var(--card-bg)),
+    color-mix(in srgb, #f59e0b 12%, var(--card-bg)) 60%,
+    var(--card-bg));
+  border: 1px solid color-mix(in srgb, #ef4444 35%, transparent);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+
+  @include tablet { grid-column: span 2; }
+  @include mobile { grid-column: span 1; min-height: 160px; }
+
+  &:hover {
+    transform: translateY(-4px) scale(1.005);
+    box-shadow: 0 20px 50px color-mix(in srgb, #ef4444 30%, transparent);
+    border-color: #ef4444;
+  }
+}
+.bento__roast-hero-bg {
+  position: absolute; inset: 0; pointer-events: none; opacity: 0.4;
+  span {
+    position: absolute;
+    width: 240px; height: 240px;
+    border-radius: 50%;
+    background: radial-gradient(circle, color-mix(in srgb, #ef4444 30%, transparent), transparent 70%);
+    filter: blur(40px);
+    animation: roastHeroOrb 12s ease-in-out infinite;
+  }
+  span:nth-child(1) { top: -30%; left: 5%; animation-delay: 0s; }
+  span:nth-child(2) { top: 30%; left: 35%; background: radial-gradient(circle, color-mix(in srgb, #f59e0b 30%, transparent), transparent 70%); animation-delay: -3s; }
+  span:nth-child(3) { bottom: -30%; right: 20%; background: radial-gradient(circle, color-mix(in srgb, #ec4899 25%, transparent), transparent 70%); animation-delay: -6s; }
+  span:nth-child(4) { top: 10%; right: -10%; animation-delay: -9s; }
+}
+@keyframes roastHeroOrb {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%      { transform: translate(40px, -30px) scale(1.15); }
+}
+.bento__roast-hero-content { position: relative; z-index: 1; padding: $space-md; max-width: 640px; }
+.bento__roast-hero-eyebrow {
+  font-family: $font-mono;
+  font-size: 0.78rem;
+  color: #ef4444;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+}
+.bento__roast-hero-title {
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 800;
+  margin: 8px 0 12px;
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  letter-spacing: -0.02em;
+}
+.bento__roast-hero-emoji {
+  font-size: 1.2em;
+  display: inline-block;
+  animation: roastHeroFlame 1.6s ease-in-out infinite;
+  transform-origin: 50% 80%;
+}
+@keyframes roastHeroFlame {
+  0%, 100% { transform: rotate(-4deg) scale(1); }
+  50%      { transform: rotate(4deg) scale(1.08); }
+}
+.bento__roast-hero-desc {
+  color: var(--text-secondary);
+  font-size: $fs-md;
+  line-height: 1.55;
+  margin: 0 0 16px;
+  max-width: 520px;
+}
+.bento__roast-hero-cta {
+  display: inline-block;
+  padding: 10px 22px;
+  background: linear-gradient(135deg, #ef4444, #f59e0b);
+  color: #fff;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  box-shadow: 0 8px 24px color-mix(in srgb, #ef4444 40%, transparent);
+}
+
+// -- Wall of Wow card --
+.bento__card--wow {
+  grid-column: span 3;
+  @include tablet { grid-column: span 2; }
+  @include mobile { grid-column: span 1; }
+}
+.bento__wow-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin: 8px 0 16px;
+}
+.bento__wow-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $space-md;
+  @include mobile { grid-template-columns: 1fr; }
+}
+.bento__wow-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: $space-md;
+  background: color-mix(in srgb, var(--accent) 5%, var(--card-bg));
+  border: 1px solid var(--border);
+  border-radius: $radius-lg;
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent, color-mix(in srgb, var(--accent) 14%, transparent));
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+  }
+
+  &:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent);
+    box-shadow: 0 12px 32px color-mix(in srgb, var(--accent) 25%, transparent);
+    &::before { opacity: 1; }
+  }
+
+  code {
+    font-family: $font-mono;
+    font-size: 0.78em;
+    padding: 1px 6px;
+    background: color-mix(in srgb, var(--accent) 14%, transparent);
+    color: var(--accent);
+    border-radius: 3px;
+    font-weight: 600;
+  }
+}
+.bento__wow-tile-icon { font-size: 1.6rem; line-height: 1; }
+.bento__wow-tile-title { font-size: 1rem; font-weight: 700; margin: 4px 0 0; }
+.bento__wow-tile-desc { font-size: 0.84rem; color: var(--text-secondary); margin: 0; line-height: 1.5; flex: 1; }
+.bento__wow-tile-cta {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-top: 6px;
+  letter-spacing: 0.02em;
+}
+
+// -----------------------------------------------
+// FEATURED ROAST HERO + WALL OF WOW
+// -----------------------------------------------
+.bento__card--roast-hero {
+  grid-column: span 3;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  color: var(--text-primary);
+  background: linear-gradient(135deg,
+    color-mix(in srgb, #ef4444 18%, var(--card-bg)),
+    color-mix(in srgb, #f59e0b 12%, var(--card-bg)) 60%,
+    var(--card-bg));
+  border: 1px solid color-mix(in srgb, #ef4444 35%, transparent);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+
+  @include tablet { grid-column: span 2; }
+  @include mobile { grid-column: span 1; min-height: 160px; }
+
+  &:hover {
+    transform: translateY(-4px) scale(1.005);
+    box-shadow: 0 20px 50px color-mix(in srgb, #ef4444 30%, transparent);
+    border-color: #ef4444;
+  }
+}
+.bento__roast-hero-bg {
+  position: absolute; inset: 0; pointer-events: none; opacity: 0.4;
+  span {
+    position: absolute;
+    width: 240px; height: 240px;
+    border-radius: 50%;
+    background: radial-gradient(circle, color-mix(in srgb, #ef4444 30%, transparent), transparent 70%);
+    filter: blur(40px);
+    animation: roastHeroOrb 12s ease-in-out infinite;
+  }
+  span:nth-child(1) { top: -30%; left: 5%; animation-delay: 0s; }
+  span:nth-child(2) { top: 30%; left: 35%; background: radial-gradient(circle, color-mix(in srgb, #f59e0b 30%, transparent), transparent 70%); animation-delay: -3s; }
+  span:nth-child(3) { bottom: -30%; right: 20%; background: radial-gradient(circle, color-mix(in srgb, #ec4899 25%, transparent), transparent 70%); animation-delay: -6s; }
+  span:nth-child(4) { top: 10%; right: -10%; animation-delay: -9s; }
+}
+@keyframes roastHeroOrb {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%      { transform: translate(40px, -30px) scale(1.15); }
+}
+.bento__roast-hero-content { position: relative; z-index: 1; padding: $space-md; max-width: 640px; }
+.bento__roast-hero-eyebrow {
+  font-family: $font-mono;
+  font-size: 0.78rem;
+  color: #ef4444;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+}
+.bento__roast-hero-title {
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 800;
+  margin: 8px 0 12px;
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  letter-spacing: -0.02em;
+}
+.bento__roast-hero-emoji {
+  font-size: 1.2em;
+  display: inline-block;
+  animation: roastHeroFlame 1.6s ease-in-out infinite;
+  transform-origin: 50% 80%;
+}
+@keyframes roastHeroFlame {
+  0%, 100% { transform: rotate(-4deg) scale(1); }
+  50%      { transform: rotate(4deg) scale(1.08); }
+}
+.bento__roast-hero-desc {
+  color: var(--text-secondary);
+  font-size: $fs-md;
+  line-height: 1.55;
+  margin: 0 0 16px;
+  max-width: 520px;
+}
+.bento__roast-hero-cta {
+  display: inline-block;
+  padding: 10px 22px;
+  background: linear-gradient(135deg, #ef4444, #f59e0b);
+  color: #fff;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  box-shadow: 0 8px 24px color-mix(in srgb, #ef4444 40%, transparent);
+}
+
+// -- Wall of Wow card --
+.bento__card--wow {
+  grid-column: span 3;
+  @include tablet { grid-column: span 2; }
+  @include mobile { grid-column: span 1; }
+}
+.bento__wow-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin: 8px 0 16px;
+}
+.bento__wow-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $space-md;
+  @include mobile { grid-template-columns: 1fr; }
+}
+.bento__wow-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: $space-md;
+  background: color-mix(in srgb, var(--accent) 5%, var(--card-bg));
+  border: 1px solid var(--border);
+  border-radius: $radius-lg;
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent, color-mix(in srgb, var(--accent) 14%, transparent));
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+  }
+
+  &:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent);
+    box-shadow: 0 12px 32px color-mix(in srgb, var(--accent) 25%, transparent);
+    &::before { opacity: 1; }
+  }
+
+  code {
+    font-family: $font-mono;
+    font-size: 0.78em;
+    padding: 1px 6px;
+    background: color-mix(in srgb, var(--accent) 14%, transparent);
+    color: var(--accent);
+    border-radius: 3px;
+    font-weight: 600;
+  }
+}
+.bento__wow-tile-icon { font-size: 1.6rem; line-height: 1; }
+.bento__wow-tile-title { font-size: 1rem; font-weight: 700; margin: 4px 0 0; }
+.bento__wow-tile-desc { font-size: 0.84rem; color: var(--text-secondary); margin: 0; line-height: 1.5; flex: 1; }
+.bento__wow-tile-cta {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-top: 6px;
+  letter-spacing: 0.02em;
+}

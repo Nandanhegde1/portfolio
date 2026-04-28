@@ -1,13 +1,12 @@
 import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { ThemeService, EngagementService } from '../../../core/services';
+import { ThemeService } from '../../../core/services';
 import { TooltipDirective } from '../../directives/tooltip.directive';
-import { SoundToggleComponent } from '../sound-toggle/sound-toggle.component';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, TooltipDirective, SoundToggleComponent],
+  imports: [RouterLink, RouterLinkActive, TooltipDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <nav class="navbar">
@@ -50,45 +49,6 @@ import { SoundToggleComponent } from '../sound-toggle/sound-toggle.component';
         </ul>
 
         <div class="navbar__actions">
-          <button
-            class="navbar__hire-meter"
-            type="button"
-            [appTooltip]="hireMeterTooltip()"
-            tooltipPosition="bottom"
-            (click)="showMeterPanel = !showMeterPanel"
-            aria-label="Engagement score"
-          >
-            <svg viewBox="0 0 36 36" class="navbar__hire-ring" aria-hidden="true">
-              <circle cx="18" cy="18" r="15.9155" class="navbar__hire-ring-bg"/>
-              <circle cx="18" cy="18" r="15.9155"
-                class="navbar__hire-ring-fill"
-                [attr.stroke]="engagement.tier().color"
-                [attr.stroke-dasharray]="engagement.score() + ', 100'"
-              />
-            </svg>
-            <span class="navbar__hire-score">{{ engagement.score() }}</span>
-          </button>
-
-          @if (showMeterPanel) {
-            <div class="navbar__hire-panel" (click)="$event.stopPropagation()">
-              <div class="navbar__hire-panel-header">
-                <strong>Hire-O-Meter</strong>
-                <span [style.color]="engagement.tier().color">{{ engagement.tier().label }}</span>
-              </div>
-              <p class="navbar__hire-panel-msg">
-                Explored <strong>{{ engagement.visitedCount() }}</strong> of 8 sections.
-                @if (engagement.score() < 100) {
-                  Visit more to unlock the legend tier!
-                } @else {
-                  You've seen it all. Time to hire me 😎
-                }
-              </p>
-              <div class="navbar__hire-panel-bar">
-                <div class="navbar__hire-panel-fill" [style.width.%]="engagement.score()" [style.background]="engagement.tier().color"></div>
-              </div>
-            </div>
-          }
-          <app-sound-toggle />
           <button
             class="navbar__theme-toggle"
             [class.navbar__theme-toggle--spin]="themeSpinning"
@@ -134,15 +94,9 @@ import { SoundToggleComponent } from '../sound-toggle/sound-toggle.component';
 })
 export class NavbarComponent {
   readonly themeService = inject(ThemeService);
-  readonly engagement = inject(EngagementService);
   themeSpinning = false;
   dropdownOpen = false;
   mobileOpen = false;
-  showMeterPanel = false;
-
-  hireMeterTooltip(): string {
-    return `Hire-O-Meter: ${this.engagement.score()}/100 — ${this.engagement.tier().label}`;
-  }
 
   toggleTheme(): void {
     this.themeSpinning = true;

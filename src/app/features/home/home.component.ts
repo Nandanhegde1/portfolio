@@ -107,27 +107,50 @@ interface JourneyNode {
           </div>
         </div>
 
-        <!-- Row 3: Interactive cards -->
-        <a routerLink="/roast" class="bento__card bento__card--roast bento__card--interactive" appScrollReveal [delay]="200">
-          <span class="bento__play-icon">\uD83D\uDD25</span>
-          <h3 class="bento__play-title">Roast My Stack</h3>
-          <p class="bento__play-desc">AI-powered tech stack roasts. Dare to submit yours?</p>
-          <span class="bento__play-cta">Try it \u2192</span>
+        <!-- Row 3: Featured Roast CTA (the wow CTA) -->
+        <a routerLink="/roast" class="bento__card bento__card--roast-hero" appScrollReveal [delay]="200">
+          <div class="bento__roast-hero-bg" aria-hidden="true">
+            <span></span><span></span><span></span><span></span>
+          </div>
+          <div class="bento__roast-hero-content">
+            <span class="bento__roast-hero-eyebrow">// AI &middot; viral</span>
+            <h3 class="bento__roast-hero-title">
+              <span class="bento__roast-hero-emoji">🔥</span>
+              Roast My Tech Stack
+            </h3>
+            <p class="bento__roast-hero-desc">
+              Paste your stack. Claude AI roasts it in three intensities — mild, medium, savage.
+              Surprisingly accurate. Always shareable.
+            </p>
+            <span class="bento__roast-hero-cta">Try the roast →</span>
+          </div>
         </a>
 
-        <a routerLink="/quiz" class="bento__card bento__card--quiz bento__card--interactive" appScrollReveal [delay]="240">
-          <span class="bento__play-icon">\uD83C\uDFAF</span>
-          <h3 class="bento__play-title">Team Quiz</h3>
-          <p class="bento__play-desc">Would you survive on my team? Find your archetype.</p>
-          <span class="bento__play-cta">Take it \u2192</span>
-        </a>
-
-        <a routerLink="/about" class="bento__card bento__card--about bento__card--interactive" appScrollReveal [delay]="280">
-          <span class="bento__play-icon">\uD83C\uDFAE</span>
-          <h3 class="bento__play-title">Character Sheet</h3>
-          <p class="bento__play-desc">RPG-style about page. Level up, forge your card.</p>
-          <span class="bento__play-cta">View \u2192</span>
-        </a>
+        <!-- Row 3b: Wall of Wow (devs love this, recruiters skip) -->
+        <div class="bento__card bento__card--wow" appScrollReveal [delay]="240">
+          <span class="bento__card-tag">// for the curious</span>
+          <h3 class="bento__wow-title">Try something fun</h3>
+          <div class="bento__wow-grid">
+            <a routerLink="/quiz" class="bento__wow-tile">
+              <span class="bento__wow-tile-icon">🎯</span>
+              <h4 class="bento__wow-tile-title">Team Quiz</h4>
+              <p class="bento__wow-tile-desc">Find your dev archetype in 60 seconds.</p>
+              <span class="bento__wow-tile-cta">Take it →</span>
+            </a>
+            <a routerLink="/about" class="bento__wow-tile">
+              <span class="bento__wow-tile-icon">🎮</span>
+              <h4 class="bento__wow-tile-title">Character Sheet</h4>
+              <p class="bento__wow-tile-desc">RPG-style about page. Forge your card.</p>
+              <span class="bento__wow-tile-cta">View →</span>
+            </a>
+            <a routerLink="/404" class="bento__wow-tile">
+              <span class="bento__wow-tile-icon">⌨️</span>
+              <h4 class="bento__wow-tile-title">Live Terminal</h4>
+              <p class="bento__wow-tile-desc">Type <code>help</code>, <code>ls</code>, or <code>sudo hire-me</code>.</p>
+              <span class="bento__wow-tile-cta">Open →</span>
+            </a>
+          </div>
+        </div>
 
         <!-- Row 4: Achievements -->
         <div class="bento__card bento__card--achievements" appScrollReveal [delay]="300">
