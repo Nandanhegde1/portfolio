@@ -1,4 +1,5 @@
 import { Component, ChangeDetectionStrategy, signal, computed } from '@angular/core';
+import { UpperCasePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
 interface ArchNode {
@@ -8,6 +9,25 @@ interface ArchNode {
   icon: string;
   tech: string[];
   layer: 'edge' | 'frontend' | 'backend' | 'data' | 'ai' | 'infra';
+}
+
+interface NodePos {
+  id: string;
+  x: number;
+  y: number;
+}
+
+interface Edge {
+  from: string;
+  to: string;
+}
+
+interface FlowScenario {
+  id: string;
+  label: string;
+  description: string;
+  hops: string[]; // node ids in order
+  color: string;
 }
 
 interface PerfMetric {
@@ -28,7 +48,7 @@ interface PipelineStep {
 @Component({
   selector: 'app-under-the-hood',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, UpperCasePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './under-the-hood.component.html',
   styleUrl: './under-the-hood.component.scss',
@@ -163,5 +183,148 @@ export class UnderTheHoodComponent {
 
   private layerColor(l: ArchNode['layer']): string {
     return { edge: '#06b6d4', frontend: '#6c63ff', backend: '#10b981', data: '#f59e0b', ai: '#ec4899', infra: '#8b5cf6' }[l];
+  }
+
+  // ── INTERACTIVE TOPOLOGY ──────────────────────────────────────
+  // SVG-space coordinates (viewBox 0 0 1000 540) for each architecture node.
+  // Layers run left-to-right: User -> Edge -> Frontend -> Backend -> external services.
+  readonly viewW = 1000;
+  readonly viewH = 540;
+
+  readonly nodePositions: NodePos[] = [
+    { id: 'user',    x: 80,  y: 270 },
+    { id: 'cdn',     x: 240, y: 270 },
+    { id: 'spa',     x: 420, y: 200 },
+    { id: 'three',   x: 420, y: 360 },
+    { id: 'api',     x: 620, y: 270 },
+    { id: 'render',  x: 620, y: 90  },
+    { id: 'supa',    x: 860, y: 110 },
+    { id: 'claude',  x: 860, y: 230 },
+    { id: 'github',  x: 860, y: 350 },
+    { id: 'spotify', x: 860, y: 460 },
+  ];
+
+  readonly edges: Edge[] = [
+    { from: 'user',   to: 'cdn'     },
+    { from: 'cdn',    to: 'spa'     },
+    { from: 'cdn',    to: 'three'   },
+    { from: 'spa',    to: 'api'     },
+    { from: 'three',  to: 'api'     },
+    { from: 'render', to: 'api'     },
+    { from: 'api',    to: 'supa'    },
+    { from: 'api',    to: 'claude'  },
+    { from: 'api',    to: 'github'  },
+    { from: 'api',    to: 'spotify' },
+  ];
+
+  readonly flows: FlowScenario[] = [
+    {
+      id: 'page-load',
+      label: 'Loading this page',
+      description: 'You hit the URL. CDN serves the SPA shell, browser hydrates, Three.js lazy-loads after first paint.',
+      hops: ['user', 'cdn', 'spa', 'three'],
+      color: '#06b6d4',
+    },
+    {
+      id: 'ai-chat',
+      label: 'Asking the chatbot',
+      description: 'Your message goes to the API, which proxies to Claude with a system prompt and logs the conversation in Postgres.',
+      hops: ['user', 'cdn', 'spa', 'api', 'claude', 'supa'],
+      color: '#ec4899',
+    },
+    {
+      id: 'roast',
+      label: 'Roasting a stack',
+      description: 'API streams Claude tokens back over Server-Sent Events; the UI types out the roast in real time.',
+      hops: ['user', 'spa', 'api', 'claude', 'spa'],
+      color: '#f59e0b',
+    },
+    {
+      id: 'github',
+      label: 'Live GitHub stats',
+      description: 'Dashboard requests recent activity. API hits the GitHub REST proxy; result is cached for an hour.',
+      hops: ['user', 'spa', 'api', 'github'],
+      color: '#10b981',
+    },
+  ];
+
+  readonly selectedFlowId = signal<string>('page-load');
+  readonly selectedNodeId = signal<string | null>(null);
+
+  readonly selectedFlow = computed(() =>
+    this.flows.find(f => f.id === this.selectedFlowId()) ?? this.flows[0]
+  );
+
+  readonly selectedNode = computed<ArchNode | null>(() => {
+    const id = this.selectedNodeId();
+    if (!id || id === 'user') return null;
+    return this.archNodes.find(n => n.id === id) ?? null;
+  });
+
+  readonly flowEdges = computed(() => {
+    const hops = this.selectedFlow().hops;
+    const set = new Set<string>();
+    for (let i = 0; i < hops.length - 1; i++) {
+      set.add(`${hops[i]}->${hops[i + 1]}`);
+      set.add(`${hops[i + 1]}->${hops[i]}`); // bidirectional highlight
+    }
+    return set;
+  });
+
+  readonly flowNodes = computed(() => new Set(this.selectedFlow().hops));
+
+  selectFlow(id: string): void {
+    this.selectedFlowId.set(id);
+    this.selectedNodeId.set(null);
+  }
+
+  selectNode(id: string): void {
+    this.selectedNodeId.set(this.selectedNodeId() === id ? null : id);
+  }
+
+  posOf(id: string): NodePos {
+    return this.nodePositions.find(p => p.id === id) ?? { id, x: 0, y: 0 };
+  }
+
+  // SVG path between two nodes — gentle horizontal cubic bezier so flows curve nicely.
+  edgePath(from: string, to: string): string {
+    const a = this.posOf(from);
+    const b = this.posOf(to);
+    const dx = (b.x - a.x) * 0.45;
+    return `M ${a.x} ${a.y} C ${a.x + dx} ${a.y}, ${b.x - dx} ${b.y}, ${b.x} ${b.y}`;
+  }
+
+  isEdgeActive(from: string, to: string): boolean {
+    return this.flowEdges().has(`${from}->${to}`);
+  }
+
+  isNodeInFlow(id: string): boolean {
+    return this.flowNodes().has(id);
+  }
+
+  // Stagger animation delay per hop so the dot appears to travel through the chain.
+  hopDelay(index: number): string {
+    return `${index * 0.7}s`;
+  }
+
+  pathHops(): { from: string; to: string }[] {
+    const hops = this.selectedFlow().hops;
+    const result: { from: string; to: string }[] = [];
+    for (let i = 0; i < hops.length - 1; i++) {
+      result.push({ from: hops[i], to: hops[i + 1] });
+    }
+    return result;
+  }
+
+  nodeDisplay(id: string): { label: string; icon: string } {
+    if (id === 'user') return { label: 'You', icon: '👤' };
+    const n = this.archNodes.find(x => x.id === id);
+    return n ? { label: n.label, icon: n.icon } : { label: id, icon: '•' };
+  }
+
+  nodeColor(id: string): string {
+    if (id === 'user') return '#ffffff';
+    const n = this.archNodes.find(x => x.id === id);
+    return n ? this.layerColor(n.layer) : '#888';
   }
 }

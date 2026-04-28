@@ -39,28 +39,148 @@
   <!-- Architecture diagram -->
   @if (activeTab() === 'arch') {
     <div class="hood__panel" role="tabpanel">
-      <h2 class="hood__h2">System architecture</h2>
-      <p class="hood__p">9 services across 6 layers. Hover any node for details.</p>
-      <div class="hood__layers">
-        @for (l of archByLayer(); track l.layer) {
-          <div class="hood__layer" [style.--layer-color]="l.color">
-            <div class="hood__layer-label">{{ l.label }}</div>
-            <div class="hood__nodes">
-              @for (n of l.nodes; track n.id) {
-                <article class="hood__node" tabindex="0">
-                  <span class="hood__node-icon">{{ n.icon }}</span>
-                  <div class="hood__node-body">
-                    <h3 class="hood__node-name">{{ n.label }}</h3>
-                    <p class="hood__node-desc">{{ n.desc }}</p>
-                    <ul class="hood__node-tech">
-                      @for (t of n.tech; track t) { <li>{{ t }}</li> }
-                    </ul>
-                  </div>
-                </article>
-              }
-            </div>
+      <div class="topo">
+        <header class="topo__head">
+          <div>
+            <h2 class="hood__h2" style="margin:0">Live request flow</h2>
+            <p class="hood__p" style="margin:4px 0 0">
+              Pick a scenario — see exactly which services touch the request and in what order.
+            </p>
           </div>
-        }
+          <div class="topo__flows" role="tablist" aria-label="Request scenarios">
+            @for (f of flows; track f.id) {
+              <button
+                class="topo__flow"
+                [class.topo__flow--active]="selectedFlowId() === f.id"
+                [style.--flow-c]="f.color"
+                (click)="selectFlow(f.id)"
+                role="tab"
+                [attr.aria-selected]="selectedFlowId() === f.id"
+              >{{ f.label }}</button>
+            }
+          </div>
+        </header>
+
+        <p class="topo__caption">
+          <span class="topo__caption-dot" [style.background]="selectedFlow().color"></span>
+          {{ selectedFlow().description }}
+        </p>
+
+        <div class="topo__stage">
+          <svg
+            class="topo__svg"
+            [attr.viewBox]="'0 0 ' + viewW + ' ' + viewH"
+            preserveAspectRatio="xMidYMid meet"
+            role="img"
+            aria-label="System architecture diagram"
+          >
+            <!-- Layer column labels (background) -->
+            <g class="topo__columns" aria-hidden="true">
+              <text x="80"  y="40" text-anchor="middle">YOU</text>
+              <text x="240" y="40" text-anchor="middle">EDGE</text>
+              <text x="420" y="40" text-anchor="middle">FRONTEND</text>
+              <text x="620" y="40" text-anchor="middle">BACKEND</text>
+              <text x="860" y="40" text-anchor="middle">SERVICES</text>
+            </g>
+
+            <!-- All edges (dim baseline) -->
+            <g class="topo__edges">
+              @for (e of edges; track e.from + e.to) {
+                <path
+                  [attr.d]="edgePath(e.from, e.to)"
+                  class="topo__edge"
+                  [class.topo__edge--active]="isEdgeActive(e.from, e.to)"
+                  [style.--flow-c]="selectedFlow().color"
+                  fill="none"
+                />
+              }
+            </g>
+
+            <!-- Animated packets travelling along the active flow -->
+            <g class="topo__packets">
+              @for (h of pathHops(); track $index) {
+                <circle
+                  r="6"
+                  class="topo__packet"
+                  [style.--flow-c]="selectedFlow().color"
+                  [style.animation-delay]="hopDelay($index)"
+                >
+                  <animateMotion
+                    [attr.dur]="'0.7s'"
+                    [attr.begin]="hopDelay($index)"
+                    repeatCount="indefinite"
+                    [attr.path]="edgePath(h.from, h.to)"
+                  />
+                </circle>
+              }
+            </g>
+
+            <!-- Nodes -->
+            <g class="topo__nodes">
+              @for (p of nodePositions; track p.id) {
+                <g
+                  class="topo__node"
+                  [class.topo__node--in-flow]="isNodeInFlow(p.id)"
+                  [class.topo__node--selected]="selectedNodeId() === p.id"
+                  [style.--node-c]="nodeColor(p.id)"
+                  [attr.transform]="'translate(' + p.x + ' ' + p.y + ')'"
+                  (click)="selectNode(p.id)"
+                  tabindex="0"
+                  (keydown.enter)="selectNode(p.id)"
+                  (keydown.space)="selectNode(p.id); $event.preventDefault()"
+                  role="button"
+                  [attr.aria-label]="'Inspect ' + nodeDisplay(p.id).label"
+                >
+                  <circle r="36" class="topo__node-bg" />
+                  <circle r="36" class="topo__node-ring" />
+                  <text class="topo__node-icon" text-anchor="middle" dy="0.35em">{{ nodeDisplay(p.id).icon }}</text>
+                  <text class="topo__node-label" text-anchor="middle" y="56">{{ nodeDisplay(p.id).label }}</text>
+                </g>
+              }
+            </g>
+          </svg>
+
+          <!-- Side detail panel: shows when a node is clicked -->
+          <aside class="topo__detail" [class.topo__detail--open]="!!selectedNode()">
+            @if (selectedNode(); as n) {
+              <div class="topo__detail-head">
+                <span class="topo__detail-icon" [style.background]="nodeColor(n.id)">{{ n.icon }}</span>
+                <div>
+                  <h3 class="topo__detail-name">{{ n.label }}</h3>
+                  <span class="topo__detail-layer">{{ n.layer | uppercase }} layer</span>
+                </div>
+                <button class="topo__detail-close" (click)="selectNode(n.id)" aria-label="Close detail">×</button>
+              </div>
+              <p class="topo__detail-desc">{{ n.desc }}</p>
+              <ul class="topo__detail-tech">
+                @for (t of n.tech; track t) { <li>{{ t }}</li> }
+              </ul>
+            } @else {
+              <div class="topo__detail-empty">
+                <span class="topo__detail-empty-icon">⌖</span>
+                <p>Click any service to see what it does and what runs inside it.</p>
+              </div>
+            }
+          </aside>
+        </div>
+
+        <!-- Hop sequence: text version of what's animating -->
+        <ol class="topo__sequence" [attr.aria-label]="selectedFlow().label + ' hop sequence'">
+          @for (id of selectedFlow().hops; track $index) {
+            <li
+              class="topo__hop"
+              [style.--flow-c]="selectedFlow().color"
+              (click)="selectNode(id)"
+              tabindex="0"
+              (keydown.enter)="selectNode(id)"
+              role="button"
+            >
+              <span class="topo__hop-num">{{ $index + 1 }}</span>
+              <span class="topo__hop-icon">{{ nodeDisplay(id).icon }}</span>
+              <span class="topo__hop-label">{{ nodeDisplay(id).label }}</span>
+            </li>
+          }
+        </ol>
       </div>
     </div>
   }

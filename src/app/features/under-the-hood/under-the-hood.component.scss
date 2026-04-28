@@ -460,3 +460,362 @@
 @media (prefers-reduced-motion: reduce) {
   .hood__lh-fg { animation: none; }
 }
+
+// ═══════════════════════════════════════════════
+// INTERACTIVE TOPOLOGY (Architecture tab)
+// ═══════════════════════════════════════════════
+.topo {
+  background:
+    radial-gradient(ellipse at 20% 0%, color-mix(in srgb, var(--accent) 8%, transparent), transparent 60%),
+    radial-gradient(ellipse at 80% 100%, color-mix(in srgb, #ec4899 6%, transparent), transparent 60%),
+    var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: $radius-lg;
+  padding: $space-lg;
+  position: relative;
+  overflow: hidden;
+
+  &__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: $space-lg;
+    margin-bottom: $space-md;
+    flex-wrap: wrap;
+  }
+
+  &__flows {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    background: color-mix(in srgb, var(--bg-primary) 70%, transparent);
+    padding: 4px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+  }
+
+  &__flow {
+    --flow-c: var(--accent);
+    background: transparent;
+    border: 0;
+    padding: 8px 16px;
+    border-radius: 999px;
+    color: var(--text-secondary);
+    font-family: $font-mono;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+
+    &:hover { color: var(--text-primary); }
+
+    &--active {
+      background: color-mix(in srgb, var(--flow-c) 18%, transparent);
+      color: var(--flow-c);
+      box-shadow: 0 0 0 1px var(--flow-c) inset, 0 0 16px color-mix(in srgb, var(--flow-c) 35%, transparent);
+    }
+  }
+
+  &__caption {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: $font-mono;
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    margin: 0 0 $space-md;
+    padding: 10px 14px;
+    background: color-mix(in srgb, var(--bg-primary) 60%, transparent);
+    border: 1px dashed var(--border);
+    border-radius: 8px;
+  }
+
+  &__caption-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    box-shadow: 0 0 12px currentColor;
+  }
+
+  &__stage {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: $space-md;
+    align-items: stretch;
+
+    @include tablet { grid-template-columns: 1fr; }
+  }
+
+  &__svg {
+    width: 100%;
+    height: auto;
+    background:
+      linear-gradient(to right, color-mix(in srgb, var(--border) 50%, transparent) 1px, transparent 1px) 0 0 / 40px 40px,
+      linear-gradient(to bottom, color-mix(in srgb, var(--border) 50%, transparent) 1px, transparent 1px) 0 0 / 40px 40px,
+      var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: $radius-md;
+    display: block;
+    min-height: 380px;
+  }
+
+  &__columns text {
+    fill: var(--text-secondary);
+    font-family: $font-mono;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    opacity: 0.55;
+  }
+
+  &__edges { pointer-events: none; }
+
+  &__edge {
+    stroke: var(--border);
+    stroke-width: 1.4;
+    transition: stroke 0.4s ease, stroke-width 0.4s ease, filter 0.4s ease;
+
+    &--active {
+      stroke: var(--flow-c);
+      stroke-width: 2.4;
+      filter: drop-shadow(0 0 6px color-mix(in srgb, var(--flow-c) 70%, transparent));
+    }
+  }
+
+  &__packet {
+    fill: var(--flow-c);
+    filter: drop-shadow(0 0 8px var(--flow-c));
+  }
+
+  &__node {
+    cursor: pointer;
+    --node-c: var(--accent);
+    transition: transform 0.25s ease;
+
+    &:hover, &:focus { outline: none; transform: translateY(-2px); }
+
+    .topo__node-bg {
+      fill: var(--bg-secondary);
+      stroke: var(--border);
+      stroke-width: 1.5;
+      transition: all 0.3s ease;
+    }
+    .topo__node-ring {
+      fill: none;
+      stroke: var(--node-c);
+      stroke-width: 2;
+      stroke-dasharray: 6 6;
+      opacity: 0;
+      transform-origin: center;
+      animation: topoRingSpin 12s linear infinite;
+    }
+    .topo__node-icon {
+      font-size: 28px;
+      pointer-events: none;
+    }
+    .topo__node-label {
+      fill: var(--text-primary);
+      font-size: 12px;
+      font-weight: 600;
+      pointer-events: none;
+    }
+
+    &--in-flow .topo__node-bg {
+      fill: color-mix(in srgb, var(--node-c) 18%, var(--bg-secondary));
+      stroke: var(--node-c);
+      stroke-width: 2;
+      filter: drop-shadow(0 0 12px color-mix(in srgb, var(--node-c) 55%, transparent));
+    }
+    &--in-flow .topo__node-ring { opacity: 0.5; }
+
+    &--selected .topo__node-bg {
+      fill: var(--node-c);
+      stroke: var(--node-c);
+    }
+    &--selected .topo__node-icon { fill: var(--bg-primary); }
+    &--selected .topo__node-ring { opacity: 1; }
+  }
+
+  &__detail {
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: $radius-md;
+    padding: $space-md;
+    display: flex;
+    flex-direction: column;
+    min-height: 380px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+    &--open {
+      border-color: var(--accent);
+      box-shadow: 0 0 24px color-mix(in srgb, var(--accent) 25%, transparent);
+    }
+  }
+
+  &__detail-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--text-secondary);
+    flex: 1;
+    gap: $space-md;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    padding: $space-lg;
+
+    p { margin: 0; max-width: 220px; }
+  }
+
+  &__detail-empty-icon {
+    font-size: 2.6rem;
+    color: var(--accent);
+    opacity: 0.5;
+    animation: topoCrosshair 3s ease-in-out infinite;
+  }
+
+  &__detail-head {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: $space-md;
+    padding-bottom: $space-md;
+    border-bottom: 1px solid var(--border);
+  }
+
+  &__detail-icon {
+    width: 44px; height: 44px;
+    border-radius: $radius-md;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem;
+    color: #fff;
+    box-shadow: 0 4px 16px color-mix(in srgb, var(--accent) 35%, transparent);
+  }
+
+  &__detail-name {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  &__detail-layer {
+    font-family: $font-mono;
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    letter-spacing: 0.1em;
+  }
+
+  &__detail-close {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    line-height: 1;
+    transition: all 0.2s ease;
+    &:hover { color: var(--text-primary); border-color: var(--text-primary); }
+  }
+
+  &__detail-desc {
+    color: var(--text-secondary);
+    font-size: 0.92rem;
+    line-height: 1.6;
+    margin: 0 0 $space-md;
+    flex: 1;
+  }
+
+  &__detail-tech {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+
+    li {
+      font-family: $font-mono;
+      font-size: 0.72rem;
+      padding: 4px 8px;
+      background: color-mix(in srgb, var(--accent) 12%, transparent);
+      color: var(--accent);
+      border-radius: 4px;
+      border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+    }
+  }
+
+  &__sequence {
+    list-style: none;
+    margin: $space-lg 0 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  &__hop {
+    --flow-c: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    background: color-mix(in srgb, var(--flow-c) 8%, var(--card-bg));
+    border: 1px solid color-mix(in srgb, var(--flow-c) 30%, var(--border));
+    border-radius: 999px;
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+
+    &:hover {
+      transform: translateY(-2px);
+      background: color-mix(in srgb, var(--flow-c) 18%, var(--card-bg));
+      border-color: var(--flow-c);
+    }
+
+    &:not(:last-child)::after {
+      content: '→';
+      margin: 0 6px 0 14px;
+      color: var(--flow-c);
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+  }
+
+  &__hop-num {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--flow-c);
+    color: var(--bg-primary);
+    font-family: $font-mono;
+    font-size: 0.7rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__hop-icon { font-size: 1rem; }
+  &__hop-label { font-weight: 600; }
+}
+
+@keyframes topoRingSpin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes topoCrosshair {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50%      { transform: scale(1.15); opacity: 0.9; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .topo__node-ring, .topo__detail-empty-icon { animation: none !important; }
+  .topo__packet { display: none; }
+}
