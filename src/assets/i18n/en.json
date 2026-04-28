@@ -1,128 +1,128 @@
 {
-    "common":  {
-                   "loading":  "Loadingâ€¦",
-                   "error":  "Something went wrong",
-                   "retry":  "Retry",
-                   "submit":  "Submit",
-                   "cancel":  "Cancel",
-                   "close":  "Close",
-                   "save":  "Save",
-                   "send":  "Send",
-                   "search":  "Search",
-                   "more":  "More",
-                   "back":  "Back",
-                   "next":  "Next",
-                   "prev":  "Previous",
-                   "viewAll":  "View all",
-                   "comingSoon":  "Coming soon"
-               },
-    "lang":  {
-                 "label":  "Language",
-                 "switchTo":  "Switch to {{lang}}"
-             },
-    "nav":  {
-                "home":  "Home",
-                "about":  "About",
-                "dashboard":  "Dashboard",
-                "blog":  "Blog",
-                "underTheHood":  "Under the Hood",
-                "play":  "Play",
-                "guestbook":  "Guestbook",
-                "contact":  "Contact",
-                "menu":  "Menu",
-                "openMenu":  "Open menu",
-                "closeMenu":  "Close menu",
-                "openToWork":  "Open to work",
-                "theme":  {
-                              "switchToLight":  "Switch to light theme",
-                              "switchToDark":  "Switch to dark theme"
-                          }
-            },
-    "footer":  {
-                   "tagline":  "Building the web, one component at a time.",
-                   "viewSource":  "View Source",
-                   "github":  "GitHub profile",
-                   "linkedin":  "Connect on LinkedIn",
-                   "email":  "Send me an email",
-                   "copyright":  "Â© {{year}} Nandan Hegde. Built with Angular 19.",
-                   "lastDeploy":  "Last deploy: {{date}}",
-                   "konami":  "KONAMI UNLOCKED! +1 Stack Overflow rep Â· Try the terminal command",
-                   "language":  "Language"
-               },
-    "home":  {
-                 "hero":  {
-                              "greeting":  "Hi, I\u0027m Nandan",
-                              "role":  "Full-stack engineer Â· Angular specialist",
-                              "lede":  "I build fast, accessible, beautifully-engineered web apps.",
-                              "ctaProjects":  "See projects",
-                              "ctaContact":  "Get in touch"
-                          }
-             },
-    "contact":  {
-                    "title":  "Let\u0027s build something",
-                    "lede":  "Drop a line. I read everything that lands here.",
-                    "name":  "Your name",
-                    "email":  "Email",
-                    "subject":  "Subject",
-                    "message":  "Message",
-                    "send":  "Send message",
-                    "sending":  "Sendingâ€¦",
-                    "sent":  "Thanks â€” I\u0027ll get back to you soon.",
-                    "errorRequired":  "This field is required",
-                    "errorEmail":  "Please enter a valid email"
-                },
-    "blog":  {
-                 "title":  "Blog",
-                 "lede":  "Notes on engineering, side-projects and the occasional rant.",
-                 "readMore":  "Read more",
-                 "minRead":  "{{n}} min read",
-                 "comments":  {
-                                  "title":  "Comments",
-                                  "empty":  "Be the first to leave a thought.",
-                                  "name":  "Your name",
-                                  "body":  "Share a thoughtâ€¦",
-                                  "submit":  "Post comment",
-                                  "remember":  "We\u0027ll remember your name on this device.",
-                                  "rateLimited":  "Too many comments â€” try again in a few minutes.",
-                                  "react":  "React"
-                              }
-             },
-    "dashboard":  {
-                      "title":  "Live Dashboard",
-                      "lede":  "Real metrics from real systems. No vanity numbers.",
-                      "github":  "GitHub activity",
-                      "coding":  "Coding stats",
-                      "skills":  "Skills",
-                      "visitors":  "Visitors",
-                      "blogAnalytics":  "Blog analytics"
-                  },
-    "underTheHood":  {
-                         "title":  "Under the Hood",
-                         "lede":  "How this portfolio is actually built â€” interactive architecture diagram, real metrics, and the trade-offs behind each choice.",
-                         "tabs":  {
-                                      "architecture":  "Architecture",
-                                      "metrics":  "Metrics",
-                                      "decisions":  "Decisions"
-                                  }
-                     },
-    "guestbook":  {
-                      "title":  "Guestbook",
-                      "lede":  "Leave a mark. Friendly notes only."
-                  },
-    "hero":  {
-                 "greeting":  {
-                                  "morning":  "Good morning, you\u0027re up early.",
-                                  "afternoon":  "Good afternoon. Glad you\u0027re here.",
-                                  "evening":  "Evening! Welcome.",
-                                  "night":  "Working late? Same.",
-                                  "late":  "It\u0027s late. Coffee?"
-                              },
-                 "suffix":  "I\u0027m",
-                 "aboutMe":  "About Me",
-                 "getInTouch":  "Get in Touch",
-                 "resume":  "Resume",
-                 "shipping":  "Currently shipping",
-                 "updated":  "updated",
-                 "scroll":  "Scroll"
-             }
+  "common": {
+    "loading": "Loading…",
+    "error": "Something went wrong",
+    "retry": "Retry",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "close": "Close",
+    "save": "Save",
+    "send": "Send",
+    "search": "Search",
+    "more": "More",
+    "back": "Back",
+    "next": "Next",
+    "prev": "Previous",
+    "viewAll": "View all",
+    "comingSoon": "Coming soon"
+  },
+  "lang": {
+    "label": "Language",
+    "switchTo": "Switch to {{lang}}"
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "dashboard": "Dashboard",
+    "blog": "Blog",
+    "underTheHood": "Under the Hood",
+    "play": "Play",
+    "guestbook": "Guestbook",
+    "contact": "Contact",
+    "menu": "Menu",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "openToWork": "Open to work",
+    "theme": {
+      "switchToLight": "Switch to light theme",
+      "switchToDark": "Switch to dark theme"
+    }
+  },
+  "footer": {
+    "tagline": "Building the web, one component at a time.",
+    "viewSource": "View Source",
+    "github": "GitHub profile",
+    "linkedin": "Connect on LinkedIn",
+    "email": "Send me an email",
+    "copyright": "© {{year}} Nandan Hegde. Built with Angular 19.",
+    "lastDeploy": "Last deploy: {{date}}",
+    "konami": "KONAMI UNLOCKED! +1 Stack Overflow rep · Try the terminal command",
+    "language": "Language"
+  },
+  "hero": {
+    "greeting": {
+      "morning": "Good morning, you're up early.",
+      "afternoon": "Good afternoon. Glad you're here.",
+      "evening": "Evening! Welcome.",
+      "night": "Working late? Same.",
+      "late": "It's late. Coffee?"
+    },
+    "suffix": "I'm",
+    "aboutMe": "About Me",
+    "getInTouch": "Get in Touch",
+    "resume": "Resume",
+    "shipping": "Currently shipping",
+    "updated": "updated",
+    "scroll": "Scroll"
+  },
+  "home": {
+    "hero": {
+      "greeting": "Hi, I'm Nandan",
+      "role": "Full-stack engineer · Angular specialist",
+      "lede": "I build fast, accessible, beautifully-engineered web apps.",
+      "ctaProjects": "See projects",
+      "ctaContact": "Get in touch"
+    }
+  },
+  "contact": {
+    "title": "Let's build something",
+    "lede": "Drop a line. I read everything that lands here.",
+    "name": "Your name",
+    "email": "Email",
+    "subject": "Subject",
+    "message": "Message",
+    "send": "Send message",
+    "sending": "Sending…",
+    "sent": "Thanks — I'll get back to you soon.",
+    "errorRequired": "This field is required",
+    "errorEmail": "Please enter a valid email"
+  },
+  "blog": {
+    "title": "Blog",
+    "lede": "Notes on engineering, side-projects and the occasional rant.",
+    "readMore": "Read more",
+    "minRead": "{{n}} min read",
+    "comments": {
+      "title": "Comments",
+      "empty": "Be the first to leave a thought.",
+      "name": "Your name",
+      "body": "Share a thought…",
+      "submit": "Post comment",
+      "remember": "We'll remember your name on this device.",
+      "rateLimited": "Too many comments — try again in a few minutes.",
+      "react": "React"
+    }
+  },
+  "dashboard": {
+    "title": "Live Dashboard",
+    "lede": "Real metrics from real systems. No vanity numbers.",
+    "github": "GitHub activity",
+    "coding": "Coding stats",
+    "skills": "Skills",
+    "visitors": "Visitors",
+    "blogAnalytics": "Blog analytics"
+  },
+  "underTheHood": {
+    "title": "Under the Hood",
+    "lede": "How this portfolio is actually built — interactive architecture diagram, real metrics, and the trade-offs behind each choice.",
+    "tabs": {
+      "architecture": "Architecture",
+      "metrics": "Metrics",
+      "decisions": "Decisions"
+    }
+  },
+  "guestbook": {
+    "title": "Guestbook",
+    "lede": "Leave a mark. Friendly notes only."
+  }
 }
