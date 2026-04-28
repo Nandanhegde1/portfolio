@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ScrollRevealDirective } from '../../shared/directives/scroll-reveal.directive';
 import { environment } from '../../../environments/environment';
 import { SoundService } from '../../core/services/sound.service';
+import { LanguageService } from '../../core/i18n/language.service';
 
 interface RoastResult {
   stack: string;
@@ -194,6 +195,7 @@ const FALLBACK_ROASTS: Record<string, string[]> = {
 export class RoastComponent {
   private readonly http = inject(HttpClient);
   private readonly sound = inject(SoundService);
+  private readonly language = inject(LanguageService);
   readonly roastCardRef = viewChild<ElementRef<HTMLDivElement>>('roastCard');
 
   readonly stackInput = signal('');
@@ -246,7 +248,7 @@ export class RoastComponent {
     const response = await fetch(`${environment.apiUrl}/api/roast/stream`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ stack, intensity }),
+      body: JSON.stringify({ stack, intensity, lang: this.language.current() }),
     });
 
     if (!response.ok || !response.body) {

@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy, signal, computed } from '@angular/core';
 import { UpperCasePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 interface ArchNode {
   id: string;
@@ -48,7 +49,7 @@ interface PipelineStep {
 @Component({
   selector: 'app-under-the-hood',
   standalone: true,
-  imports: [RouterLink, UpperCasePipe],
+  imports: [RouterLink, UpperCasePipe, TranslocoPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './under-the-hood.component.html',
   styleUrl: './under-the-hood.component.scss',

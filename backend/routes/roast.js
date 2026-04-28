@@ -3,6 +3,7 @@ const limiters = require('../lib/limiters');
 const { callClaude, streamClaude } = require('../lib/anthropic');
 const { getSupabase } = require('../supabase');
 const { ROAST_PROMPTS } = require('../prompts/roast');
+const { languageInstruction } = require('../lib/i18n');
 
 const router = express.Router();
 
@@ -28,13 +29,13 @@ function logRoast({ stack, level, roast }) {
 }
 
 function validate(req, res) {
-  const { stack, intensity } = req.body || {};
+  const { stack, intensity, lang } = req.body || {};
   if (!stack || typeof stack !== 'string' || stack.length > 500) {
     res.status(400).json({ error: 'Invalid stack. Keep it under 500 characters.' });
     return null;
   }
   const level = VALID_LEVELS.includes(intensity) ? intensity : 'medium';
-  return { stack, level };
+  return { stack, level, lang };
 }
 
 // Streaming endpoint — perceived latency drops from ~10s to ~1s by
@@ -42,7 +43,7 @@ function validate(req, res) {
 router.post('/stream', limiters.roast, async (req, res) => {
   const params = validate(req, res);
   if (!params) return;
-  const { stack, level } = params;
+  const { stack, level, lang } = params;
 
   res.setHeader('Content-Type', 'text/event-stream; charset=utf-8');
   res.setHeader('Cache-Control', 'no-cache, no-transform');
@@ -61,7 +62,7 @@ router.post('/stream', limiters.roast, async (req, res) => {
   try {
     let full = '';
     await streamClaude({
-      system: ROAST_PROMPTS[level],
+      system: ROAST_PROMPTS[level] + languageInstruction(lang),
       messages: buildMessages(stack, level),
       maxTokens: MAX_TOKENS,
       temperature: 1,
@@ -95,11 +96,11 @@ router.post('/stream', limiters.roast, async (req, res) => {
 router.post('/', limiters.roast, async (req, res) => {
   const params = validate(req, res);
   if (!params) return;
-  const { stack, level } = params;
+  const { stack, level, lang } = params;
 
   try {
     const roast = await callClaude({
-      system: ROAST_PROMPTS[level],
+      system: ROAST_PROMPTS[level] + languageInstruction(lang),
       messages: buildMessages(stack, level),
       maxTokens: MAX_TOKENS,
       temperature: 1,

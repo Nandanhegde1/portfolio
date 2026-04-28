@@ -1,0 +1,86 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.lang {
+  position: relative;
+  display: inline-block;
+  font-family: $font-mono;
+
+  &__trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    border-radius: $radius-md;
+    cursor: pointer;
+    font-size: 0.82rem;
+    font-weight: 600;
+    line-height: 1;
+    min-height: 36px;
+    transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+
+    &:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+  }
+
+  &__flag { font-size: 1rem; line-height: 1; }
+  &__code { letter-spacing: 0.04em; }
+  &__caret {
+    font-size: 0.7rem;
+    transition: transform 0.2s ease;
+    .lang--open & { transform: rotate(180deg); }
+  }
+
+  &__menu {
+    position: absolute;
+    bottom: calc(100% + 8px);   // open upward — switcher lives in the footer
+    right: 0;
+    min-width: 180px;
+    list-style: none;
+    margin: 0;
+    padding: 6px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: $radius-md;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+    z-index: 50;
+    animation: langMenuIn 0.16s ease-out;
+  }
+
+  &__option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 8px 10px;
+    background: transparent;
+    border: 0;
+    border-radius: $radius-sm;
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 0.86rem;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+
+    &:hover { background: color-mix(in srgb, var(--accent) 10%, transparent); }
+
+    &--active {
+      color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 12%, transparent);
+    }
+  }
+
+  &__name { flex: 1; }
+  &__check { color: var(--accent); font-weight: 700; }
+}
+
+@keyframes langMenuIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

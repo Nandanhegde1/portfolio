@@ -3,11 +3,12 @@ const limiters = require('../lib/limiters');
 const { callClaude } = require('../lib/anthropic');
 const { getSupabase } = require('../supabase');
 const SYSTEM_PROMPT = require('../prompts/chat-system');
+const { languageInstruction } = require('../lib/i18n');
 
 const router = express.Router();
 
 router.post('/', limiters.chat, async (req, res) => {
-  const { message, history } = req.body || {};
+  const { message, history, lang } = req.body || {};
 
   if (!message || typeof message !== 'string' || message.length > 1000) {
     return res.status(400).json({ error: 'Invalid message' });
@@ -25,7 +26,7 @@ router.post('/', limiters.chat, async (req, res) => {
   messages.push({ role: 'user', content: message.slice(0, 1000) });
 
   try {
-    const reply = await callClaude({ system: SYSTEM_PROMPT, messages, maxTokens: 1024 })
+    const reply = await callClaude({ system: SYSTEM_PROMPT + languageInstruction(lang), messages, maxTokens: 1024 })
       || 'Sorry, I could not generate a response.';
 
     const sb = getSupabase();

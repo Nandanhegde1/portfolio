@@ -2,6 +2,7 @@ import { Component, ChangeDetectionStrategy, signal, computed, inject, HostListe
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
+import { TranslocoPipe } from '@jsverse/transloco';
 import { BlogCommentsService, COMMENT_REACTIONS, CommentReaction } from './blog-comments.service';
 
 interface Post {
@@ -20,7 +21,7 @@ interface Post {
 @Component({
   selector: 'app-blog',
   standalone: true,
-  imports: [RouterLink, FormsModule],
+  imports: [RouterLink, FormsModule, TranslocoPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (activePost(); as post) {
@@ -75,14 +76,14 @@ interface Post {
         </div>
 
         <!-- ── COMMENTS ── -->
-        <section class="comments" aria-label="Reader comments">
+        <section class="comments" [attr.aria-label]="'blog.comments.title' | transloco">
           <header class="comments__head">
             <h2 class="comments__title">
-              Discussion
+              {{ 'blog.comments.title' | transloco }}
               <span class="comments__count">{{ comments.comments().length }}</span>
             </h2>
             <p class="comments__sub">
-              Push back, ask a question, or leave a note. Markdown is off — keep it short and human.
+              {{ 'blog.comments.remember' | transloco }}
             </p>
           </header>
 
@@ -91,7 +92,7 @@ interface Post {
               <input
                 class="comments__input"
                 type="text"
-                placeholder="Your name"
+                [placeholder]="'blog.comments.name' | transloco"
                 maxlength="60"
                 required
                 [ngModel]="commentName()"
@@ -99,11 +100,11 @@ interface Post {
                 name="name"
                 autocomplete="name"
               />
-              <span class="comments__hint">Stays on this device · 2-60 chars</span>
+              <span class="comments__hint">{{ 'blog.comments.remember' | transloco }}</span>
             </div>
             <textarea
               class="comments__textarea"
-              placeholder="Share a thought…"
+              [placeholder]="'blog.comments.body' | transloco"
               maxlength="800"
               required
               rows="3"
@@ -121,15 +122,15 @@ interface Post {
                 class="comments__submit"
                 [disabled]="comments.posting() || commentBody().trim().length < 2 || commentName().trim().length < 2"
               >
-                {{ comments.posting() ? 'Posting…' : 'Post comment' }}
+                {{ comments.posting() ? ('common.loading' | transloco) : ('blog.comments.submit' | transloco) }}
               </button>
             </div>
           </form>
 
           @if (comments.loading()) {
-            <p class="comments__empty">Loading discussion…</p>
+            <p class="comments__empty">{{ 'common.loading' | transloco }}</p>
           } @else if (comments.comments().length === 0) {
-            <p class="comments__empty">No comments yet. Be the first to weigh in.</p>
+            <p class="comments__empty">{{ 'blog.comments.empty' | transloco }}</p>
           } @else {
             <ul class="comments__list">
               @for (c of comments.comments(); track c.id) {

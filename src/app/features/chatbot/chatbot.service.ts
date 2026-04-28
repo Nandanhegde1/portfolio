@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { ChatMessage } from '../../core/models';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { LanguageService } from '../../core/i18n/language.service';
 
 interface ChatApiResponse {
   reply: string;
@@ -12,6 +13,7 @@ interface ChatApiResponse {
 @Injectable({ providedIn: 'root' })
 export class ChatbotService {
   private readonly http = inject(HttpClient);
+  private readonly language = inject(LanguageService);
   private readonly MAX_MESSAGES_PER_SESSION = 10;
   private readonly API_URL = `${environment.apiUrl}/api/chat`;
   private messageCount = 0;
@@ -72,6 +74,7 @@ export class ChatbotService {
         this.http.post<ChatApiResponse>(this.API_URL, {
           message: content,
           history: history.slice(0, -1),
+          lang: this.language.current(),
         })
       );
 

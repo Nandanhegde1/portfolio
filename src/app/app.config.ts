@@ -1,4 +1,4 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, provideAppInitializer, inject, provideZoneChangeDetection } from '@angular/core';
 import {
   provideRouter,
   withInMemoryScrolling,
@@ -9,6 +9,8 @@ import {
 import { provideHttpClient, withFetch } from '@angular/common/http';
 
 import { routes } from './app.routes';
+import { provideI18n } from './core/i18n/transloco.config';
+import { LanguageService } from './core/i18n/language.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -23,5 +25,8 @@ export const appConfig: ApplicationConfig = {
       withViewTransitions({ skipInitialTransition: true }),
     ),
     provideHttpClient(withFetch()),
+    provideI18n(),
+    // Restore the user's previously chosen language (or default 'en') before the app paints.
+    provideAppInitializer(() => inject(LanguageService).init()),
   ],
 };

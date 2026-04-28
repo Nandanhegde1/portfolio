@@ -1,5 +1,6 @@
 import { Component, inject, OnInit, ChangeDetectionStrategy, computed } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { PortfolioDataService, GitHubService } from '../../core/services';
 import { ThreeSceneComponent } from './three-scene/three-scene.component';
 import { TimeAgoPipe } from '../../shared/pipes/time-ago.pipe';
@@ -8,7 +9,7 @@ import { MagneticDirective } from '../../shared/directives/magnetic.directive';
 @Component({
   selector: 'app-hero',
   standalone: true,
-  imports: [ThreeSceneComponent, RouterLink, TimeAgoPipe, MagneticDirective],
+  imports: [ThreeSceneComponent, RouterLink, TimeAgoPipe, MagneticDirective, TranslocoPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="hero">
@@ -24,7 +25,7 @@ import { MagneticDirective } from '../../shared/directives/magnetic.directive';
         <div class="hero__particles-fallback hero__particles-fallback--loading" aria-hidden="true"></div>
       }
       <div class="hero__content">
-        <span class="hero__greeting">{{ greeting() }} I'm</span>
+        <span class="hero__greeting">{{ greeting() | transloco }} {{ 'hero.suffix' | transloco }}</span>
         <h1 class="hero__name">{{ portfolioData.data()?.personal?.name ?? 'Nandan Hegde' }}</h1>
         <div class="hero__title-wrapper">
           <span class="hero__title">{{ portfolioData.data()?.personal?.title ?? 'Full Stack Developer' }}</span>
@@ -32,13 +33,13 @@ import { MagneticDirective } from '../../shared/directives/magnetic.directive';
         </div>
         <p class="hero__tagline">{{ portfolioData.data()?.personal?.tagline ?? '' }}</p>
         <div class="hero__actions">
-          <a routerLink="/about" class="btn btn--primary" appMagnetic>About Me</a>
-          <a routerLink="/contact" class="btn btn--outline" appMagnetic>Get in Touch</a>
+          <a routerLink="/about" class="btn btn--primary" appMagnetic>{{ 'hero.aboutMe' | transloco }}</a>
+          <a routerLink="/contact" class="btn btn--outline" appMagnetic>{{ 'hero.getInTouch' | transloco }}</a>
           <a routerLink="/about" fragment="resume" class="btn btn--ghost" appMagnetic>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
             </svg>
-            Resume
+            {{ 'hero.resume' | transloco }}
           </a>
         </div>
 
@@ -46,14 +47,14 @@ import { MagneticDirective } from '../../shared/directives/magnetic.directive';
           <a [href]="r.html_url" target="_blank" rel="noopener" class="hero__activity">
             <span class="hero__activity-pulse" aria-hidden="true"></span>
             <span class="hero__activity-text">
-              Currently shipping <strong>{{ r.name }}</strong>
-              <span class="hero__activity-meta">· updated {{ r.updated_at | timeAgo }}</span>
+              {{ 'hero.shipping' | transloco }} <strong>{{ r.name }}</strong>
+              <span class="hero__activity-meta">· {{ 'hero.updated' | transloco }} {{ r.updated_at | timeAgo }}</span>
             </span>
           </a>
         }
       </div>
       <div class="hero__scroll-hint">
-        <span class="hero__scroll-label">Scroll</span>
+        <span class="hero__scroll-label">{{ 'hero.scroll' | transloco }}</span>
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M12 5v14M5 12l7 7 7-7"/>
         </svg>
@@ -69,14 +70,14 @@ export class HeroComponent implements OnInit {
   // Static array used by the CSS skeleton placeholder while Three.js loads.
   readonly skeletonDots = Array.from({ length: 30 });
 
-  // Time-aware greeting that adapts to visitor's local hour
+  // Time-aware greeting that adapts to visitor's local hour. Returns a transloco key.
   readonly greeting = computed(() => {
     const h = new Date().getHours();
-    if (h >= 5 && h < 12) return 'Good morning, you’re up early.';
-    if (h >= 12 && h < 17) return 'Good afternoon. Glad you’re here.';
-    if (h >= 17 && h < 21) return 'Evening! Welcome.';
-    if (h >= 21 || h < 1) return 'Working late? Same.';
-    return 'It’s late. Coffee?';
+    if (h >= 5 && h < 12) return 'hero.greeting.morning';
+    if (h >= 12 && h < 17) return 'hero.greeting.afternoon';
+    if (h >= 17 && h < 21) return 'hero.greeting.evening';
+    if (h >= 21 || h < 1) return 'hero.greeting.night';
+    return 'hero.greeting.late';
   });
 
   ngOnInit(): void {

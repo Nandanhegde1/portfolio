@@ -1,13 +1,14 @@
 import { Component, inject, ChangeDetectionStrategy, HostListener, ElementRef, signal } from '@angular/core';
 import { Router, NavigationEnd, RouterLink, RouterLinkActive } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { TranslocoPipe } from '@jsverse/transloco';
 import { ThemeService } from '../../../core/services';
 import { TooltipDirective } from '../../directives/tooltip.directive';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, TooltipDirective],
+  imports: [RouterLink, RouterLinkActive, TooltipDirective, TranslocoPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <nav class="navbar">
@@ -25,18 +26,18 @@ import { TooltipDirective } from '../../directives/tooltip.directive';
           aria-label="Open to opportunities — click to contact"
         >
           <span class="navbar__status-dot" aria-hidden="true"></span>
-          <span class="navbar__status-text">Open to work</span>
+          <span class="navbar__status-text">{{ 'nav.openToWork' | transloco }}</span>
         </a>
 
         <ul class="navbar__links">
-          <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a></li>
-          <li><a routerLink="/about" routerLinkActive="active">About</a></li>
-          <li><a routerLink="/dashboard" routerLinkActive="active">Dashboard</a></li>
-          <li><a routerLink="/blog" routerLinkActive="active">Blog</a></li>
-          <li><a routerLink="/under-the-hood" routerLinkActive="active">Under the Hood</a></li>
+          <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">{{ 'nav.home' | transloco }}</a></li>
+          <li><a routerLink="/about" routerLinkActive="active">{{ 'nav.about' | transloco }}</a></li>
+          <li><a routerLink="/dashboard" routerLinkActive="active">{{ 'nav.dashboard' | transloco }}</a></li>
+          <li><a routerLink="/blog" routerLinkActive="active">{{ 'nav.blog' | transloco }}</a></li>
+          <li><a routerLink="/under-the-hood" routerLinkActive="active">{{ 'nav.underTheHood' | transloco }}</a></li>
           <li class="navbar__dropdown" [class.navbar__dropdown--open]="dropdownOpen()">
             <button class="navbar__dropdown-trigger" type="button" (click)="toggleDropdown($event)" [attr.aria-expanded]="dropdownOpen()">
-              Play <span class="navbar__dropdown-caret" aria-hidden="true">\u25BE</span>
+              {{ 'nav.play' | transloco }} <span class="navbar__dropdown-caret" aria-hidden="true">\u25BE</span>
             </button>
             @if (dropdownOpen()) {
               <ul class="navbar__dropdown-menu">
@@ -45,8 +46,8 @@ import { TooltipDirective } from '../../directives/tooltip.directive';
               </ul>
             }
           </li>
-          <li><a routerLink="/guestbook" routerLinkActive="active">Guestbook</a></li>
-          <li><a routerLink="/contact" routerLinkActive="active">Contact</a></li>
+          <li><a routerLink="/guestbook" routerLinkActive="active">{{ 'nav.guestbook' | transloco }}</a></li>
+          <li><a routerLink="/contact" routerLinkActive="active">{{ 'nav.contact' | transloco }}</a></li>
         </ul>
 
         <div class="navbar__actions">
@@ -54,7 +55,7 @@ import { TooltipDirective } from '../../directives/tooltip.directive';
             class="navbar__theme-toggle"
             [class.navbar__theme-toggle--spin]="themeSpinning"
             (click)="toggleTheme()"
-            [appTooltip]="themeService.currentTheme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+            [appTooltip]="(themeService.currentTheme() === 'dark' ? 'nav.theme.switchToLight' : 'nav.theme.switchToDark') | transloco"
             aria-label="Toggle theme"
           >
             @if (themeService.currentTheme() === 'dark') {
@@ -69,7 +70,7 @@ import { TooltipDirective } from '../../directives/tooltip.directive';
             }
           </button>
 
-          <button class="navbar__mobile-toggle" [class.navbar__mobile-toggle--open]="mobileOpen" (click)="toggleMobile()" appTooltip="Open menu" aria-label="Menu">
+          <button class="navbar__mobile-toggle" [class.navbar__mobile-toggle--open]="mobileOpen" (click)="toggleMobile()" [appTooltip]="'nav.openMenu' | transloco" [attr.aria-label]="'nav.menu' | transloco">
             <span></span><span></span><span></span>
           </button>
         </div>
@@ -78,15 +79,15 @@ import { TooltipDirective } from '../../directives/tooltip.directive';
       @if (mobileOpen) {
         <div class="navbar__mobile-overlay" (click)="mobileOpen = false"></div>
         <ul class="navbar__mobile-menu">
-          <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="mobileOpen = false">Home</a></li>
-          <li><a routerLink="/about" routerLinkActive="active" (click)="mobileOpen = false">About</a></li>
-          <li><a routerLink="/dashboard" routerLinkActive="active" (click)="mobileOpen = false">Dashboard</a></li>
-          <li><a routerLink="/blog" routerLinkActive="active" (click)="mobileOpen = false">Blog</a></li>
-          <li><a routerLink="/under-the-hood" routerLinkActive="active" (click)="mobileOpen = false">Under the Hood</a></li>
+          <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="mobileOpen = false">{{ 'nav.home' | transloco }}</a></li>
+          <li><a routerLink="/about" routerLinkActive="active" (click)="mobileOpen = false">{{ 'nav.about' | transloco }}</a></li>
+          <li><a routerLink="/dashboard" routerLinkActive="active" (click)="mobileOpen = false">{{ 'nav.dashboard' | transloco }}</a></li>
+          <li><a routerLink="/blog" routerLinkActive="active" (click)="mobileOpen = false">{{ 'nav.blog' | transloco }}</a></li>
+          <li><a routerLink="/under-the-hood" routerLinkActive="active" (click)="mobileOpen = false">{{ 'nav.underTheHood' | transloco }}</a></li>
           <li><a routerLink="/roast" routerLinkActive="active" (click)="mobileOpen = false">\uD83D\uDD25 Roast My Stack</a></li>
           <li><a routerLink="/quiz" routerLinkActive="active" (click)="mobileOpen = false">\uD83C\uDFAF Team Quiz</a></li>
-          <li><a routerLink="/guestbook" routerLinkActive="active" (click)="mobileOpen = false">Guestbook</a></li>
-          <li><a routerLink="/contact" routerLinkActive="active" (click)="mobileOpen = false">Contact</a></li>
+          <li><a routerLink="/guestbook" routerLinkActive="active" (click)="mobileOpen = false">{{ 'nav.guestbook' | transloco }}</a></li>
+          <li><a routerLink="/contact" routerLinkActive="active" (click)="mobileOpen = false">{{ 'nav.contact' | transloco }}</a></li>
         </ul>
       }
     </nav>

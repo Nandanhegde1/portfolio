@@ -1,4 +1,5 @@
 import { Component, inject, OnInit, OnDestroy, ChangeDetectionStrategy, signal, computed } from '@angular/core';
+import { TranslocoPipe } from '@jsverse/transloco';
 import { AnimatedCounterComponent, LoadingSkeletonComponent } from '../../shared/components';
 import { GitHubService } from '../../core/services';
 import { ScrollRevealDirective } from '../../shared/directives/scroll-reveal.directive';
@@ -10,7 +11,7 @@ import { StatsService } from '../../core/services/stats.service';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [AnimatedCounterComponent, LoadingSkeletonComponent, ScrollRevealDirective, LiveStatsWidgetComponent, GithubTickerComponent, HireMeterWidgetComponent],
+  imports: [AnimatedCounterComponent, LoadingSkeletonComponent, ScrollRevealDirective, LiveStatsWidgetComponent, GithubTickerComponent, HireMeterWidgetComponent, TranslocoPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="dash">
@@ -18,8 +19,8 @@ import { StatsService } from '../../core/services/stats.service';
         <!-- Header -->
         <div class="dash__header">
           <span class="dash__tag">// mission-control</span>
-          <h1 class="dash__title">Developer Dashboard</h1>
-          <p class="dash__subtitle">Real-time stats, because developers love data.</p>
+          <h1 class="dash__title">{{ 'dashboard.title' | transloco }}</h1>
+          <p class="dash__subtitle">{{ 'dashboard.lede' | transloco }}</p>
         </div>
 
         <!-- Live GitHub Activity Ticker -->
