@@ -1,0 +1,128 @@
+{
+    "common":  {
+                   "loading":  "Ladenâ€¦",
+                   "error":  "Etwas ist schiefgelaufen",
+                   "retry":  "Erneut versuchen",
+                   "submit":  "Absenden",
+                   "cancel":  "Abbrechen",
+                   "close":  "SchlieÃŸen",
+                   "save":  "Speichern",
+                   "send":  "Senden",
+                   "search":  "Suchen",
+                   "more":  "Mehr",
+                   "back":  "ZurÃ¼ck",
+                   "next":  "Weiter",
+                   "prev":  "Vorherige",
+                   "viewAll":  "Alle anzeigen",
+                   "comingSoon":  "DemnÃ¤chst"
+               },
+    "lang":  {
+                 "label":  "Sprache",
+                 "switchTo":  "Zu {{lang}} wechseln"
+             },
+    "nav":  {
+                "home":  "Start",
+                "about":  "Ãœber",
+                "dashboard":  "Dashboard",
+                "blog":  "Blog",
+                "underTheHood":  "Hinter den Kulissen",
+                "play":  "Spielen",
+                "guestbook":  "GÃ¤stebuch",
+                "contact":  "Kontakt",
+                "menu":  "MenÃ¼",
+                "openMenu":  "MenÃ¼ Ã¶ffnen",
+                "closeMenu":  "MenÃ¼ schlieÃŸen",
+                "openToWork":  "VerfÃ¼gbar fÃ¼r Projekte",
+                "theme":  {
+                              "switchToLight":  "Zum hellen Design wechseln",
+                              "switchToDark":  "Zum dunklen Design wechseln"
+                          }
+            },
+    "footer":  {
+                   "tagline":  "Das Web bauen, eine Komponente nach der anderen.",
+                   "viewSource":  "Quellcode ansehen",
+                   "github":  "GitHub-Profil",
+                   "linkedin":  "Auf LinkedIn vernetzen",
+                   "email":  "Schreib mir eine E-Mail",
+                   "copyright":  "Â© {{year}} Nandan Hegde. Mit Angular 19 gebaut.",
+                   "lastDeploy":  "Letzter Deploy: {{date}}",
+                   "konami":  "KONAMI FREIGESCHALTET! +1 Stack Overflow Rep Â· Probier den Terminal-Befehl",
+                   "language":  "Sprache"
+               },
+    "home":  {
+                 "hero":  {
+                              "greeting":  "Hi, ich bin Nandan",
+                              "role":  "Full-Stack-Entwickler Â· Angular-Spezialist",
+                              "lede":  "Ich baue schnelle, barrierefreie, schÃ¶n gestaltete Web-Apps.",
+                              "ctaProjects":  "Projekte ansehen",
+                              "ctaContact":  "Kontakt aufnehmen"
+                          }
+             },
+    "contact":  {
+                    "title":  "Lass uns etwas bauen",
+                    "lede":  "Schreib eine Nachricht. Ich lese alles, was hier ankommt.",
+                    "name":  "Dein Name",
+                    "email":  "E-Mail",
+                    "subject":  "Betreff",
+                    "message":  "Nachricht",
+                    "send":  "Nachricht senden",
+                    "sending":  "Wird gesendetâ€¦",
+                    "sent":  "Danke â€” ich melde mich bald.",
+                    "errorRequired":  "Pflichtfeld",
+                    "errorEmail":  "Bitte gÃ¼ltige E-Mail eingeben"
+                },
+    "blog":  {
+                 "title":  "Blog",
+                 "lede":  "Notizen zu Engineering, Nebenprojekten und gelegentlichen Rants.",
+                 "readMore":  "Weiterlesen",
+                 "minRead":  "{{n}} Min. Lesezeit",
+                 "comments":  {
+                                  "title":  "Kommentare",
+                                  "empty":  "Sei der Erste mit einem Kommentar.",
+                                  "name":  "Dein Name",
+                                  "body":  "Teile einen Gedankenâ€¦",
+                                  "submit":  "Kommentar posten",
+                                  "remember":  "Wir merken uns deinen Namen auf diesem GerÃ¤t.",
+                                  "rateLimited":  "Zu viele Kommentare â€” bitte in ein paar Minuten erneut versuchen.",
+                                  "react":  "Reagieren"
+                              }
+             },
+    "dashboard":  {
+                      "title":  "Live-Dashboard",
+                      "lede":  "Echte Metriken aus echten Systemen. Keine Eitelkeitszahlen.",
+                      "github":  "GitHub-AktivitÃ¤t",
+                      "coding":  "Coding-Statistiken",
+                      "skills":  "FÃ¤higkeiten",
+                      "visitors":  "Besucher",
+                      "blogAnalytics":  "Blog-Analytics"
+                  },
+    "underTheHood":  {
+                         "title":  "Hinter den Kulissen",
+                         "lede":  "Wie dieses Portfolio aufgebaut ist â€” interaktives Architekturdiagramm, echte Metriken und die Entscheidungen dahinter.",
+                         "tabs":  {
+                                      "architecture":  "Architektur",
+                                      "metrics":  "Metriken",
+                                      "decisions":  "Entscheidungen"
+                                  }
+                     },
+    "guestbook":  {
+                      "title":  "GÃ¤stebuch",
+                      "lede":  "Hinterlasse eine Spur. Nur freundliche Nachrichten."
+                  },
+    "hero":  {
+                 "greeting":  {
+                                  "morning":  "Guten Morgen, du bist früh wach.",
+                                  "afternoon":  "Guten Tag. Schön, dass du da bist.",
+                                  "evening":  "Guten Abend! Willkommen.",
+                                  "night":  "Lange wach? Geht mir auch so.",
+                                  "late":  "Es ist spät. Kaffee?"
+                              },
+                 "suffix":  "bin ich",
+                 "aboutMe":  "Über mich",
+                 "getInTouch":  "Kontakt",
+                 "resume":  "Lebenslauf",
+                 "shipping":  "Aktuell in Arbeit",
+                 "updated":  "aktualisiert",
+                 "scroll":  "Scrollen"
+             }
+}
