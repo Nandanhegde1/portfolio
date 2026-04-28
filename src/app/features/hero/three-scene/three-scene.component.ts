@@ -39,6 +39,13 @@ export class ThreeSceneComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     if (!isPlatformBrowser(this.platformId)) return;
 
+    // Respect prefers-reduced-motion: skip Three.js entirely; SCSS shows a static gradient.
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) {
+      this.canvasRef().nativeElement.style.display = 'none';
+      return;
+    }
+
     this.ngZone.runOutsideAngular(() => {
       this.initScene();
       this.createParticles();
@@ -68,14 +75,19 @@ export class ThreeSceneComponent implements AfterViewInit, OnDestroy {
     this.renderer = new THREE.WebGLRenderer({
       canvas,
       alpha: true,
-      antialias: true,
+      antialias: window.innerWidth > 768,
+      powerPreference: 'low-power',
     });
     this.renderer.setSize(width, height);
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    // Cap pixel ratio at 1.5 (2 doubles GPU load for negligible gain on dense particle scenes)
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
   }
 
   private createParticles(): void {
-    const count = 1500;
+    // Halve particles on mobile / low-end devices for smoother frames.
+    const isMobile = window.innerWidth < 768;
+    const lowEnd = (navigator as any).deviceMemory != null && (navigator as any).deviceMemory <= 4;
+    const count = isMobile || lowEnd ? 600 : 1500;
     const geometry = new THREE.BufferGeometry();
     const positions = new Float32Array(count * 3);
     const colors = new Float32Array(count * 3);
@@ -146,6 +158,9 @@ export class ThreeSceneComponent implements AfterViewInit, OnDestroy {
 
   private animate(): void {
     this.animationId = requestAnimationFrame(() => this.animate());
+
+    // Pause animation while tab is hidden to save battery / CPU.
+    if (document.hidden) return;
 
     // Slow rotation
     this.particles.rotation.y += 0.0005;

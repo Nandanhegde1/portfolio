@@ -13,6 +13,42 @@
     inset: 0;
     z-index: 0;
     background: radial-gradient(ellipse at 50% 30%, var(--glow-color) 0%, transparent 60%);
+    overflow: hidden;
+    pointer-events: none;
+
+    // CSS-only "particle field" while Three.js chunk loads.
+    // 30 dots with staggered float + fade animations. Pure GPU compositor.
+    &-dot {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: var(--accent, #6c63ff);
+      opacity: 0;
+      box-shadow: 0 0 8px var(--accent, #6c63ff);
+      animation: heroParticleFloat 6s ease-in-out infinite;
+      animation-delay: calc(var(--i) * -0.2s);
+      // Pseudo-random scatter via nth-child positions
+      top: 50%;
+      left: 50%;
+      transform: translate(calc(var(--i) * 13px - 200px), calc(var(--i) * -7px + 100px));
+    }
+
+    &--loading {
+      // While the chunk is actively fetching, dim slightly so the swap is invisible.
+      opacity: 0.95;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      &-dot { animation: none; opacity: 0.4; }
+    }
+  }
+
+  @keyframes heroParticleFloat {
+    0%, 100% { transform: translateY(0) scale(0.8); opacity: 0; }
+    25%      { opacity: 0.6; }
+    50%      { transform: translateY(-30px) scale(1.2); opacity: 0.9; }
+    75%      { opacity: 0.6; }
   }
 
   &__content {

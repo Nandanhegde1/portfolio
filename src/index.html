@@ -15,6 +15,14 @@
   <meta name="theme-color" content="#6c63ff">
   <meta name="color-scheme" content="dark light">
 
+  <!-- Preconnect to API origins to shave ~150-300ms off first request (DNS + TCP + TLS in parallel) -->
+  <link rel="preconnect" href="https://portfolio-1-8qlk.onrender.com" crossorigin>
+  <link rel="preconnect" href="https://api.github.com" crossorigin>
+  <link rel="dns-prefetch" href="https://api.github.com">
+  <link rel="dns-prefetch" href="https://avatars.githubusercontent.com">
+  <link rel="dns-prefetch" href="https://i.scdn.co">
+  <link rel="dns-prefetch" href="https://api.spotify.com">
+
   <!-- Open Graph / LinkedIn / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="Nandan Hegde | Senior Software Engineer">
@@ -72,6 +80,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://api.dicebear.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
 </head>
 <body>
   <app-root></app-root>

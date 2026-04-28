@@ -1,7 +1,7 @@
 // Typography — Font imports and base styles
+// NOTE: Google Fonts <link> is loaded from index.html (runtime fetch, not inlined at build).
+// Build-time inlining was disabled in angular.json optimization.fonts to avoid offline build failures.
 @use 'variables' as *;
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 body {
   font-family: $font-primary;

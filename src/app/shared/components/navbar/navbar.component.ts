@@ -31,7 +31,8 @@ import { TooltipDirective } from '../../directives/tooltip.directive';
           <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a></li>
           <li><a routerLink="/about" routerLinkActive="active">About</a></li>
           <li><a routerLink="/dashboard" routerLinkActive="active">Dashboard</a></li>
-          <li><a routerLink="/blog" routerLinkActive="active">Under the Hood</a></li>
+          <li><a routerLink="/blog" routerLinkActive="active">Blog</a></li>
+          <li><a routerLink="/under-the-hood" routerLinkActive="active">Under the Hood</a></li>
           <li class="navbar__dropdown">
             <button class="navbar__dropdown-trigger" (click)="dropdownOpen = !dropdownOpen">
               Play \u25BE
@@ -117,7 +118,8 @@ import { TooltipDirective } from '../../directives/tooltip.directive';
           <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="mobileOpen = false">Home</a></li>
           <li><a routerLink="/about" routerLinkActive="active" (click)="mobileOpen = false">About</a></li>
           <li><a routerLink="/dashboard" routerLinkActive="active" (click)="mobileOpen = false">Dashboard</a></li>
-          <li><a routerLink="/blog" routerLinkActive="active" (click)="mobileOpen = false">Under the Hood</a></li>
+          <li><a routerLink="/blog" routerLinkActive="active" (click)="mobileOpen = false">Blog</a></li>
+          <li><a routerLink="/under-the-hood" routerLinkActive="active" (click)="mobileOpen = false">Under the Hood</a></li>
           <li><a routerLink="/roast" routerLinkActive="active" (click)="mobileOpen = false">\uD83D\uDD25 Roast My Stack</a></li>
           <li><a routerLink="/quiz" routerLinkActive="active" (click)="mobileOpen = false">\uD83C\uDFAF Team Quiz</a></li>
           <li><a routerLink="/guestbook" routerLinkActive="active" (click)="mobileOpen = false">Guestbook</a></li>

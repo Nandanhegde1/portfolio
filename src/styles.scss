@@ -10,3 +10,26 @@
 @use 'scss/print';
 @use 'scss/a11y';
 @use 'scss/tooltip';
+
+/* --- View Transitions API: smooth route morphs (Chrome/Edge) --- */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.35s;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+::view-transition-old(root) {
+  animation-name: vtFadeOut;
+}
+::view-transition-new(root) {
+  animation-name: vtFadeIn;
+}
+@keyframes vtFadeOut {
+  to { opacity: 0; transform: translateY(-8px); }
+}
+@keyframes vtFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) { animation: none; }
+}

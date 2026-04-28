@@ -39,6 +39,17 @@ export const routes: Routes = [
         },
       },
       {
+        path: 'under-the-hood',
+        loadComponent: () => import('./features/under-the-hood/under-the-hood.component').then(m => m.UnderTheHoodComponent),
+        data: {
+          seo: {
+            title: 'Under the Hood — Architecture, CI/CD, SEO & Security',
+            description: 'How this portfolio is actually built: Angular 19, Node backend, Claude AI, Supabase, Render, GitHub Pages, performance budgets, and OWASP-audited security.',
+            url: 'https://nandanhegde1.github.io/portfolio/under-the-hood',
+          },
+        },
+      },
+      {
         path: 'blog',
         loadComponent: () => import('./features/blog/blog.component').then(m => m.BlogComponent),
         data: {

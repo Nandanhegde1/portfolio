@@ -12,10 +12,16 @@ import { MagneticDirective } from '../../shared/directives/magnetic.directive';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="hero">
-      @defer (on viewport) {
+      @defer (on viewport; prefetch on idle) {
         <app-three-scene />
       } @placeholder {
-        <div class="hero__particles-fallback"></div>
+        <div class="hero__particles-fallback" aria-hidden="true">
+          @for (i of skeletonDots; track $index) {
+            <span class="hero__particles-fallback-dot" [style.--i]="$index"></span>
+          }
+        </div>
+      } @loading (minimum 200ms) {
+        <div class="hero__particles-fallback hero__particles-fallback--loading" aria-hidden="true"></div>
       }
       <div class="hero__content">
         <span class="hero__greeting">{{ greeting() }} I'm</span>
@@ -59,6 +65,9 @@ import { MagneticDirective } from '../../shared/directives/magnetic.directive';
 export class HeroComponent implements OnInit {
   readonly portfolioData = inject(PortfolioDataService);
   readonly github = inject(GitHubService);
+
+  // Static array used by the CSS skeleton placeholder while Three.js loads.
+  readonly skeletonDots = Array.from({ length: 30 });
 
   // Time-aware greeting that adapts to visitor's local hour
   readonly greeting = computed(() => {
