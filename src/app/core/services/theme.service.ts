@@ -24,11 +24,9 @@ export class ThemeService {
   private getInitialTheme(): ThemeName {
     const stored = localStorage.getItem(this.STORAGE_KEY) as ThemeName | null;
     if (stored) return stored;
-
-    if (typeof window !== 'undefined' && window.matchMedia?.('(prefers-color-scheme: dark)').matches) {
-      return 'dark';
-    }
-    return 'light';
+    // Default to dark for everyone (ignores prefers-color-scheme on first visit
+    // because the brand reads better on dark; users can still switch).
+    return 'dark';
   }
 
   private applyTheme(theme: ThemeName): void {

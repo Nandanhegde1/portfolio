@@ -509,3 +509,16 @@
     }
   }
 }
+
+// Streaming caret shown only while tokens are still arriving
+.roast__caret {
+  display: inline-block;
+  width: 0.55em;
+  margin-left: 2px;
+  color: currentColor;
+  opacity: 0.85;
+  animation: roastCaretBlink 0.9s steps(2, start) infinite;
+
+  &--hidden { display: none; }
+}
+@keyframes roastCaretBlink { to { opacity: 0; } }

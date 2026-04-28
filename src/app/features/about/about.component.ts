@@ -273,28 +273,26 @@ interface InventoryItem {
               <div class="rpg__forge-field">
                 <label class="rpg__forge-label">Avatar</label>
                 <div class="rpg__forge-avatars">
-                  @for (avatar of avatarOptions; track avatar.id) {
-                    <button
-                      class="rpg__forge-avatar-btn"
-                      [class.rpg__forge-avatar-btn--active]="forgeAvatar() === avatar.id"
-                      (click)="forgeAvatar.set(avatar.id)"
-                      [title]="avatar.label"
-                    >{{ avatar.emoji }}</button>
-                  }
                   <button
                     class="rpg__forge-avatar-btn"
                     [class.rpg__forge-avatar-btn--active]="forgeAvatar() === 'dicebear'"
                     (click)="forgeAvatar.set('dicebear')"
-                    title="DiceBear cartoon avatar (unique to your name)"
+                    title="Cartoon avatar generated from your name"
                   >
                     <img
                       [src]="getDiceBearUrl(visitorName || 'guest')"
-                      alt="DiceBear avatar option"
+                      alt="Cartoon avatar option"
                       class="rpg__forge-dicebear-thumb"
                       width="28"
                       height="28"
                     />
                   </button>
+                  <button
+                    class="rpg__forge-avatar-btn"
+                    [class.rpg__forge-avatar-btn--active]="forgeAvatar() === 'initials'"
+                    (click)="forgeAvatar.set('initials')"
+                    title="Use your initials as text"
+                  >Aa</button>
                 </div>
               </div>
               <div class="rpg__forge-field">
@@ -392,14 +390,12 @@ interface InventoryItem {
                   <div class="rpg__forge-avatar-display">
                     @if (forgeAvatar() === 'initials') {
                       <span>{{ getInitials(visitorName) }}</span>
-                    } @else if (forgeAvatar() === 'dicebear') {
+                    } @else {
                       <img
                         [src]="getDiceBearUrl(visitorName || 'guest')"
                         alt="Cartoon avatar"
                         class="rpg__forge-dicebear-display"
                       />
-                    } @else {
-                      <span class="rpg__forge-avatar-emoji">{{ getAvatarEmoji(forgeAvatar()) }}</span>
                     }
                   </div>
                   <h2 class="rpg__card-name">{{ visitorName || 'Your Name' }}</h2>
@@ -452,29 +448,19 @@ export class AboutComponent implements OnInit {
     { id: 'solid', label: 'Solid', icon: '■' },
   ];
 
+  // Avatar options trimmed to just initials and a DiceBear cartoon avatar.
+  // Default is the cartoon avatar — feels more like a character card.
   readonly avatarOptions: AvatarOption[] = [
+    { id: 'dicebear', emoji: '', label: 'Cartoon avatar' },
     { id: 'initials', emoji: 'Aa', label: 'Initials' },
-    { id: 'rocket', emoji: '🚀', label: 'Rocket' },
-    { id: 'fire', emoji: '🔥', label: 'Fire' },
-    { id: 'lightning', emoji: '⚡', label: 'Lightning' },
-    { id: 'gem', emoji: '💎', label: 'Gem' },
-    { id: 'robot', emoji: '🤖', label: 'Robot' },
-    { id: 'ninja', emoji: '🥷', label: 'Ninja' },
-    { id: 'alien', emoji: '👾', label: 'Alien' },
-    { id: 'skull', emoji: '💀', label: 'Skull' },
-    { id: 'ghost', emoji: '👻', label: 'Ghost' },
   ];
 
   readonly forgeColorId = signal('cyan');
   readonly forgeGradient = signal<GradientStyle>('linear');
-  readonly forgeAvatar = signal('initials');
+  readonly forgeAvatar = signal('dicebear');
 
   activeForgeColor(): CardColor {
     return this.forgeColors.find(c => c.id === this.forgeColorId()) ?? this.forgeColors[0];
-  }
-
-  getAvatarEmoji(id: string): string {
-    return this.avatarOptions.find(a => a.id === id)?.emoji ?? '??';
   }
 
   getDiceBearUrl(name: string): string {
@@ -676,7 +662,6 @@ export class AboutComponent implements OnInit {
     const initials = this.getInitials(name);
     const cx = w / 2;
     const fc = this.activeForgeColor();
-    const avatarId = this.forgeAvatar();
 
     // Background with subtle gradient
     const bgGrad = ctx.createLinearGradient(0, 0, w, h);
@@ -732,17 +717,13 @@ export class AboutComponent implements OnInit {
     ctx.fill();
     ctx.restore();
 
-    // Avatar content (initials or emoji)
+    // Avatar content — DiceBear is an external SVG that can't be drawn into
+    // the export canvas synchronously, so fall back to initials for both.
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    if (avatarId === 'initials') {
-      ctx.font = 'bold 22px Courier New, monospace';
-      ctx.fillStyle = '#ffffff';
-      ctx.fillText(initials, cx, avatarY + 1);
-    } else {
-      ctx.font = '28px serif';
-      ctx.fillText(this.getAvatarEmoji(avatarId), cx, avatarY + 1);
-    }
+    ctx.font = 'bold 22px Courier New, monospace';
+    ctx.fillStyle = '#ffffff';
+    ctx.fillText(initials, cx, avatarY + 1);
 
     // Name
     ctx.font = 'bold 28px Segoe UI, sans-serif';

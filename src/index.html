@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8">
   <title>Nandan Hegde | Senior Software Engineer | Angular, Node.js, AWS</title>
@@ -85,6 +85,16 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://api.dicebear.com">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+
+  <!-- Pre-paint theme: honour stored preference instantly to avoid a flash. Defaults to dark. -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('portfolio-theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', t);
+      } catch (e) { /* localStorage unavailable; data-theme=dark from html attr stays */ }
+    })();
+  </script>
 </head>
 <body>
   <app-root></app-root>

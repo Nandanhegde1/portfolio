@@ -132,7 +132,7 @@ const FALLBACK_ROASTS: Record<string, string[]> = {
                   <p class="roast__card-stack-text">{{ result()!.stack }}</p>
                 </div>
                 <div class="roast__card-roast">
-                  <p>{{ result()!.roast }}</p>
+                  <p>{{ result()!.roast }}<span class="roast__caret" [class.roast__caret--hidden]="!streaming()">&#9608;</span></p>
                 </div>
                 <div class="roast__card-footer">
                   <span>nandanhegde.dev/roast</span>
@@ -199,6 +199,7 @@ export class RoastComponent {
   readonly stackInput = signal('');
   readonly intensity = signal('medium');
   readonly loading = signal(false);
+  readonly streaming = signal(false);
   readonly result = signal<RoastResult | null>(null);
   readonly error = signal<string | null>(null);
   readonly copied = signal(false);
@@ -223,27 +224,84 @@ export class RoastComponent {
     const stack = this.stackInput().trim();
     if (stack.length < 3) return;
 
+    const intensity = this.intensity();
     this.sound.play('click');
     this.loading.set(true);
     this.error.set(null);
     this.result.set(null);
 
-    this.http.post<{ roast: string }>(`${environment.apiUrl}/api/roast`, { stack, intensity: this.intensity() }).subscribe({
-      next: (res) => {
-        this.result.set({ stack, roast: res.roast, intensity: this.intensity(), timestamp: Date.now() });
-        this.incrementCount();
-        this.loading.set(false);
-        this.sound.play('success');
-      },
-      error: () => {
-        // Fallback to local roasts
-        const roast = this.getLocalRoast(stack);
-        this.result.set({ stack, roast, intensity: this.intensity(), timestamp: Date.now() });
-        this.incrementCount();
-        this.loading.set(false);
-        this.sound.play('error');
-      },
+    this.streamRoast(stack, intensity).catch(() => {
+      const roast = this.getLocalRoast(stack);
+      this.result.set({ stack, roast, intensity, timestamp: Date.now() });
+      this.incrementCount();
+      this.loading.set(false);
+      this.streaming.set(false);
+      this.sound.play('error');
     });
+  }
+
+  // Streams the roast token-by-token from /api/roast/stream so the user
+  // sees text appearing in ~1s instead of waiting ~10s for the full reply.
+  private async streamRoast(stack: string, intensity: string): Promise<void> {
+    const response = await fetch(`${environment.apiUrl}/api/roast/stream`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ stack, intensity }),
+    });
+
+    if (!response.ok || !response.body) {
+      throw new Error(`Roast stream failed: ${response.status}`);
+    }
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+    let text = '';
+    let started = false;
+    const ts = Date.now();
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      buffer += decoder.decode(value, { stream: true });
+      const frames = buffer.split('\n\n');
+      buffer = frames.pop() || '';
+
+      for (const frame of frames) {
+        let event = 'message';
+        let data = '';
+        for (const line of frame.split('\n')) {
+          if (line.startsWith('event:')) event = line.slice(6).trim();
+          else if (line.startsWith('data:')) data += line.slice(5).trim();
+        }
+        if (!data) continue;
+
+        let payload: { text?: string; roast?: string; error?: string };
+        try { payload = JSON.parse(data); } catch { continue; }
+
+        if (event === 'chunk' && payload.text) {
+          text += payload.text;
+          if (!started) {
+            started = true;
+            this.loading.set(false);
+            this.streaming.set(true);
+          }
+          this.result.set({ stack, roast: text, intensity, timestamp: ts });
+        } else if (event === 'done') {
+          const finalRoast = payload.roast || text;
+          this.result.set({ stack, roast: finalRoast, intensity, timestamp: ts });
+          this.incrementCount();
+          this.loading.set(false);
+          this.streaming.set(false);
+          this.sound.play('success');
+          return;
+        } else if (event === 'error') {
+          this.streaming.set(false);
+          throw new Error(payload.error || 'stream error');
+        }
+      }
+    }
   }
 
   downloadCard(): void {
