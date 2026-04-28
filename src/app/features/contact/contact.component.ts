@@ -164,7 +164,7 @@ export class ContactComponent implements AfterViewInit {
   readonly submitting = signal(false);
   readonly currentError = signal<string | null>(null);
   readonly log = signal<LogLine[]>([
-    { kind: 'sys', text: 'session opened â€” fastest way to reach me. answers usually in <24h.' },
+    { kind: 'sys', text: 'session opened — fastest way to reach me. answers usually in <24h.' },
     { kind: 'hint', text: 'press Enter after each field. type your message, then Ctrl+Enter to send.' },
   ]);
 
@@ -201,7 +201,7 @@ export class ContactComponent implements AfterViewInit {
   }
 
   truncate(s: string, n: number): string {
-    return s.length > n ? s.slice(0, n - 1).trim() + 'â€¦' : s;
+    return s.length > n ? s.slice(0, n - 1).trim() + '…' : s;
   }
 
   advance(): void {
@@ -261,7 +261,7 @@ export class ContactComponent implements AfterViewInit {
     ).subscribe({
       next: () => {
         const ms = Math.round(performance.now() - t0);
-        this.log.update(l => [...l, { kind: 'ok', text: `message delivered in ${ms}ms â€” talk soon.` }]);
+        this.log.update(l => [...l, { kind: 'ok', text: `message delivered in ${ms}ms — talk soon.` }]);
         this.submitting.set(false);
         this.step.set('done');
         this.sound.play('unlock');
@@ -272,7 +272,7 @@ export class ContactComponent implements AfterViewInit {
         const ms = Math.round(performance.now() - t0);
         this.log.update(l => [
           ...l,
-          { kind: 'err', text: `request failed after ${ms}ms â€” ${err?.error?.error || 'backend offline'}.` },
+          { kind: 'err', text: `request failed after ${ms}ms — ${err?.error?.error || 'backend offline'}.` },
           { kind: 'hint', text: 'fallback: email me directly via the link in the chrome bar.' },
         ]);
         this.submitting.set(false);

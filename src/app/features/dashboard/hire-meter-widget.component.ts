@@ -1,4 +1,4 @@
-﻿import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { EngagementService } from '../../core/services';
 
@@ -33,12 +33,12 @@ interface SectionItem {
           (click)="infoOpen.set(!infoOpen())"
           aria-label="What is this?"
         >?</button>
-        <span class="hm__sub">A friendly nudge to explore â€” no signup, no tracking, all in your browser.</span>
+        <span class="hm__sub">A friendly nudge to explore — no signup, no tracking, all in your browser.</span>
       </header>
 
       @if (infoOpen()) {
         <div class="hm__info-panel" role="region" aria-label="How the score works">
-          <p class="hm__info-line"><strong>What is this?</strong> A score that grows as you visit different sections of this portfolio. It's a fun way to see how thoroughly you've explored my work â€” and a hint to me about which pages people actually find useful.</p>
+          <p class="hm__info-line"><strong>What is this?</strong> A score that grows as you visit different sections of this portfolio. It's a fun way to see how thoroughly you've explored my work — and a hint to me about which pages people actually find useful.</p>
           <p class="hm__info-line"><strong>How it works:</strong> Each section is worth points (shown below). Points are stored only in your browser via <code>localStorage</code>. No account, no cookies, no server.</p>
           <p class="hm__info-line"><strong>Why bother?</strong> Hit 75+ and the contact CTA pre-fills with a context-aware message. Hit 90+ and you've officially seen everything that makes me hireable.</p>
         </div>
@@ -65,7 +65,7 @@ interface SectionItem {
             @if (engagement.score() < 100) {
               {{ remainingHint() }}
             } @else {
-              You've seen it all. The contact form is one click away ðŸ˜Ž
+              You've seen it all. The contact form is one click away 😎
             }
           </p>
           <a routerLink="/contact" class="hm__cta">
@@ -80,7 +80,7 @@ interface SectionItem {
         <ul class="hm__checklist" aria-label="Sections explored">
           @for (s of sections; track s.path) {
             <li class="hm__check-item" [class.hm__check-item--done]="visited().has(s.path)">
-              <span class="hm__check-mark" aria-hidden="true">{{ visited().has(s.path) ? 'âœ“' : 'â—‹' }}</span>
+              <span class="hm__check-mark" aria-hidden="true">{{ visited().has(s.path) ? '✓' : '○' }}</span>
               <a [routerLink]="s.path" class="hm__check-link">
                 <span class="hm__check-icon" aria-hidden="true">{{ s.icon }}</span>
                 <span class="hm__check-name">{{ s.label }}</span>
@@ -214,7 +214,7 @@ interface SectionItem {
       box-shadow: 0 8px 22px color-mix(in srgb, var(--accent) 40%, transparent);
     }
 
-    /* â”€â”€â”€ Section checklist â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    /* Section checklist */
     .hm__checklist-wrap { margin-top: 1.5rem; }
     .hm__checklist-label {
       font-size: 0.72rem;
@@ -311,17 +311,17 @@ export class HireMeterWidgetComponent {
   protected readonly engagement = inject(EngagementService);
   protected readonly infoOpen = signal(false);
 
-  // Mirror of EngagementService.weights â€” kept here for the visible checklist.
+  // Mirror of EngagementService.weights — kept here for the visible checklist.
   // If you change weights in the service, update this list too.
   protected readonly sections: SectionItem[] = [
-    { path: '/',          label: 'Home',       icon: 'ðŸ ', points: 10 },
-    { path: '/about',     label: 'About',      icon: 'ðŸ‘¤', points: 20 },
-    { path: '/dashboard', label: 'Dashboard',  icon: 'ðŸ“Š', points: 20 },
-    { path: '/blog',      label: 'Blog',       icon: 'âœï¸', points: 15 },
-    { path: '/roast',     label: 'Roast',      icon: 'ðŸ”¥', points: 10 },
-    { path: '/quiz',      label: 'Quiz',       icon: 'ðŸŽ¯', points: 10 },
-    { path: '/guestbook', label: 'Guestbook',  icon: 'ðŸ“–', points: 8  },
-    { path: '/contact',   label: 'Contact',    icon: 'ðŸ“¬', points: 7  },
+    { path: '/',          label: 'Home',       icon: '🏠', points: 10 },
+    { path: '/about',     label: 'About',      icon: '👤', points: 20 },
+    { path: '/dashboard', label: 'Dashboard',  icon: '📊', points: 20 },
+    { path: '/blog',      label: 'Blog',       icon: '✍️', points: 15 },
+    { path: '/roast',     label: 'Roast',      icon: '🔥', points: 10 },
+    { path: '/quiz',      label: 'Quiz',       icon: '🎯', points: 10 },
+    { path: '/guestbook', label: 'Guestbook',  icon: '📖', points: 8  },
+    { path: '/contact',   label: 'Contact',    icon: '📬', points: 7  },
   ];
 
   protected readonly totalSections = this.sections.length;
@@ -342,11 +342,11 @@ export class HireMeterWidgetComponent {
   });
 
   protected readonly tiers: TierStop[] = [
-    { at: 0,  label: 'New here',  color: '#94a3b8', emoji: 'ðŸ‘‹' },
-    { at: 25, label: 'Browsing', color: '#10b981', emoji: 'ðŸ‘€' },
-    { at: 50, label: 'Curious',  color: '#6c63ff', emoji: 'âœ¨' },
-    { at: 75, label: 'On fire',  color: '#f43f5e', emoji: 'ðŸ”¥' },
-    { at: 90, label: 'Legend',   color: '#fbbf24', emoji: 'ðŸ†' },
+    { at: 0,  label: 'New here',  color: '#94a3b8', emoji: '👋' },
+    { at: 25, label: 'Browsing', color: '#10b981', emoji: '👀' },
+    { at: 50, label: 'Curious',  color: '#6c63ff', emoji: '✨' },
+    { at: 75, label: 'On fire',  color: '#f43f5e', emoji: '🔥' },
+    { at: 90, label: 'Legend',   color: '#fbbf24', emoji: '🏆' },
   ];
 
   protected readonly dashArray = computed(() => {
