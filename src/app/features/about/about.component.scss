@@ -17,6 +17,12 @@
     gap: $space-2xl;
     align-items: start;
 
+    // Cramped 380px sidebar at narrow desktops — collapse earlier
+    @media (max-width: 1100px) {
+      grid-template-columns: 320px 1fr;
+      gap: $space-xl;
+    }
+
     @include tablet {
       grid-template-columns: 1fr;
     }
@@ -30,7 +36,15 @@
     align-items: center;
     gap: $space-lg;
 
+    // Stay sticky on tablet too — card scales down to fit
     @include tablet {
+      position: sticky;
+      top: 80px;
+      z-index: 5;
+    }
+
+    // On true mobile, drop sticky (card too tall vs viewport)
+    @include mobile {
       position: static;
     }
   }
@@ -959,9 +973,35 @@
     perspective: 800px;
     display: flex;
     justify-content: center;
+    position: sticky;
+    top: 100px;
+    align-self: start;
 
     @include tablet {
+      // On tablet the preview drops above the form (order:-1)
+      // and sticks to the top so it follows the user as they scroll the form below.
       order: -1;
+      position: sticky;
+      top: 70px;
+      z-index: 5;
+      padding: $space-sm 0;
+      background: linear-gradient(
+        to bottom,
+        var(--bg-primary) 0%,
+        var(--bg-primary) 85%,
+        transparent 100%
+      );
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    @include mobile {
+      // Smaller card scale on mobile so sticky doesn't dominate viewport
+      .rpg__forge-card {
+        transform: scale(0.78);
+        transform-origin: top center;
+        margin-bottom: -90px; // recoup space lost to scale
+      }
     }
   }
 
