@@ -67,6 +67,7 @@
         </p>
 
         <div class="topo__stage">
+          <div class="topo__svg-wrap">
           <svg
             class="topo__svg"
             [attr.viewBox]="'0 0 ' + viewW + ' ' + viewH"
@@ -139,6 +140,7 @@
               }
             </g>
           </svg>
+          </div>
 
           <!-- Side detail panel: shows when a node is clicked -->
           <aside class="topo__detail" [class.topo__detail--open]="!!selectedNode()">

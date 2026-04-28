@@ -65,3 +65,68 @@
 @media (prefers-reduced-motion: reduce) {
   .skeleton::after { animation: none; opacity: 0.4; }
 }
+
+/* ──────────────────────────────────────────────
+   GLOBAL MOBILE OPTIMIZATION
+   ────────────────────────────────────────────── */
+html, body {
+  // prevent unwanted horizontal page scroll caused by oversized children
+  overflow-x: clip;
+  max-width: 100%;
+}
+
+@media (max-width: 480px) {
+  html { font-size: 15px; } // slight down-scale: keeps clamp() typography readable
+
+  // Default min tap-target for buttons/links inside interactive components
+  button:not([class*="navbar"]):not([class*="terminal"]),
+  a.btn,
+  [role="button"] {
+    min-height: 40px;
+  }
+
+  // Reduce default container padding for tight viewports
+  main { padding-inline: clamp(12px, 4vw, 20px); }
+
+  // Tables & wide content scroll horizontally instead of breaking layout
+  table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+}
+
+/* Avoid 16px iOS auto-zoom on focus by ensuring inputs are >=16px */
+@media (max-width: 768px) {
+  input, textarea, select {
+    font-size: max(16px, 1rem);
+  }
+}
+/* ──────────────────────────────────────────────
+   GLOBAL MOBILE OPTIMIZATION
+   ────────────────────────────────────────────── */
+html, body {
+  // prevent unwanted horizontal page scroll caused by oversized children
+  overflow-x: clip;
+  max-width: 100%;
+}
+
+@media (max-width: 480px) {
+  html { font-size: 15px; } // slight down-scale: keeps clamp() typography readable
+
+  // Default min tap-target for buttons/links inside interactive components
+  button:not([class*="navbar"]):not([class*="terminal"]),
+  a.btn,
+  [role="button"] {
+    min-height: 40px;
+  }
+
+  // Reduce default container padding for tight viewports
+  main { padding-inline: clamp(12px, 4vw, 20px); }
+
+  // Tables & wide content scroll horizontally instead of breaking layout
+  table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+}
+
+/* Avoid 16px iOS auto-zoom on focus by ensuring inputs are >=16px */
+@media (max-width: 768px) {
+  input, textarea, select {
+    font-size: max(16px, 1rem);
+  }
+}

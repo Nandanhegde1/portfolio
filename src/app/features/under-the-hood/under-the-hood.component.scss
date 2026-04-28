@@ -828,3 +828,138 @@
   .topo__node-ring, .topo__detail-empty-icon { animation: none !important; }
   .topo__packet { display: none; }
 }
+// ═══════════════════════════════════════════════
+// MOBILE OVERRIDES (added pass)
+// ═══════════════════════════════════════════════
+@include mobile {
+  .hood {
+    padding: $space-md $space-sm;
+
+    &__header { padding: $space-lg 0; }
+    &__lede   { font-size: $fs-md; }
+    &__cta    { flex-direction: column; align-items: stretch; }
+    &__btn    { justify-content: center; width: 100%; }
+
+    &__tabs {
+      // horizontal scroll instead of wrap to keep all tabs reachable
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      justify-content: flex-start;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      margin: $space-md 0;
+      padding: 4px;
+
+      &::-webkit-scrollbar { display: none; }
+    }
+    &__tab {
+      flex-shrink: 0;
+      scroll-snap-align: start;
+      font-size: 0.82rem;
+      padding: 8px 12px;
+    }
+
+    &__panel { padding: 0; }
+    &__h2 { font-size: 1.4rem; }
+    &__h3 { font-size: 1.1rem; }
+    &__grid, &__metrics, &__lh {
+      grid-template-columns: 1fr !important;
+      gap: $space-sm;
+    }
+  }
+
+  .topo {
+    padding: $space-sm;
+
+    &__head {
+      flex-direction: column;
+      align-items: stretch;
+      gap: $space-sm;
+    }
+
+    &__flows {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scroll-snap-type: x mandatory;
+      &::-webkit-scrollbar { display: none; }
+    }
+    &__flow {
+      flex-shrink: 0;
+      scroll-snap-align: start;
+      padding: 8px 12px;
+      font-size: 0.78rem;
+    }
+
+    &__caption {
+      font-size: 0.82rem;
+      padding: 8px 10px;
+    }
+
+    &__stage {
+      grid-template-columns: 1fr;
+      gap: $space-sm;
+    }
+
+    // Let the SVG scroll horizontally if needed; preserves diagram readability.
+    &__svg {
+      min-height: 320px;
+      max-height: 60vh;
+    }
+
+    // Detail panel becomes the bottom card; tighter spacing.
+    &__detail {
+      min-height: 0;
+      padding: $space-sm;
+    }
+    &__detail-empty { padding: $space-md; }
+
+    &__sequence {
+      gap: 6px;
+      margin-top: $space-md;
+    }
+    &__hop {
+      padding: 6px 10px;
+      font-size: 0.78rem;
+
+      &:not(:last-child)::after {
+        margin: 0 4px 0 8px;
+        font-size: 0.95rem;
+      }
+    }
+    &__hop-icon { font-size: 0.9rem; }
+  }
+}
+// ═══════════════════════════════════════════════
+// SVG scroll wrapper (lets phones pan the architecture diagram)
+.topo__svg-wrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 12px;
+}
+@include mobile {
+  .topo__svg-wrap {
+    // hint horizontal scroll: keep diagram readable on small screens
+    overscroll-behavior-x: contain;
+    .topo__svg {
+      min-width: 720px; // preserves label/icon legibility while phone scrolls
+    }
+  }
+}
+// SVG scroll wrapper (lets phones pan the architecture diagram)
+.topo__svg-wrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 12px;
+}
+@include mobile {
+  .topo__svg-wrap {
+    // hint horizontal scroll: keep diagram readable on small screens
+    overscroll-behavior-x: contain;
+    .topo__svg {
+      min-width: 720px; // preserves label/icon legibility while phone scrolls
+    }
+  }
+}
