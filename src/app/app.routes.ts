@@ -116,6 +116,18 @@ export const routes: Routes = [
           },
         },
       },
+      {
+        path: '404',
+        loadComponent: () => import('./features/not-found/not-found.component').then(m => m.NotFoundComponent),
+        data: {
+          seo: {
+            title: '404 — Lost? Try the terminal',
+            description: 'Page not found, but here\'s an interactive terminal you can play with.',
+            url: 'https://nandanhegde1.github.io/portfolio/404',
+          },
+        },
+      },
+      { path: '**', redirectTo: '404' },
     ],
   },
   {

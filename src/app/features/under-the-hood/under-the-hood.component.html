@@ -68,6 +68,24 @@
   <!-- Performance -->
   @if (activeTab() === 'perf') {
     <div class="hood__panel" role="tabpanel">
+      <h2 class="hood__h2">Lighthouse scores</h2>
+      <p class="hood__p">Audited from production on mobile + desktop. Click <a class="hood__inline-link" href="https://pagespeed.web.dev/analysis?url=https%3A%2F%2Fnandanhegde1.github.io%2Fportfolio%2F" target="_blank" rel="noopener">to verify on PageSpeed Insights →</a></p>
+      <div class="hood__lh">
+        @for (s of lighthouse; track s.label) {
+          <div class="hood__lh-card" [style.--lh-color]="s.color">
+            <svg viewBox="0 0 36 36" class="hood__lh-ring" aria-hidden="true">
+              <circle cx="18" cy="18" r="15.9155" class="hood__lh-bg"/>
+              <circle cx="18" cy="18" r="15.9155" class="hood__lh-fg"
+                      [attr.stroke-dasharray]="s.value + ', 100'"/>
+            </svg>
+            <div class="hood__lh-body">
+              <span class="hood__lh-value">{{ s.value }}</span>
+              <span class="hood__lh-label">{{ s.label }}</span>
+            </div>
+          </div>
+        }
+      </div>
+
       <h2 class="hood__h2">Performance budget</h2>
       <p class="hood__p">Every kilobyte fought for. Here are the receipts.</p>
       <div class="hood__metrics">

@@ -88,6 +88,13 @@ export class UnderTheHoodComponent {
     },
   ];
 
+  readonly lighthouse = [
+    { label: 'Performance',    value: 98,  color: '#0cce6b' },
+    { label: 'Accessibility',  value: 100, color: '#0cce6b' },
+    { label: 'Best Practices', value: 100, color: '#0cce6b' },
+    { label: 'SEO',            value: 100, color: '#0cce6b' },
+  ];
+
   readonly perfMetrics: PerfMetric[] = [
     { label: 'Lighthouse Performance', value: '98', detail: 'Mobile, throttled 4G', color: '#16a34a' },
     { label: 'Initial Bundle (gzip)', value: '90 KB', detail: 'Below 100 KB budget', color: '#16a34a' },

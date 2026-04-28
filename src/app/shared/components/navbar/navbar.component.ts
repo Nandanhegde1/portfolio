@@ -2,11 +2,12 @@ import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { ThemeService, EngagementService } from '../../../core/services';
 import { TooltipDirective } from '../../directives/tooltip.directive';
+import { SoundToggleComponent } from '../sound-toggle/sound-toggle.component';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, TooltipDirective],
+  imports: [RouterLink, RouterLinkActive, TooltipDirective, SoundToggleComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <nav class="navbar">
@@ -87,6 +88,7 @@ import { TooltipDirective } from '../../directives/tooltip.directive';
               </div>
             </div>
           }
+          <app-sound-toggle />
           <button
             class="navbar__theme-toggle"
             [class.navbar__theme-toggle--spin]="themeSpinning"

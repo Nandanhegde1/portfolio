@@ -3,12 +3,13 @@ import { AnimatedCounterComponent, LoadingSkeletonComponent } from '../../shared
 import { GitHubService } from '../../core/services';
 import { ScrollRevealDirective } from '../../shared/directives/scroll-reveal.directive';
 import { LiveStatsWidgetComponent } from './live-stats-widget.component';
+import { GithubTickerComponent } from './github-ticker/github-ticker.component';
 import { StatsService } from '../../core/services/stats.service';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [AnimatedCounterComponent, LoadingSkeletonComponent, ScrollRevealDirective, LiveStatsWidgetComponent],
+  imports: [AnimatedCounterComponent, LoadingSkeletonComponent, ScrollRevealDirective, LiveStatsWidgetComponent, GithubTickerComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="dash">
@@ -18,6 +19,11 @@ import { StatsService } from '../../core/services/stats.service';
           <span class="dash__tag">// mission-control</span>
           <h1 class="dash__title">Developer Dashboard</h1>
           <p class="dash__subtitle">Real-time stats, because developers love data.</p>
+        </div>
+
+        <!-- Live GitHub Activity Ticker -->
+        <div appScrollReveal>
+          <app-github-ticker />
         </div>
 
         <!-- Visitor Counter — Hero -->

@@ -204,10 +204,14 @@ app.post('/api/chat', chatLimiter, async (req, res) => {
     // Log chat to Supabase
     const sb = getSupabase();
     if (sb) {
-      await sb.from('chat_logs').insert({
+      const { error: logErr } = await sb.from('chat_logs').insert({
         user_message: message.slice(0, 1000),
         ai_reply: reply.slice(0, 5000),
-      }).catch(() => {});
+      });
+      if (logErr) console.error('[supabase] chat_logs insert failed:', logErr.message, logErr.details || '', logErr.hint || '');
+      else console.log('[supabase] chat_logs insert ok');
+    } else {
+      console.warn('[supabase] client unavailable for chat_logs insert (check SUPABASE_URL / SUPABASE_SERVICE_KEY)');
     }
 
     res.json({ reply });
@@ -315,11 +319,15 @@ app.post('/api/roast', roastLimiter, async (req, res) => {
     // Log roast to Supabase
     const sb = getSupabase();
     if (sb) {
-      await sb.from('roast_logs').insert({
+      const { error: logErr } = await sb.from('roast_logs').insert({
         stack: stack.slice(0, 500),
         intensity: level,
         roast: roast.slice(0, 5000),
-      }).catch(() => {});
+      });
+      if (logErr) console.error('[supabase] roast_logs insert failed:', logErr.message, logErr.details || '', logErr.hint || '');
+      else console.log('[supabase] roast_logs insert ok');
+    } else {
+      console.warn('[supabase] client unavailable for roast_logs insert');
     }
 
     res.json({ roast });
@@ -346,13 +354,17 @@ app.post('/api/contact', contactLimiter, async (req, res) => {
 
   const sb = getSupabase();
   if (sb) {
-    await sb.from('contacts').insert({
+    const { error: logErr } = await sb.from('contacts').insert({
       name: name.substring(0, 200),
       email: email.substring(0, 200),
       subject: subject.substring(0, 500),
       message: message.substring(0, 5000),
       ip: req.ip,
-    }).catch(err => console.error('Supabase contact insert error:', err.message));
+    });
+    if (logErr) console.error('[supabase] contacts insert failed:', logErr.message, logErr.details || '', logErr.hint || '');
+    else console.log('[supabase] contacts insert ok');
+  } else {
+    console.warn('[supabase] client unavailable for contacts insert');
   }
 
   res.json({ success: true, message: 'Message received!' });

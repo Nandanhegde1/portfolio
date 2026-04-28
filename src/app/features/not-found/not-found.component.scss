@@ -1,0 +1,253 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.nf {
+  position: relative;
+  min-height: 100vh;
+  padding: $space-2xl $space-lg;
+  overflow: hidden;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+    opacity: 0.07;
+  }
+
+  &__glitch {
+    position: absolute;
+    font-family: $font-mono;
+    font-size: 1.2rem;
+    color: var(--accent);
+    top: calc(var(--i) * 7% - 50%);
+    left: calc(var(--i) * 11% - 50%);
+    transform: rotate(calc(var(--i) * 13deg));
+    animation: nfGlitchDrift 12s linear infinite;
+    animation-delay: calc(var(--i) * -0.4s);
+  }
+
+  &__inner {
+    position: relative;
+    z-index: 1;
+    max-width: 820px;
+    width: 100%;
+    text-align: center;
+  }
+
+  &__code {
+    display: flex;
+    justify-content: center;
+    gap: $space-md;
+    margin-bottom: $space-md;
+  }
+
+  &__digit {
+    font-family: $font-mono;
+    font-size: clamp(5rem, 18vw, 11rem);
+    font-weight: 800;
+    line-height: 1;
+    background: linear-gradient(135deg, var(--accent), #ec4899, #06b6d4);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: nfDigitFloat 3.4s ease-in-out infinite;
+
+    &--mid {
+      animation-delay: 0.2s;
+      animation-name: nfDigitSpin;
+    }
+  }
+
+  &__title {
+    font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+    font-weight: 700;
+    margin: 0 0 $space-sm;
+  }
+
+  &__cursor {
+    display: inline-block;
+    color: var(--accent);
+    animation: nfBlink 1s step-end infinite;
+  }
+
+  &__lede {
+    font-size: $fs-md;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto $space-xl;
+
+    code {
+      font-family: $font-mono;
+      font-size: 0.85em;
+      padding: 2px 8px;
+      background: color-mix(in srgb, var(--accent) 12%, transparent);
+      color: var(--accent);
+      border-radius: 4px;
+      font-weight: 600;
+    }
+  }
+
+  &__terminal {
+    text-align: left;
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5),
+                0 0 80px color-mix(in srgb, var(--accent) 20%, transparent);
+    margin: 0 auto $space-xl;
+    max-width: 720px;
+  }
+
+  &__bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: #161b22;
+    border-bottom: 1px solid #30363d;
+  }
+
+  &__dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+
+    &--r { background: #ff5f57; }
+    &--y { background: #febc2e; }
+    &--g { background: #28c840; }
+  }
+
+  &__bar-label {
+    margin-left: auto;
+    font-family: $font-mono;
+    font-size: 0.72rem;
+    color: #8b949e;
+  }
+
+  &__screen {
+    padding: $space-md;
+    height: 340px;
+    overflow-y: auto;
+    font-family: $font-mono;
+    font-size: 0.85rem;
+    line-height: 1.55;
+    color: #e6edf3;
+    background: #0d1117;
+
+    &::-webkit-scrollbar { width: 8px; }
+    &::-webkit-scrollbar-thumb { background: #30363d; border-radius: 4px; }
+  }
+
+  &__line { margin-bottom: $space-sm; }
+
+  &__prompt {
+    color: #8b949e;
+    margin-bottom: 2px;
+  }
+
+  &__user { color: #7ee787; font-weight: 600; }
+  &__path { color: #79c0ff; font-weight: 600; }
+  &__cmd { color: #e6edf3; margin-left: 6px; }
+
+  &__out {
+    margin: 0;
+    padding-left: 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-family: $font-mono;
+    color: #c9d1d9;
+  }
+
+  &__hl { color: var(--accent); font-weight: 700; }
+  &__err { color: #f85149; font-weight: 600; }
+  &__dir { color: #79c0ff; }
+
+  &__link {
+    display: inline-block;
+    margin-top: 4px;
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 600;
+    transition: opacity 0.2s;
+
+    &:hover { opacity: 0.7; text-decoration: underline; }
+  }
+
+  &__input-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #8b949e;
+    margin-top: $space-sm;
+  }
+
+  &__input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #e6edf3;
+    font-family: $font-mono;
+    font-size: 0.85rem;
+    padding: 4px 0;
+    caret-color: var(--accent);
+  }
+
+  &__cta {
+    display: flex;
+    gap: $space-md;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  &__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 0.92rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+
+    &--primary {
+      background: var(--accent);
+      color: #fff;
+      &:hover { transform: translateY(-2px); box-shadow: 0 10px 30px color-mix(in srgb, var(--accent) 40%, transparent); }
+    }
+    &--ghost {
+      background: transparent;
+      color: var(--text-primary);
+      border: 1px solid var(--border, rgba(255,255,255,0.15));
+      &:hover { background: var(--card-bg); transform: translateY(-2px); }
+    }
+  }
+}
+
+@keyframes nfBlink {
+  50% { opacity: 0; }
+}
+@keyframes nfDigitFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-12px); }
+}
+@keyframes nfDigitSpin {
+  0%, 100% { transform: rotate(0deg) translateY(0); }
+  25%      { transform: rotate(-8deg) translateY(-6px); }
+  75%      { transform: rotate(8deg)  translateY(-6px); }
+}
+@keyframes nfGlitchDrift {
+  from { transform: translate(0, 0) rotate(0deg); }
+  to   { transform: translate(80px, 60px) rotate(360deg); }
+}
