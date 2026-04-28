@@ -52,6 +52,6 @@ export class SocialSidebarComponent {
     { label: 'GitHub', url: 'https://github.com/nandanhegde', icon: 'github' },
     { label: 'LinkedIn', url: 'https://linkedin.com/in/nandan-hegde-195020168', icon: 'linkedin' },
     { label: 'Email', url: 'mailto:nandanhegde1096@gmail.com', icon: 'email' },
-    { label: 'Resume', url: '/assets/resume.pdf', icon: 'resume' },
+    { label: 'Resume', url: 'assets/Nandan_Hegde_Resume.pdf', icon: 'resume' },
   ];
 }

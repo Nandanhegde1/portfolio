@@ -24,7 +24,7 @@ router.post('/', async (req, res) => {
   res.json({ ok: true });
 });
 
-router.get('/', async (_req, res) => {
+async function getStats(_req, res) {
   const sb = getSupabase();
   if (!sb) return res.json({ totalPageViews: 0, pages: {} });
 
@@ -38,6 +38,9 @@ router.get('/', async (_req, res) => {
     totalPageViews: views?.length || 0,
     pages,
   });
-});
+}
+
+router.get('/', getStats);
+router.get('/stats', getStats);
 
 module.exports = router;

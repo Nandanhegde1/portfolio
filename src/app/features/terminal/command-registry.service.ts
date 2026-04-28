@@ -139,7 +139,16 @@ export class CommandRegistryService {
     this.register({
       name: 'cat',
       description: 'Display file contents (resume.pdf)',
-      action: () => 'Opening resume... (would download resume.pdf)',
+      action: () => {
+        const a = document.createElement('a');
+        a.href = 'assets/Nandan_Hegde_Resume.pdf';
+        a.download = 'Nandan_Hegde_Resume.pdf';
+        a.target = '_blank';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        return 'Opening Nandan_Hegde_Resume.pdf in a new tab...';
+      },
     });
 
     this.register({

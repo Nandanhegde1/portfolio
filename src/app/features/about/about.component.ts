@@ -648,162 +648,220 @@ export class AboutComponent implements OnInit {
   }
 
   downloadCard(): void {
-    const canvas = this.downloadCanvasRef.nativeElement;
-    const w = 600, h = 340;
-    const dpr = 2;
-    canvas.width = w * dpr;
-    canvas.height = h * dpr;
-    const ctx = canvas.getContext('2d')!;
-    ctx.scale(dpr, dpr);
-
-    const name = this.visitorName || 'Your Name';
-    const title = this.visitorTitle || 'Developer';
-    const skills = this.visitorSkills();
+    // Build a self-contained, animated holographic SVG so the downloaded
+    // artifact actually looks like the live preview: real gradients, an
+    // animated glare sweep, and a slow tilt. SVG opens in any browser and
+    // keeps the animation — far better than a flat PNG.
+    const name = (this.visitorName || 'Your Name').slice(0, 30);
+    const title = (this.visitorTitle || 'Developer').slice(0, 40);
+    const skills = this.visitorSkills().slice(0, 6);
     const initials = this.getInitials(name);
-    const cx = w / 2;
     const fc = this.activeForgeColor();
+    const gradient = this.forgeGradient();
+    const useDicebear = this.forgeAvatar() === 'dicebear';
 
-    // Background with subtle gradient
-    const bgGrad = ctx.createLinearGradient(0, 0, w, h);
-    bgGrad.addColorStop(0, '#0a0e1a');
-    bgGrad.addColorStop(1, '#111827');
-    this.canvasRoundRect(ctx, 0, 0, w, h, 20);
-    ctx.fillStyle = bgGrad;
-    ctx.fill();
+    const W = 600, H = 360;
+    const cx = W / 2;
+    const c1 = fc.primary;
+    const c2 = fc.secondary;
 
-    // Border using forge color
-    const grad = ctx.createLinearGradient(0, 0, w, h);
-    grad.addColorStop(0, fc.primary);
-    grad.addColorStop(1, fc.secondary);
-    ctx.strokeStyle = grad;
-    ctx.lineWidth = 4;
-    this.canvasRoundRect(ctx, 2, 2, w - 4, h - 4, 18);
-    ctx.stroke();
+    // Background fill — matches the linear/radial/conic preview exactly.
+    let bgFill = `url(#linearBg)`;
+    if (gradient === 'radial') bgFill = `url(#radialBg)`;
+    if (gradient === 'conic') bgFill = `url(#conicBg)`;
+    if (gradient === 'solid') bgFill = c1;
 
-    // Inner border glow
-    ctx.strokeStyle = fc.primary + '1a';
-    ctx.lineWidth = 1;
-    this.canvasRoundRect(ctx, 8, 8, w - 16, h - 16, 14);
-    ctx.stroke();
+    // Conic isn't supported in plain SVG, so we approximate it with a
+    // multi-stop sweep using <foreignObject> + a CSS conic-gradient.
+    const conicLayer = gradient === 'conic'
+      ? `<foreignObject x="0" y="0" width="${W}" height="${H}">
+           <div xmlns="http://www.w3.org/1999/xhtml" style="
+             width:100%;height:100%;border-radius:24px;
+             background:conic-gradient(from 0deg, ${c1}, ${c2}, ${c1});
+             filter:saturate(1.1);"></div>
+         </foreignObject>`
+      : '';
 
-    // Ambient glow
-    const glow = ctx.createRadialGradient(cx, 60, 0, cx, 60, 200);
-    glow.addColorStop(0, fc.primary + '20');
-    glow.addColorStop(1, 'transparent');
-    ctx.fillStyle = glow;
-    ctx.fillRect(0, 0, w, h);
-
-    // Subtle grid pattern
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.015)';
-    ctx.lineWidth = 0.5;
-    for (let gi = 0; gi < w; gi += 30) {
-      ctx.beginPath(); ctx.moveTo(gi, 0); ctx.lineTo(gi, h); ctx.stroke();
-    }
-    for (let gj = 0; gj < h; gj += 30) {
-      ctx.beginPath(); ctx.moveTo(0, gj); ctx.lineTo(w, gj); ctx.stroke();
-    }
-
-    // Avatar circle
-    const avatarY = 65;
-    ctx.save();
-    ctx.shadowColor = fc.primary + '66';
-    ctx.shadowBlur = 20;
-    ctx.beginPath();
-    ctx.arc(cx, avatarY, 30, 0, Math.PI * 2);
-    const ag = ctx.createLinearGradient(cx - 30, avatarY - 30, cx + 30, avatarY + 30);
-    ag.addColorStop(0, fc.primary);
-    ag.addColorStop(1, fc.secondary);
-    ctx.fillStyle = ag;
-    ctx.fill();
-    ctx.restore();
-
-    // Avatar content — DiceBear is an external SVG that can't be drawn into
-    // the export canvas synchronously, so fall back to initials for both.
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.font = 'bold 22px Courier New, monospace';
-    ctx.fillStyle = '#ffffff';
-    ctx.fillText(initials, cx, avatarY + 1);
-
-    // Name
-    ctx.font = 'bold 28px Segoe UI, sans-serif';
-    ctx.fillStyle = '#f1f5f9';
-    ctx.textBaseline = 'alphabetic';
-    ctx.fillText(name, cx, avatarY + 62);
-
-    // Title
-    ctx.font = '14px Segoe UI, sans-serif';
-    ctx.fillStyle = fc.primary;
-    ctx.fillText(title, cx, avatarY + 84);
-
-    // Skill badges
-    if (skills.length > 0) {
-      const badgeY = avatarY + 118;
-      ctx.font = 'bold 11px Courier New, monospace';
-      const padX = 14;
-      const badgeH = 24;
-      const gap = 8;
-      const widths = skills.map(s => ctx.measureText(s).width + padX * 2);
-      const total = widths.reduce((a, b) => a + b, 0) + (skills.length - 1) * gap;
-      let sx = cx - total / 2;
-      for (let si = 0; si < skills.length; si++) {
-        const bw = widths[si];
-        const by = badgeY - badgeH / 2;
-        ctx.fillStyle = fc.primary + '1a';
-        this.canvasRoundRect(ctx, sx, by, bw, badgeH, 6);
-        ctx.fill();
-        ctx.strokeStyle = fc.primary + '66';
-        ctx.lineWidth = 1;
-        this.canvasRoundRect(ctx, sx, by, bw, badgeH, 6);
-        ctx.stroke();
-        ctx.fillStyle = fc.primary;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(skills[si], sx + bw / 2, badgeY + 1);
-        sx += bw + gap;
-      }
-    }
-
-    // Separator line
-    const sepY = h - 52;
-    const lineGrad = ctx.createLinearGradient(60, sepY, w - 60, sepY);
-    lineGrad.addColorStop(0, 'transparent');
-    lineGrad.addColorStop(0.3, fc.primary + '33');
-    lineGrad.addColorStop(0.7, fc.secondary + '33');
-    lineGrad.addColorStop(1, 'transparent');
-    ctx.strokeStyle = lineGrad;
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.moveTo(60, sepY);
-    ctx.lineTo(w - 60, sepY);
-    ctx.stroke();
-
-    // Watermark
-    ctx.font = '11px Courier New, monospace';
-    ctx.fillStyle = '#334155';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'alphabetic';
-    ctx.fillText('forged on nandan.dev', cx, h - 22);
-
-    // Corner branding
-    ctx.font = 'bold 11px Courier New, monospace';
-    ctx.fillStyle = '#1e293b';
-    ctx.textAlign = 'left';
-    ctx.fillText('<NH/>', 18, h - 14);
-
-    // Download
-    canvas.toBlob(blob => {
-      if (!blob) return;
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      const safeName = name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-      a.download = 'dev-card-' + safeName + '.png';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+    const skillBadges = skills.map((s, i) => {
+      const padX = 12;
+      const charW = 7.2;
+      const w = Math.max(60, s.length * charW + padX * 2);
+      return { text: s, w, i };
     });
+    const totalSkillsW = skillBadges.reduce((sum, b) => sum + b.w, 0) + (skillBadges.length - 1) * 8;
+    let skillX = cx - totalSkillsW / 2;
+    const skillY = 246;
+    const skillsSvg = skillBadges.map(b => {
+      const x = skillX;
+      skillX += b.w + 8;
+      return `
+        <g transform="translate(${x} ${skillY})">
+          <rect width="${b.w}" height="26" rx="6" fill="${c1}" fill-opacity="0.16" stroke="${c1}" stroke-opacity="0.5"/>
+          <text x="${b.w / 2}" y="17" text-anchor="middle"
+                font-family="ui-monospace, 'SF Mono', Menlo, monospace"
+                font-size="11" font-weight="700" fill="${c1}">${this.escapeXml(b.text)}</text>
+        </g>`;
+    }).join('');
+
+    // Avatar — DiceBear is fetched as data URI when chosen so it renders
+    // inside the standalone SVG; otherwise initials.
+    const avatarInner = useDicebear
+      ? `<image href="${this.getDiceBearUrl(name || 'guest')}" x="${cx - 32}" y="80" width="64" height="64" clip-path="circle(32px at 32px 32px)"/>`
+      : `<text x="${cx}" y="124" text-anchor="middle"
+              font-family="ui-monospace, 'SF Mono', Menlo, monospace"
+              font-size="24" font-weight="800" fill="#fff">${this.escapeXml(initials)}</text>`;
+
+    const svg = `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img"
+     aria-label="Holographic dev card for ${this.escapeXml(name)}">
+  <defs>
+    <linearGradient id="linearBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="${c1}" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="${c2}" stop-opacity="0.85"/>
+    </linearGradient>
+    <radialGradient id="radialBg" cx="0.3" cy="0.3" r="0.9">
+      <stop offset="0%" stop-color="${c1}"/>
+      <stop offset="100%" stop-color="${c2}"/>
+    </radialGradient>
+    <linearGradient id="dark" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0a0e1a" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#0a0e1a" stop-opacity="0.85"/>
+    </linearGradient>
+    <linearGradient id="border" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="${c1}"/>
+      <stop offset="100%" stop-color="${c2}"/>
+    </linearGradient>
+    <linearGradient id="glare" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#fff" stop-opacity="0"/>
+      <stop offset="45%" stop-color="#fff" stop-opacity="0.0"/>
+      <stop offset="50%" stop-color="#fff" stop-opacity="0.45"/>
+      <stop offset="55%" stop-color="#fff" stop-opacity="0.0"/>
+      <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="rainbow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%"  stop-color="#ff5fa2" stop-opacity="0.5"/>
+      <stop offset="25%" stop-color="#ffd166" stop-opacity="0.5"/>
+      <stop offset="50%" stop-color="#5af787" stop-opacity="0.5"/>
+      <stop offset="75%" stop-color="#6ad9ff" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#c896ff" stop-opacity="0.5"/>
+    </linearGradient>
+    <linearGradient id="separator" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="${c1}" stop-opacity="0"/>
+      <stop offset="50%" stop-color="${c1}" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="${c2}" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="avatarGrad" cx="0.3" cy="0.3" r="0.8">
+      <stop offset="0%" stop-color="${c1}"/>
+      <stop offset="100%" stop-color="${c2}"/>
+    </radialGradient>
+    <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <clipPath id="cardClip">
+      <rect x="2" y="2" width="${W - 4}" height="${H - 4}" rx="22" ry="22"/>
+    </clipPath>
+  </defs>
+
+  <style><![CDATA[
+    @keyframes tilt {
+      0%, 100% { transform: rotate(-1deg); }
+      50%      { transform: rotate(1deg); }
+    }
+    @keyframes sweep {
+      0%   { transform: translateX(-${W}px) skewX(-18deg); }
+      100% { transform: translateX(${W}px) skewX(-18deg); }
+    }
+    @keyframes shimmer {
+      0%, 100% { opacity: 0.18; }
+      50%      { opacity: 0.32; }
+    }
+    .card-root  { transform-origin: ${cx}px ${H / 2}px; animation: tilt 6s ease-in-out infinite; }
+    .glare-bar  { animation: sweep 4.2s linear infinite; mix-blend-mode: screen; opacity: 0.85; }
+    .rainbow    { animation: shimmer 5s ease-in-out infinite; mix-blend-mode: overlay; }
+    @media (prefers-reduced-motion: reduce) {
+      .card-root, .glare-bar, .rainbow { animation: none; }
+    }
+  ]]></style>
+
+  <g class="card-root">
+    <!-- card body + clip -->
+    <rect x="2" y="2" width="${W - 4}" height="${H - 4}" rx="22" ry="22" fill="${bgFill}"/>
+    ${conicLayer}
+    <g clip-path="url(#cardClip)">
+      <!-- darken the gradient for legibility -->
+      <rect x="0" y="0" width="${W}" height="${H}" fill="url(#dark)"/>
+
+      <!-- holographic rainbow film -->
+      <rect class="rainbow" x="0" y="0" width="${W}" height="${H}" fill="url(#rainbow)"/>
+
+      <!-- subtle grid -->
+      <g stroke="rgba(255,255,255,0.04)" stroke-width="0.5">
+        ${Array.from({ length: Math.floor(W / 30) }, (_, i) =>
+          `<line x1="${i * 30}" y1="0" x2="${i * 30}" y2="${H}"/>`).join('')}
+        ${Array.from({ length: Math.floor(H / 30) }, (_, i) =>
+          `<line x1="0" y1="${i * 30}" x2="${W}" y2="${i * 30}"/>`).join('')}
+      </g>
+
+      <!-- corner brand -->
+      <text x="20" y="${H - 18}" font-family="ui-monospace, 'SF Mono', Menlo, monospace"
+            font-size="11" font-weight="700" fill="rgba(255,255,255,0.35)">&lt;NH/&gt;</text>
+
+      <!-- avatar -->
+      <circle cx="${cx}" cy="112" r="36" fill="url(#avatarGrad)" filter="url(#softGlow)"/>
+      ${avatarInner}
+
+      <!-- name -->
+      <text x="${cx}" y="186" text-anchor="middle"
+            font-family="'Segoe UI', system-ui, sans-serif"
+            font-size="28" font-weight="800" fill="#f8fafc">${this.escapeXml(name)}</text>
+
+      <!-- title -->
+      <text x="${cx}" y="212" text-anchor="middle"
+            font-family="'Segoe UI', system-ui, sans-serif"
+            font-size="14" font-weight="500" fill="#e2e8f0" opacity="0.9">⚔ ${this.escapeXml(title)}</text>
+
+      <!-- skills -->
+      ${skillsSvg}
+
+      <!-- separator -->
+      <line x1="60" y1="${H - 50}" x2="${W - 60}" y2="${H - 50}" stroke="url(#separator)" stroke-width="1"/>
+
+      <!-- watermark -->
+      <text x="${cx}" y="${H - 28}" text-anchor="middle"
+            font-family="ui-monospace, 'SF Mono', Menlo, monospace"
+            font-size="10.5" fill="rgba(255,255,255,0.35)">forged on nandan.dev</text>
+
+      <!-- animated glare sweep -->
+      <rect class="glare-bar" x="-${W}" y="-50" width="220" height="${H + 100}" fill="url(#glare)"/>
+    </g>
+
+    <!-- gradient border -->
+    <rect x="2" y="2" width="${W - 4}" height="${H - 4}" rx="22" ry="22"
+          fill="none" stroke="url(#border)" stroke-width="3"/>
+  </g>
+</svg>`;
+
+    const blob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    const safeName = name.toLowerCase().replace(/[^a-z0-9]+/g, '-') || 'card';
+    a.download = `dev-card-${safeName}.svg`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  private escapeXml(s: string): string {
+    return s
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&apos;');
   }
 
   shareCard(): void {
