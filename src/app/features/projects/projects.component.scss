@@ -1,0 +1,635 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// ════════════════════════════════════════════════════════
+// CASE STUDY REEL
+// Distinct identity: vertical scroll-snapped panels with
+// sticky numbered index, monospace chrome, project-color
+// theming. NOT a card grid, NOT magazine, NOT tabs.
+// ════════════════════════════════════════════════════════
+
+.reel {
+  background: var(--bg-primary);
+  padding: $space-2xl 0 $space-4xl;
+  color: var(--text-primary);
+
+  // ── Header ──
+  &__header {
+    @include container;
+    max-width: 1240px;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: $space-2xl;
+    align-items: end;
+    padding-bottom: $space-xl;
+    border-bottom: 1px solid var(--border);
+
+    @include tablet {
+      grid-template-columns: 1fr;
+      gap: $space-lg;
+    }
+  }
+
+  &__kicker {
+    display: inline-block;
+    font-family: $font-mono;
+    font-size: 0.74rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: $space-md;
+  }
+
+  &__title {
+    font-size: clamp(2.8rem, 7vw, 5.2rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 0.96;
+    margin: 0 0 $space-md;
+
+    &-stroke {
+      -webkit-text-stroke: 2px var(--text-primary);
+      color: transparent;
+      font-style: italic;
+      font-weight: 800;
+    }
+  }
+
+  &__lede {
+    font-size: $fs-md;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    max-width: 560px;
+    margin: 0;
+  }
+
+  &__header-right {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: $space-md;
+
+    @include mobile { gap: $space-sm; }
+  }
+
+  &__stat {
+    display: flex;
+    flex-direction: column;
+    padding: $space-md;
+    border: 1px solid var(--border);
+    border-radius: $radius-md;
+    background: var(--card-bg);
+    text-align: left;
+
+    strong {
+      font-family: $font-heading;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      color: var(--accent);
+    }
+    span {
+      margin-top: 4px;
+      font-family: $font-mono;
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+  }
+
+  // ── Filter bar ──
+  &__filterbar {
+    @include container;
+    max-width: 1240px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-top: $space-lg;
+    padding-bottom: $space-xl;
+    position: sticky;
+    top: 64px;
+    z-index: 5;
+    background: linear-gradient(to bottom, var(--bg-primary) 70%, transparent);
+  }
+
+  &__pill {
+    --pill-color: #{var(--accent)};
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+    font-family: $font-mono;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--pill-color);
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--pill-color) 25%, transparent);
+    }
+    &-n {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      background: var(--bg-secondary);
+      padding: 1px 8px;
+      border-radius: 999px;
+    }
+
+    &:hover { color: var(--text-primary); border-color: var(--pill-color); }
+    &--active {
+      background: var(--pill-color);
+      color: #fff;
+      border-color: var(--pill-color);
+      .reel__pill-dot { background: #fff; box-shadow: none; }
+      .reel__pill-n { background: rgba(255,255,255,0.22); color: #fff; }
+    }
+  }
+
+  // ── Body ──
+  &__body {
+    @include container;
+    max-width: 1240px;
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: $space-2xl;
+
+    @include tablet {
+      grid-template-columns: 1fr;
+      gap: $space-lg;
+    }
+  }
+
+  // ── Sticky index ──
+  &__index {
+    align-self: start;
+    position: sticky;
+    top: 140px;
+    border-left: 2px solid var(--border);
+    padding-left: $space-md;
+
+    @include tablet { display: none; }
+
+    &-head {
+      font-family: $font-mono;
+      font-size: 0.7rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: $space-md;
+    }
+
+    &-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 $space-lg;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    &-item {
+      --idx-color: #{var(--accent)};
+
+      button {
+        display: grid;
+        grid-template-columns: 28px 1fr;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        background: transparent;
+        border: 0;
+        padding: 10px 8px;
+        text-align: left;
+        cursor: pointer;
+        color: var(--text-muted);
+        position: relative;
+        border-radius: 6px;
+        transition: color 0.2s ease, background 0.2s ease;
+
+        &:hover { color: var(--text-primary); background: var(--card-bg); }
+      }
+
+      &--active button {
+        color: var(--text-primary);
+        background: color-mix(in srgb, var(--idx-color) 8%, transparent);
+
+        .reel__index-bar {
+          background: var(--idx-color);
+          width: 3px;
+        }
+      }
+    }
+
+    &-num {
+      font-family: $font-mono;
+      font-size: 0.74rem;
+      color: var(--text-muted);
+    }
+
+    &-name {
+      font-size: 0.86rem;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    &-bar {
+      position: absolute;
+      left: -18px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 0;
+      height: 60%;
+      background: transparent;
+      border-radius: 2px;
+      transition: width 0.3s ease, background 0.3s ease;
+    }
+
+    &-foot {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      font-family: $font-mono;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      padding-top: $space-md;
+      border-top: 1px dashed var(--border);
+
+      &-sep { font-size: 1rem; color: var(--text-muted); font-weight: 400; }
+      span:last-child { color: var(--text-muted); font-weight: 400; }
+    }
+  }
+
+  // ── Stage / panels ──
+  &__stage {
+    display: flex;
+    flex-direction: column;
+    gap: $space-2xl;
+  }
+
+  &__panel {
+    --panel-color: #{var(--accent)};
+    position: relative;
+    border: 1px solid var(--border);
+    border-radius: $radius-xl;
+    padding: clamp($space-lg, 3vw, $space-2xl);
+    background:
+      linear-gradient(135deg,
+        color-mix(in srgb, var(--panel-color) 6%, var(--card-bg)),
+        var(--card-bg) 60%);
+    overflow: hidden;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--panel-color);
+      opacity: 0.85;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: -120px; right: -120px;
+      width: 320px; height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, color-mix(in srgb, var(--panel-color) 22%, transparent), transparent 65%);
+      filter: blur(40px);
+      pointer-events: none;
+    }
+
+    &:hover {
+      border-color: color-mix(in srgb, var(--panel-color) 40%, var(--border));
+      box-shadow: 0 20px 50px color-mix(in srgb, var(--panel-color) 14%, transparent);
+    }
+  }
+
+  &__panel-chrome {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: $space-lg;
+    font-family: $font-mono;
+    font-size: 0.74rem;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  &__panel-num {
+    font-size: 1rem;
+    color: var(--panel-color);
+    font-weight: 800;
+  }
+
+  &__panel-divider {
+    width: 24px;
+    height: 1px;
+    background: var(--border);
+  }
+
+  &__panel-cat {
+    color: var(--panel-color);
+    font-weight: 700;
+  }
+
+  &__panel-feature {
+    margin-left: auto;
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: var(--panel-color);
+    color: #fff;
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+  }
+
+  &__panel-grid {
+    display: grid;
+    grid-template-columns: 1fr 220px;
+    gap: $space-2xl;
+    position: relative;
+
+    @include tablet {
+      grid-template-columns: 1fr;
+      gap: $space-lg;
+    }
+  }
+
+  &__panel-main { position: relative; z-index: 1; }
+
+  &__panel-title {
+    font-family: $font-heading;
+    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    margin: 0;
+  }
+
+  &__panel-client {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 8px 0 $space-md;
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+  }
+
+  &__client-mark {
+    width: 10px; height: 10px;
+    border-radius: 2px;
+    background: var(--panel-color);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--panel-color) 20%, transparent);
+  }
+
+  &__panel-desc {
+    font-size: $fs-md;
+    line-height: 1.6;
+    color: var(--text-primary);
+    margin: 0 0 $space-lg;
+    max-width: 640px;
+  }
+
+  // Metric chips (extracted from highlights)
+  &__metrics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: $space-lg;
+    padding: $space-md;
+    background: color-mix(in srgb, var(--panel-color) 5%, var(--bg-secondary));
+    border-left: 3px solid var(--panel-color);
+    border-radius: 0 $radius-md $radius-md 0;
+  }
+
+  &__metric {
+    display: flex;
+    flex-direction: column;
+    min-width: 80px;
+
+    strong {
+      font-family: $font-heading;
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      color: var(--panel-color);
+    }
+    span {
+      margin-top: 4px;
+      font-family: $font-mono;
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+  }
+
+  &__panel-h3 {
+    font-family: $font-mono;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin: 0 0 $space-sm;
+  }
+
+  &__highlights {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 $space-lg;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    li {
+      display: grid;
+      grid-template-columns: 32px 1fr;
+      gap: 12px;
+      align-items: start;
+      padding: 8px 0;
+      border-bottom: 1px dashed var(--border);
+      transition: padding-left 0.2s ease;
+
+      &:hover { padding-left: 6px; }
+      &:last-child { border-bottom: 0; }
+    }
+  }
+
+  &__h-num {
+    font-family: $font-mono;
+    font-size: 0.78rem;
+    color: var(--panel-color);
+    font-weight: 700;
+    padding-top: 2px;
+  }
+
+  &__h-text {
+    font-size: 0.94rem;
+    line-height: 1.55;
+    color: var(--text-primary);
+  }
+
+  // Action buttons
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: $space-md;
+  }
+
+  &__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-family: $font-mono;
+    font-size: 0.86rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.25s ease;
+
+    &--solid {
+      background: var(--panel-color);
+      color: #fff;
+      box-shadow: 0 6px 20px color-mix(in srgb, var(--panel-color) 35%, transparent);
+      &:hover { transform: translateY(-2px); box-shadow: 0 10px 28px color-mix(in srgb, var(--panel-color) 50%, transparent); }
+    }
+    &--ghost {
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      background: var(--card-bg);
+      &:hover { border-color: var(--panel-color); color: var(--panel-color); }
+    }
+  }
+
+  // ── Vertical stack ribbon ──
+  &__ribbon {
+    position: relative;
+    z-index: 1;
+    border-left: 2px dashed color-mix(in srgb, var(--panel-color) 40%, var(--border));
+    padding-left: $space-md;
+
+    @include tablet {
+      border-left: 0;
+      border-top: 2px dashed color-mix(in srgb, var(--panel-color) 40%, var(--border));
+      padding-left: 0;
+      padding-top: $space-md;
+    }
+
+    &-label {
+      font-family: $font-mono;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--panel-color);
+      font-weight: 700;
+      margin-bottom: $space-md;
+    }
+
+    &-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 $space-md;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+
+      @include tablet {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+    }
+
+    &-chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-family: $font-mono;
+      color: var(--text-primary);
+      animation: ribbonSlide 0.5s ease both;
+      animation-delay: var(--delay, 0ms);
+      transition: all 0.2s ease;
+
+      &:hover {
+        border-color: var(--panel-color);
+        color: var(--panel-color);
+        transform: translateX(3px);
+        @include tablet { transform: translateY(-2px); }
+      }
+    }
+
+    &-tick {
+      color: var(--panel-color);
+      font-size: 0.7rem;
+    }
+
+    &-foot {
+      font-family: $font-mono;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+    }
+  }
+
+  // ── Inter-panel divider ──
+  &__panel-end {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: $space-2xl;
+    font-family: $font-mono;
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+
+    span:nth-child(1), span:nth-child(3) {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+  }
+
+  &__empty {
+    text-align: center;
+    padding: $space-2xl;
+    color: var(--text-secondary);
+    font-family: $font-mono;
+    font-size: 0.9rem;
+
+    button {
+      display: inline-block;
+      margin-top: $space-md;
+      padding: 8px 16px;
+      background: var(--accent);
+      color: #fff;
+      border: 0;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+  }
+}
+
+@keyframes ribbonSlide {
+  from { opacity: 0; transform: translateX(-8px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
