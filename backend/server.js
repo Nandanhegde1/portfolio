@@ -54,6 +54,7 @@ app.use('/api/chat',       require('./routes/chat'));
 app.use('/api/roast',      require('./routes/roast'));
 app.use('/api/contact',    require('./routes/contact'));
 app.use('/api/guestbook',  require('./routes/guestbook'));
+app.use('/api/blog',       require('./routes/blog'));
 app.use('/api/recruiter',  require('./routes/recruiter'));
 app.use('/api/interviews', require('./routes/interviews'));
 app.use('/api/spotify',    require('./routes/spotify'));

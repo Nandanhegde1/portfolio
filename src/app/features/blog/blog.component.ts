@@ -1,6 +1,8 @@
 import { Component, ChangeDetectionStrategy, signal, computed, inject, HostListener, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { BlogCommentsService, COMMENT_REACTIONS, CommentReaction } from './blog-comments.service';
 
 interface Post {
   slug: string;
@@ -18,7 +20,7 @@ interface Post {
 @Component({
   selector: 'app-blog',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, FormsModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (activePost(); as post) {
@@ -71,6 +73,98 @@ interface Post {
             <span>{{ formatDate(post.date) }}</span>
           </div>
         </div>
+
+        <!-- ── COMMENTS ── -->
+        <section class="comments" aria-label="Reader comments">
+          <header class="comments__head">
+            <h2 class="comments__title">
+              Discussion
+              <span class="comments__count">{{ comments.comments().length }}</span>
+            </h2>
+            <p class="comments__sub">
+              Push back, ask a question, or leave a note. Markdown is off — keep it short and human.
+            </p>
+          </header>
+
+          <form class="comments__form" (submit)="submitComment(post.slug); $event.preventDefault()">
+            <div class="comments__form-row">
+              <input
+                class="comments__input"
+                type="text"
+                placeholder="Your name"
+                maxlength="60"
+                required
+                [ngModel]="commentName()"
+                (ngModelChange)="commentName.set($event)"
+                name="name"
+                autocomplete="name"
+              />
+              <span class="comments__hint">Stays on this device · 2-60 chars</span>
+            </div>
+            <textarea
+              class="comments__textarea"
+              placeholder="Share a thought…"
+              maxlength="800"
+              required
+              rows="3"
+              [ngModel]="commentBody()"
+              (ngModelChange)="commentBody.set($event)"
+              name="body"
+            ></textarea>
+            <div class="comments__form-foot">
+              <span class="comments__counter">{{ commentBody().length }} / 800</span>
+              @if (comments.error(); as e) {
+                <span class="comments__error">{{ e }}</span>
+              }
+              <button
+                type="submit"
+                class="comments__submit"
+                [disabled]="comments.posting() || commentBody().trim().length < 2 || commentName().trim().length < 2"
+              >
+                {{ comments.posting() ? 'Posting…' : 'Post comment' }}
+              </button>
+            </div>
+          </form>
+
+          @if (comments.loading()) {
+            <p class="comments__empty">Loading discussion…</p>
+          } @else if (comments.comments().length === 0) {
+            <p class="comments__empty">No comments yet. Be the first to weigh in.</p>
+          } @else {
+            <ul class="comments__list">
+              @for (c of comments.comments(); track c.id) {
+                <li class="comments__item">
+                  <div class="comments__item-head">
+                    <span class="comments__avatar" [style.background]="avatarColor(c.name)">
+                      {{ initials(c.name) }}
+                    </span>
+                    <div>
+                      <strong class="comments__name">{{ c.name }}</strong>
+                      <span class="comments__when">{{ timeAgo(c.created_at) }}</span>
+                    </div>
+                  </div>
+                  <p class="comments__body">{{ c.body }}</p>
+                  <div class="comments__reactions">
+                    @for (r of reactionList; track r) {
+                      <button
+                        type="button"
+                        class="comments__react"
+                        [class.comments__react--active]="(c.reactions[r] || 0) > 0"
+                        (click)="reactToComment(c.id, r)"
+                        [attr.aria-label]="'React with ' + r"
+                      >
+                        <span>{{ r }}</span>
+                        @if ((c.reactions[r] || 0) > 0) {
+                          <span class="comments__react-count">{{ c.reactions[r] }}</span>
+                        }
+                      </button>
+                    }
+                  </div>
+                </li>
+              }
+            </ul>
+          }
+        </section>
 
         <nav class="reader__pager" aria-label="Article navigation">
           @if (prevPost(); as p) {
@@ -212,7 +306,12 @@ export class BlogComponent implements OnInit, OnDestroy {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly title = inject(Title);
+  readonly comments = inject(BlogCommentsService);
   private readonly defaultTitle = 'Blog | Nandan Hegde';
+
+  readonly reactionList = COMMENT_REACTIONS;
+  readonly commentName = signal<string>('');
+  readonly commentBody = signal<string>('');
 
   readonly today = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
   readonly currentIssue = signal(1);
@@ -390,6 +489,9 @@ export class BlogComponent implements OnInit, OnDestroy {
       if (slug && this.posts.some(p => p.slug === slug)) {
         this.activeSlug.set(slug);
         this.title.setTitle(`${this.posts.find(p => p.slug === slug)!.title} | Nandan Hegde`);
+        this.comments.loadFor(slug);
+        this.commentName.set(this.comments.rememberedName());
+        this.commentBody.set('');
         queueMicrotask(() => window.scrollTo({ top: 0, behavior: 'auto' }));
       } else {
         this.activeSlug.set(null);
@@ -436,6 +538,45 @@ export class BlogComponent implements OnInit, OnDestroy {
   }
 
   formatDate(iso: string): string {
+    return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
+  // ── Comments helpers ──
+  submitComment(slug: string): void {
+    this.comments.add(slug, this.commentName(), this.commentBody())
+      .then(() => this.commentBody.set(''))
+      .catch(() => { /* error already surfaced via service signal */ });
+  }
+
+  reactToComment(id: string, emoji: CommentReaction): void {
+    this.comments.react(id, emoji);
+  }
+
+  initials(name: string): string {
+    const parts = name.trim().split(/\s+/);
+    const first = parts[0]?.[0] || '?';
+    const last = parts.length > 1 ? parts[parts.length - 1][0] : '';
+    return (first + last).toUpperCase();
+  }
+
+  // Stable hue per name — same person always gets the same avatar color.
+  avatarColor(name: string): string {
+    let h = 0;
+    for (const ch of name) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+    const hue = h % 360;
+    return `linear-gradient(135deg, hsl(${hue} 70% 55%), hsl(${(hue + 40) % 360} 75% 45%))`;
+  }
+
+  timeAgo(iso: string): string {
+    const diff = Date.now() - new Date(iso).getTime();
+    const s = Math.floor(diff / 1000);
+    if (s < 60) return 'just now';
+    const m = Math.floor(s / 60);
+    if (m < 60) return `${m}m ago`;
+    const h = Math.floor(m / 60);
+    if (h < 24) return `${h}h ago`;
+    const d = Math.floor(h / 24);
+    if (d < 30) return `${d}d ago`;
     return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   }
 }

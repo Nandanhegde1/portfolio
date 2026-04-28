@@ -590,15 +590,24 @@
   &__node {
     cursor: pointer;
     --node-c: var(--accent);
-    transition: transform 0.25s ease;
 
-    &:hover, &:focus { outline: none; transform: translateY(-2px); }
+    // NOTE: do NOT apply CSS `transform` to the <g> — it overrides the SVG
+    // transform="translate(x y)" attribute and snaps the node to (-2px,0).
+    // Hover effects live on child shapes only.
+    &:focus { outline: none; }
 
     .topo__node-bg {
       fill: var(--bg-secondary);
       stroke: var(--border);
       stroke-width: 1.5;
-      transition: all 0.3s ease;
+      transition: fill 0.3s ease, stroke 0.3s ease, stroke-width 0.3s ease, filter 0.3s ease;
+    }
+
+    &:hover .topo__node-bg,
+    &:focus-visible .topo__node-bg {
+      stroke: var(--node-c);
+      stroke-width: 2.4;
+      filter: drop-shadow(0 0 14px color-mix(in srgb, var(--node-c) 60%, transparent));
     }
     .topo__node-ring {
       fill: none;
