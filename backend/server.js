@@ -558,6 +558,6 @@ app.get('/api/admin/roast-logs', async (req, res) => {
   res.json(data || []);
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Portfolio API running on port ${PORT}`);
 });
