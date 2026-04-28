@@ -1,128 +1,128 @@
 {
-    "common":  {
-                   "loading":  "Cargandoâ€¦",
-                   "error":  "Algo saliÃ³ mal",
-                   "retry":  "Reintentar",
-                   "submit":  "Enviar",
-                   "cancel":  "Cancelar",
-                   "close":  "Cerrar",
-                   "save":  "Guardar",
-                   "send":  "Enviar",
-                   "search":  "Buscar",
-                   "more":  "MÃ¡s",
-                   "back":  "AtrÃ¡s",
-                   "next":  "Siguiente",
-                   "prev":  "Anterior",
-                   "viewAll":  "Ver todo",
-                   "comingSoon":  "PrÃ³ximamente"
-               },
-    "lang":  {
-                 "label":  "Idioma",
-                 "switchTo":  "Cambiar a {{lang}}"
-             },
-    "nav":  {
-                "home":  "Inicio",
-                "about":  "Acerca",
-                "dashboard":  "Panel",
-                "blog":  "Blog",
-                "underTheHood":  "Bajo el CapÃ³",
-                "play":  "Jugar",
-                "guestbook":  "Libro de Visitas",
-                "contact":  "Contacto",
-                "menu":  "MenÃº",
-                "openMenu":  "Abrir menÃº",
-                "closeMenu":  "Cerrar menÃº",
-                "openToWork":  "Abierto a propuestas",
-                "theme":  {
-                              "switchToLight":  "Cambiar a tema claro",
-                              "switchToDark":  "Cambiar a tema oscuro"
-                          }
-            },
-    "footer":  {
-                   "tagline":  "Construyendo la web, un componente a la vez.",
-                   "viewSource":  "Ver CÃ³digo",
-                   "github":  "Perfil de GitHub",
-                   "linkedin":  "Conectar en LinkedIn",
-                   "email":  "EnvÃ­ame un correo",
-                   "copyright":  "Â© {{year}} Nandan Hegde. Hecho con Angular 19.",
-                   "lastDeploy":  "Ãšltimo despliegue: {{date}}",
-                   "konami":  "Â¡KONAMI DESBLOQUEADO! +1 Stack Overflow rep Â· Prueba el comando",
-                   "language":  "Idioma"
-               },
-    "home":  {
-                 "hero":  {
-                              "greeting":  "Hola, soy Nandan",
-                              "role":  "Ingeniero full-stack Â· Especialista en Angular",
-                              "lede":  "Construyo apps web rÃ¡pidas, accesibles y bellamente diseÃ±adas.",
-                              "ctaProjects":  "Ver proyectos",
-                              "ctaContact":  "ContÃ¡ctame"
-                          }
-             },
-    "contact":  {
-                    "title":  "Construyamos algo",
-                    "lede":  "EscrÃ­beme. Leo todo lo que llega aquÃ­.",
-                    "name":  "Tu nombre",
-                    "email":  "Correo",
-                    "subject":  "Asunto",
-                    "message":  "Mensaje",
-                    "send":  "Enviar mensaje",
-                    "sending":  "Enviandoâ€¦",
-                    "sent":  "Gracias â€” te responderÃ© pronto.",
-                    "errorRequired":  "Este campo es obligatorio",
-                    "errorEmail":  "Ingresa un correo vÃ¡lido"
-                },
-    "blog":  {
-                 "title":  "Blog",
-                 "lede":  "Notas sobre ingenierÃ­a, side-projects y alguna que otra queja.",
-                 "readMore":  "Leer mÃ¡s",
-                 "minRead":  "{{n}} min de lectura",
-                 "comments":  {
-                                  "title":  "Comentarios",
-                                  "empty":  "SÃ© el primero en dejar un pensamiento.",
-                                  "name":  "Tu nombre",
-                                  "body":  "Comparte un pensamientoâ€¦",
-                                  "submit":  "Publicar comentario",
-                                  "remember":  "Recordaremos tu nombre en este dispositivo.",
-                                  "rateLimited":  "Demasiados comentarios â€” vuelve a intentarlo en unos minutos.",
-                                  "react":  "Reaccionar"
-                              }
-             },
-    "dashboard":  {
-                      "title":  "Panel en Vivo",
-                      "lede":  "MÃ©tricas reales de sistemas reales. Sin nÃºmeros de vanidad.",
-                      "github":  "Actividad de GitHub",
-                      "coding":  "EstadÃ­sticas de programaciÃ³n",
-                      "skills":  "Habilidades",
-                      "visitors":  "Visitantes",
-                      "blogAnalytics":  "AnalÃ­tica del blog"
-                  },
-    "underTheHood":  {
-                         "title":  "Bajo el CapÃ³",
-                         "lede":  "CÃ³mo estÃ¡ construido este portafolio â€” diagrama interactivo, mÃ©tricas reales y las decisiones detrÃ¡s de cada elecciÃ³n.",
-                         "tabs":  {
-                                      "architecture":  "Arquitectura",
-                                      "metrics":  "MÃ©tricas",
-                                      "decisions":  "Decisiones"
-                                  }
-                     },
-    "guestbook":  {
-                      "title":  "Libro de Visitas",
-                      "lede":  "Deja tu huella. Solo notas amigables."
-                  },
-    "hero":  {
-                 "greeting":  {
-                                  "morning":  "Buenos días, te has levantado temprano.",
-                                  "afternoon":  "Buenas tardes. Me alegra que estés aquí.",
-                                  "evening":  "¡Buenas noches! Bienvenido.",
-                                  "night":  "¿Trabajando hasta tarde? Igual.",
-                                  "late":  "Es tarde. ¿Café?"
-                              },
-                 "suffix":  "soy",
-                 "aboutMe":  "Sobre mí",
-                 "getInTouch":  "Contáctame",
-                 "resume":  "CV",
-                 "shipping":  "Trabajando en",
-                 "updated":  "actualizado",
-                 "scroll":  "Desplázate"
-             }
+  "common": {
+    "loading": "Cargando…",
+    "error": "Algo salió mal",
+    "retry": "Reintentar",
+    "submit": "Enviar",
+    "cancel": "Cancelar",
+    "close": "Cerrar",
+    "save": "Guardar",
+    "send": "Enviar",
+    "search": "Buscar",
+    "more": "Más",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "prev": "Anterior",
+    "viewAll": "Ver todo",
+    "comingSoon": "Próximamente"
+  },
+  "lang": {
+    "label": "Idioma",
+    "switchTo": "Cambiar a {{lang}}"
+  },
+  "nav": {
+    "home": "Inicio",
+    "about": "Acerca",
+    "dashboard": "Panel",
+    "blog": "Blog",
+    "underTheHood": "Bajo el Capó",
+    "play": "Jugar",
+    "guestbook": "Libro de Visitas",
+    "contact": "Contacto",
+    "menu": "Menú",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú",
+    "openToWork": "Abierto a propuestas",
+    "theme": {
+      "switchToLight": "Cambiar a tema claro",
+      "switchToDark": "Cambiar a tema oscuro"
+    }
+  },
+  "footer": {
+    "tagline": "Construyendo la web, un componente a la vez.",
+    "viewSource": "Ver Código",
+    "github": "Perfil de GitHub",
+    "linkedin": "Conectar en LinkedIn",
+    "email": "Envíame un correo",
+    "copyright": "© {{year}} Nandan Hegde. Hecho con Angular 19.",
+    "lastDeploy": "Último despliegue: {{date}}",
+    "konami": "¡KONAMI DESBLOQUEADO! +1 Stack Overflow rep · Prueba el comando",
+    "language": "Idioma"
+  },
+  "hero": {
+    "greeting": {
+      "morning": "Buenos días, te has levantado temprano.",
+      "afternoon": "Buenas tardes. Me alegra que estés aquí.",
+      "evening": "¡Buenas noches! Bienvenido.",
+      "night": "¿Trabajando hasta tarde? Igual.",
+      "late": "Es tarde. ¿Café?"
+    },
+    "suffix": "soy",
+    "aboutMe": "Sobre mí",
+    "getInTouch": "Contáctame",
+    "resume": "CV",
+    "shipping": "Trabajando en",
+    "updated": "actualizado",
+    "scroll": "Desplázate"
+  },
+  "home": {
+    "hero": {
+      "greeting": "Hola, soy Nandan",
+      "role": "Ingeniero full-stack · Especialista en Angular",
+      "lede": "Construyo apps web rápidas, accesibles y bellamente diseñadas.",
+      "ctaProjects": "Ver proyectos",
+      "ctaContact": "Contáctame"
+    }
+  },
+  "contact": {
+    "title": "Construyamos algo",
+    "lede": "Escríbeme. Leo todo lo que llega aquí.",
+    "name": "Tu nombre",
+    "email": "Correo",
+    "subject": "Asunto",
+    "message": "Mensaje",
+    "send": "Enviar mensaje",
+    "sending": "Enviando…",
+    "sent": "Gracias — te responderé pronto.",
+    "errorRequired": "Este campo es obligatorio",
+    "errorEmail": "Ingresa un correo válido"
+  },
+  "blog": {
+    "title": "Blog",
+    "lede": "Notas sobre ingeniería, side-projects y alguna que otra queja.",
+    "readMore": "Leer más",
+    "minRead": "{{n}} min de lectura",
+    "comments": {
+      "title": "Comentarios",
+      "empty": "Sé el primero en dejar un pensamiento.",
+      "name": "Tu nombre",
+      "body": "Comparte un pensamiento…",
+      "submit": "Publicar comentario",
+      "remember": "Recordaremos tu nombre en este dispositivo.",
+      "rateLimited": "Demasiados comentarios — vuelve a intentarlo en unos minutos.",
+      "react": "Reaccionar"
+    }
+  },
+  "dashboard": {
+    "title": "Panel en Vivo",
+    "lede": "Métricas reales de sistemas reales. Sin números de vanidad.",
+    "github": "Actividad de GitHub",
+    "coding": "Estadísticas de programación",
+    "skills": "Habilidades",
+    "visitors": "Visitantes",
+    "blogAnalytics": "Analítica del blog"
+  },
+  "underTheHood": {
+    "title": "Bajo el Capó",
+    "lede": "Cómo está construido este portafolio — diagrama interactivo, métricas reales y las decisiones detrás de cada elección.",
+    "tabs": {
+      "architecture": "Arquitectura",
+      "metrics": "Métricas",
+      "decisions": "Decisiones"
+    }
+  },
+  "guestbook": {
+    "title": "Libro de Visitas",
+    "lede": "Deja tu huella. Solo notas amigables."
+  }
 }
