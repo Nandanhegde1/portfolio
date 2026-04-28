@@ -1,278 +1,299 @@
-import {
-  Component,
-  ChangeDetectionStrategy,
-  signal,
-  OnInit,
-  OnDestroy,
-} from '@angular/core';
-import { AnimatedCounterComponent } from '../../shared/components';
-import { ScrollRevealDirective } from '../../shared/directives/scroll-reveal.directive';
+import { Component, ChangeDetectionStrategy, signal, computed } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
-interface TechCard {
-  icon: string;
-  name: string;
-  tagline: string;
-  why: string;
-  details: string[];
+interface Post {
+  slug: string;
+  title: string;
+  dek: string;
+  body: string;
+  tag: 'Engineering' | 'Design' | 'Career' | 'Tooling' | 'Notes';
+  readMin: number;
+  date: string;
+  pullQuote?: string;
+  cover?: string;
+  featured?: boolean;
 }
 
 @Component({
   selector: 'app-blog',
   standalone: true,
-  imports: [AnimatedCounterComponent, ScrollRevealDirective],
+  imports: [RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <section class="built">
-      <div class="built__container">
-        <div class="built__header" appScrollReveal>
-          <span class="built__tag">// view-source</span>
-          <h1 class="built__title">Under the Hood</h1>
-          <p class="built__subtitle">How this portfolio was engineered — from concept to deploy.</p>
+    <section class="journal">
+      <header class="journal__masthead">
+        <div class="journal__masthead-row">
+          <span class="journal__masthead-issue">Vol. 01 &middot; Issue {{ currentIssue() }}</span>
+          <span class="journal__masthead-date">{{ today }}</span>
         </div>
-
-        <div class="built__terminal" appScrollReveal>
-          <div class="built__terminal-header">
-            <span class="built__terminal-dot built__terminal-dot--red"></span>
-            <span class="built__terminal-dot built__terminal-dot--yellow"></span>
-            <span class="built__terminal-dot built__terminal-dot--green"></span>
-            <span class="built__terminal-title">portfolio — build</span>
-          </div>
-          <div class="built__terminal-body">
-            @for (line of terminalLines(); track $index) {
-              <div
-                class="built__terminal-line"
-                [class.built__terminal-line--cmd]="line.startsWith('$')"
-                [class.built__terminal-line--success]="line.startsWith(successChar)"
-                [class.built__terminal-line--info]="line.startsWith(boltChar) || line.startsWith(rocketChar)"
-              >{{ line }}</div>
-            }
-            @if (terminalDone()) {
-              <div class="built__terminal-cursor"></div>
-            }
-          </div>
+        <h1 class="journal__masthead-title">
+          Field <em>Notes</em>
+        </h1>
+        <p class="journal__masthead-tagline">
+          Long-form writing on Angular, performance, design systems, and the craft of shipping software.
+        </p>
+        <div class="journal__masthead-rule" aria-hidden="true">
+          <span></span><span></span><span></span>
         </div>
+      </header>
 
-        <div class="built__stats" appScrollReveal [delay]="200">
-          <h3 class="built__section-title">By the Numbers</h3>
-          <div class="built__stats-grid">
-            @for (stat of buildStats; track stat.label) {
-              <div class="built__stat-card">
-                <span class="built__stat-icon">{{ stat.icon }}</span>
-                <div class="built__stat-value">
-                  <app-animated-counter [targetValue]="stat.value" size="sm" />
-                  @if (stat.suffix) {
-                    <span class="built__stat-suffix">{{ stat.suffix }}</span>
-                  }
-                </div>
-                <span class="built__stat-label">{{ stat.label }}</span>
+      <div class="journal__inner">
+        @if (featured(); as f) {
+          <a [routerLink]="[]" (click)="open(f.slug); $event.preventDefault()" class="journal__cover">
+            <div class="journal__cover-art" aria-hidden="true">
+              <span class="journal__cover-glyph">{{ f.cover }}</span>
+              <span class="journal__cover-blob journal__cover-blob--a"></span>
+              <span class="journal__cover-blob journal__cover-blob--b"></span>
+              <span class="journal__cover-blob journal__cover-blob--c"></span>
+              <span class="journal__cover-grain"></span>
+            </div>
+            <div class="journal__cover-content">
+              <div class="journal__chips">
+                <span class="journal__chip journal__chip--feature">Feature</span>
+                <span class="journal__chip">{{ f.tag }}</span>
+                <span class="journal__chip journal__chip--ghost">{{ f.readMin }} min read</span>
               </div>
-            }
-          </div>
-        </div>
-
-        <div class="built__stack" appScrollReveal [delay]="300">
-          <h3 class="built__section-title">The Stack</h3>
-          <div class="built__stack-grid">
-            @for (tech of techStack; track tech.name; let i = $index) {
-              <div
-                class="built__tech-card"
-                [class.built__tech-card--expanded]="expandedTech() === i"
-                (click)="toggleTech(i)"
-              >
-                <div class="built__tech-header">
-                  <span class="built__tech-icon">{{ tech.icon }}</span>
-                  <div class="built__tech-info">
-                    <h4 class="built__tech-name">{{ tech.name }}</h4>
-                    <p class="built__tech-tagline">{{ tech.tagline }}</p>
-                  </div>
-                  <span class="built__tech-toggle">{{ expandedTech() === i ? '−' : '+' }}</span>
+              <h2 class="journal__cover-title">{{ f.title }}</h2>
+              <p class="journal__cover-dek">{{ f.dek }}</p>
+              <div class="journal__byline">
+                <span class="journal__byline-avatar">NH</span>
+                <div>
+                  <strong>Nandan Hegde</strong>
+                  <span>{{ formatDate(f.date) }}</span>
                 </div>
-                @if (expandedTech() === i) {
-                  <div class="built__tech-details">
-                    <p class="built__tech-why">{{ tech.why }}</p>
-                    <div class="built__tech-features">
-                      @for (detail of tech.details; track detail) {
-                        <span class="built__tech-feature">{{ detail }}</span>
-                      }
-                    </div>
-                  </div>
+              </div>
+              @if (f.pullQuote) {
+                <blockquote class="journal__cover-pull">
+                  <span aria-hidden="true">&ldquo;</span>{{ f.pullQuote }}<span aria-hidden="true">&rdquo;</span>
+                </blockquote>
+              }
+              <span class="journal__cover-cta">Read the feature &rarr;</span>
+            </div>
+          </a>
+        }
+
+        <div class="journal__body">
+          <main class="journal__archive">
+            <div class="journal__archive-head">
+              <h3>In this issue</h3>
+              <div class="journal__filters" role="tablist">
+                <button
+                  class="journal__filter"
+                  [class.journal__filter--active]="filter() === 'all'"
+                  (click)="filter.set('all')"
+                  role="tab"
+                >All</button>
+                @for (t of tags; track t) {
+                  <button
+                    class="journal__filter"
+                    [class.journal__filter--active]="filter() === t"
+                    (click)="filter.set(t)"
+                    role="tab"
+                  >{{ t }}</button>
                 }
               </div>
-            }
-          </div>
-        </div>
+            </div>
 
-        <div class="built__decisions" appScrollReveal [delay]="400">
-          <h3 class="built__section-title">Design Decisions</h3>
-          <div class="built__decisions-grid">
-            @for (d of decisions; track d.question) {
-              <div class="built__decision-card">
-                <h4 class="built__decision-q">{{ d.question }}</h4>
-                <p class="built__decision-a">{{ d.answer }}</p>
-              </div>
-            }
-          </div>
-        </div>
+            <ol class="journal__list">
+              @for (p of visible(); track p.slug; let i = $index) {
+                <li class="journal__entry" [class.journal__entry--open]="opened() === p.slug">
+                  <button class="journal__entry-head" (click)="open(p.slug)" [attr.aria-expanded]="opened() === p.slug">
+                    <span class="journal__entry-num">{{ pad(i + 1) }}</span>
+                    <div class="journal__entry-meta">
+                      <h4 class="journal__entry-title">{{ p.title }}</h4>
+                      <p class="journal__entry-dek">{{ p.dek }}</p>
+                      <div class="journal__entry-row">
+                        <span class="journal__chip journal__chip--sm">{{ p.tag }}</span>
+                        <span class="journal__entry-dot">&middot;</span>
+                        <span>{{ p.readMin }} min</span>
+                        <span class="journal__entry-dot">&middot;</span>
+                        <time>{{ formatDate(p.date) }}</time>
+                      </div>
+                    </div>
+                    <span class="journal__entry-toggle" aria-hidden="true">{{ opened() === p.slug ? '−' : '+' }}</span>
+                  </button>
+                  @if (opened() === p.slug) {
+                    <div class="journal__entry-body">
+                      <p>{{ p.body }}</p>
+                      @if (p.pullQuote) {
+                        <blockquote>{{ p.pullQuote }}</blockquote>
+                      }
+                      <div class="journal__entry-footer">
+                        <span>Filed under <em>{{ p.tag }}</em></span>
+                        <span>&mdash;</span>
+                        <span>{{ p.readMin }} min read</span>
+                      </div>
+                    </div>
+                  }
+                </li>
+              }
+            </ol>
+          </main>
 
-        <div class="built__colophon" appScrollReveal [delay]="500">
-          <h3 class="built__section-title">Colophon</h3>
-          <div class="built__colophon-grid">
-            @for (item of colophon; track item.key) {
-              <div class="built__colophon-item">
-                <span class="built__colophon-key">{{ item.key }}</span>
-                <span class="built__colophon-val">{{ item.val }}</span>
+          <aside class="journal__rail">
+            <section class="journal__rail-card">
+              <h5 class="journal__rail-title">About this notebook</h5>
+              <p>
+                Written in plain text, shipped as Angular components. No CMS, no markdown plugin —
+                each post is a typed object so the build catches typos at compile time.
+              </p>
+              <p class="journal__rail-meta">
+                <span>{{ posts.length }} posts</span>
+                <span>&middot;</span>
+                <span>{{ totalMinutes() }} min total</span>
+              </p>
+            </section>
+
+            <section class="journal__rail-card journal__rail-card--accent">
+              <h5 class="journal__rail-title">Categories</h5>
+              <ul class="journal__rail-tags">
+                @for (t of tagCounts(); track t.tag) {
+                  <li>
+                    <button (click)="filter.set(t.tag)">
+                      <span>{{ t.tag }}</span>
+                      <span class="journal__rail-tag-n">{{ t.count }}</span>
+                    </button>
+                  </li>
+                }
+              </ul>
+            </section>
+
+            <section class="journal__rail-card">
+              <h5 class="journal__rail-title">Subscribe</h5>
+              <p>RSS &amp; weekly digest are coming soon. For now, the best way to follow along:</p>
+              <div class="journal__rail-links">
+                <a href="https://github.com/Nandanhegde1" target="_blank" rel="noopener">GitHub &rarr;</a>
+                <a href="https://www.linkedin.com/in/nandan-hegde-3a7370166/" target="_blank" rel="noopener">LinkedIn &rarr;</a>
+                <a routerLink="/contact">Email me &rarr;</a>
               </div>
-            }
-          </div>
+            </section>
+
+            <section class="journal__rail-card journal__rail-card--colophon">
+              <h5 class="journal__rail-title">Colophon</h5>
+              <dl>
+                <dt>Set in</dt>
+                <dd>Space Grotesk &middot; Inter</dd>
+                <dt>Built with</dt>
+                <dd>Angular 19 &middot; SCSS</dd>
+                <dt>Updated</dt>
+                <dd>{{ today }}</dd>
+              </dl>
+            </section>
+          </aside>
         </div>
       </div>
     </section>
   `,
   styleUrl: './blog.component.scss',
 })
-export class BlogComponent implements OnInit, OnDestroy {
-  readonly terminalLines = signal<string[]>([]);
-  readonly terminalDone = signal(false);
-  readonly expandedTech = signal<number | null>(null);
+export class BlogComponent {
+  readonly today = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  readonly currentIssue = signal(1);
+  readonly opened = signal<string | null>(null);
+  readonly filter = signal<'all' | Post['tag']>('all');
 
-  // These avoid inline emoji in template expressions which can cause encoding issues
-  readonly successChar = '\u2713';
-  readonly boltChar = '\u26A1';
-  readonly rocketChar = '\uD83D\uDE80';
+  readonly tags: Post['tag'][] = ['Engineering', 'Design', 'Career', 'Tooling', 'Notes'];
 
-  private terminalTimer: ReturnType<typeof setTimeout> | null = null;
-
-  readonly buildStats = [
-    { value: 25, suffix: '+', label: 'Components', icon: '\uD83E\uDDE9' },
-    { value: 8, suffix: '', label: 'Services', icon: '\u2699\uFE0F' },
-    { value: 5, suffix: '', label: 'Themes', icon: '\uD83C\uDFA8' },
-    { value: 2000, suffix: '+', label: 'Lines of SCSS', icon: '\uD83D\uDC85' },
-    { value: 15, suffix: '+', label: 'Terminal Cmds', icon: '\u2328\uFE0F' },
-    { value: 1, suffix: '', label: 'AI Chatbot', icon: '\uD83E\uDD16' },
-  ];
-
-  readonly techStack: TechCard[] = [
+  readonly posts: Post[] = [
     {
-      icon: '\uD83C\uDD70\uFE0F',
-      name: 'Angular 19',
-      tagline: 'The framework that powers everything',
-      why: 'Standalone components, signals, and the new control flow syntax make Angular 19 the most productive framework for building complex SPAs. Type-safe, fast, and SSR-ready.',
-      details: ['Standalone components', 'Signal-based state', '@if/@for/@defer', 'OnPush change detection', 'Lazy-loaded routes'],
+      slug: 'shipping-portfolio-without-a-cms',
+      title: 'Shipping a portfolio without a CMS',
+      dek: 'Why I picked typed Angular objects over Contentful, Sanity, or a markdown loader — and what I gave up.',
+      body: 'I kept replacing the blog tooling: first markdown files in src/assets, then a headless CMS, then back to markdown. Eventually I noticed the pattern — I was avoiding writing by tweaking the writing tool. So I deleted all of it and made each post a TypeScript object. The build catches typos. Routing is automatic. There is no draft state, no preview server, no API key. The downside: no rich images yet. The upside: I shipped the page.',
+      tag: 'Engineering',
+      readMin: 4,
+      date: '2026-04-22',
+      pullQuote: 'Tooling is a procrastination strategy in disguise.',
+      cover: '✍️',
+      featured: true,
     },
     {
-      icon: '\uD83C\uDFA8',
-      name: 'Three.js',
-      tagline: '3D particles in the hero section',
-      why: '1,500 animated particles that react to mouse movement and adapt their color to whichever theme is active. Lazy-loaded via @defer so it never blocks the critical rendering path.',
-      details: ['1500 animated particles', 'Mouse parallax', 'Theme-reactive colors', '@defer lazy loading', '2D CSS fallback'],
+      slug: 'angular-19-signals-real-world',
+      title: 'Six months with Angular 19 signals',
+      dek: 'What I keep reaching for, what I still wrap in RxJS, and the one footgun I hit on every project.',
+      body: 'Signals are the right default for component state. Computed signals are the right default for derived state. Effects are the wrong default for almost everything — they hide control flow and make tests brittle. The one footgun: forgetting that read-tracking only happens during execution. If you call a signal inside a setTimeout, the dependency is not registered.',
+      tag: 'Engineering',
+      readMin: 6,
+      date: '2026-04-10',
+      pullQuote: 'Effects are the wrong default for almost everything.',
+      cover: '⚡',
     },
     {
-      icon: '\uD83E\uDD16',
-      name: 'Claude AI',
-      tagline: 'An AI that knows my resume by heart',
-      why: 'A real conversational AI powered by Anthropic\'s Claude \u2014 not a keyword matcher. Has my complete resume as system context and maintains conversation history across messages.',
-      details: ['Anthropic Claude API', 'Full resume context', 'Conversation memory', 'Rate-limited proxy', 'Graceful offline fallback'],
+      slug: 'design-tokens-without-a-design-team',
+      title: 'Design tokens when you are the only designer',
+      dek: 'Five themes, zero hardcoded colors, and a SCSS file that fits on one screen.',
+      body: 'I treat design tokens like an API contract with my future self. Spacing is a 4 px ladder. Colors are CSS custom properties only. Themes are alternate :root scopes. The whole system fits in seven SCSS partials and never needs a Figma export.',
+      tag: 'Design',
+      readMin: 5,
+      date: '2026-03-28',
+      cover: '🎨',
     },
     {
-      icon: '\uD83C\uDFD7\uFE0F',
-      name: 'SCSS + 5 Themes',
-      tagline: 'Zero hardcoded colors',
-      why: 'A complete design system with CSS custom properties for theming. Every color \u2014 from navbar to heatmap cells \u2014 is a variable. Switch themes and everything adapts instantly.',
-      details: ['5 color themes', 'CSS custom properties', 'BEM methodology', '7 SCSS partials', 'Responsive mixin system'],
+      slug: 'lighthouse-100-on-github-pages',
+      title: 'Lighthouse 100 on GitHub Pages',
+      dek: 'No edge worker, no image CDN, no service worker tricks. Just defer, preconnect, and ruthless honesty about the critical path.',
+      body: 'Three changes moved the score from 78 to 100: lazy-loading the Three.js scene with @defer on idle, preconnecting Google Fonts, and removing a 200 KB icon font I was using for three icons. The lesson is the same one every time — measure, then delete.',
+      tag: 'Tooling',
+      readMin: 3,
+      date: '2026-03-15',
+      pullQuote: 'Measure, then delete.',
+      cover: '⚡',
     },
     {
-      icon: '\u26A1',
-      name: 'Express Backend',
-      tagline: 'Lightweight API proxy',
-      why: 'A minimal Express 5 server that proxies API calls to Claude and handles rate limiting. Keeps API keys server-side and CORS-safe.',
-      details: ['Express 5', 'Helmet security headers', 'Rate limiting', 'CORS configured', '.env secret management'],
+      slug: 'recruiter-friendly-readmes',
+      title: 'Writing READMEs recruiters actually finish',
+      dek: 'A 90-second test for whether the top of your repo answers the only three questions a hiring manager asks.',
+      body: 'A recruiter spends roughly the same time on your README as on your resume. They want to know what it does, what it is built with, and whether you can ship. Anything else belongs in a docs folder. I rewrote my pinned repos against this rule and interview replies doubled.',
+      tag: 'Career',
+      readMin: 4,
+      date: '2026-02-28',
+      cover: '📝',
     },
     {
-      icon: '\uD83D\uDDBC\uFE0F',
-      name: 'Canvas API',
-      tagline: 'Downloadable holographic cards',
-      why: 'The "Forge Your Card" feature renders custom developer cards onto a Canvas element and exports them as high-DPI PNG images. Zero external libraries \u2014 pure Canvas 2D.',
-      details: ['Canvas 2D rendering', 'Retina export (2x DPI)', 'Gradient effects', 'PNG download', 'URL-encoded sharing'],
-    },
-  ];
-
-  readonly decisions = [
-    {
-      question: '"Why build from scratch?"',
-      answer: 'Templates are for people who don\'t know their framework. Every component here was hand-crafted to showcase Angular 19 \u2014 not copied from a theme.',
+      slug: 'small-tools-i-keep-rewriting',
+      title: 'Small tools I keep rewriting',
+      dek: 'A debounced input, a typed event bus, a date formatter. Why I write them fresh every project instead of installing a library.',
+      body: 'There is a class of utility that is faster to write than to evaluate. A typed event bus is twenty lines. A debounce is six. The cost of adding a dependency — audit, version drift, bundle weight, type compatibility — is higher than the cost of writing it again. The line moves with project size, but for portfolios it sits very low.',
+      tag: 'Notes',
+      readMin: 3,
+      date: '2026-02-10',
+      cover: '🔧',
     },
     {
-      question: '"Why 5 themes?"',
-      answer: 'Dark mode is table stakes. Synthwave is a personality statement. Nord is for minimalists. Dracula is for the night owls. Light mode is for the brave.',
-    },
-    {
-      question: '"Why an RPG character sheet?"',
-      answer: 'Skill percentage bars are on every portfolio. Quest logs, inventory, and a holographic trading card that visitors can create for themselves? Those are memorable.',
-    },
-    {
-      question: '"Why a real AI chatbot?"',
-      answer: 'I can\'t be online 24/7 to answer recruiter questions. Claude can \u2014 and it knows my entire resume, tech stack, and career history by heart.',
-    },
-    {
-      question: '"Why let visitors forge cards?"',
-      answer: 'Interactivity creates connection. When visitors create something personalized on your site, they remember it. And they share it.',
+      slug: 'three-js-without-a-physics-engine',
+      title: 'Three.js without a physics engine',
+      dek: 'Building a 1,500-particle hero that responds to a mouse with nothing but linear interpolation.',
+      body: 'Real physics is fun and overkill for a hero scene. Lerp the particle towards a target, decay the velocity, and call it a day. Total code: forty lines. Total bundle weight added: zero. Total visual difference from a physics-engine version: imperceptible.',
+      tag: 'Engineering',
+      readMin: 5,
+      date: '2026-01-22',
+      cover: '🌌',
     },
   ];
 
-  readonly colophon = [
-    { key: 'Framework', val: 'Angular 19' },
-    { key: 'Language', val: 'TypeScript 5.x' },
-    { key: 'Styling', val: 'SCSS + CSS Custom Props' },
-    { key: '3D Engine', val: 'Three.js' },
-    { key: 'AI', val: 'Claude by Anthropic' },
-    { key: 'Backend', val: 'Express 5 / Node.js' },
-    { key: 'Fonts', val: 'Space Grotesk \u00B7 Inter \u00B7 JetBrains Mono' },
-    { key: 'Deploy', val: 'GitHub Pages' },
-  ];
+  readonly featured = computed(() => this.posts.find(p => p.featured));
+  readonly nonFeatured = computed(() => this.posts.filter(p => !p.featured));
+  readonly visible = computed(() => {
+    const f = this.filter();
+    const list = this.nonFeatured();
+    return f === 'all' ? list : list.filter(p => p.tag === f);
+  });
+  readonly totalMinutes = computed(() => this.posts.reduce((s, p) => s + p.readMin, 0));
+  readonly tagCounts = computed(() =>
+    this.tags
+      .map(tag => ({ tag, count: this.posts.filter(p => p.tag === tag).length }))
+      .filter(t => t.count > 0)
+  );
 
-  private readonly commands = [
-    '$ ng new portfolio --style=scss --ssr',
-    '$ npm install three @types/three gsap',
-    '$ npm install @anthropic-ai/sdk express helmet',
-    '$ ng g component features/hero',
-    '$ ng g component features/dashboard',
-    '$ ng g service core/services/github',
-    '$ ng g service core/services/theme',
-    '...',
-    '',
-    '\u26A1 Compiling portfolio...',
-    '\u2713 25+ components compiled',
-    '\u2713 5 themes loaded',
-    '\u2713 1 AI chatbot initialized',
-    '\u2713 Built successfully in 26s',
-    '',
-    '\uD83D\uDE80 Ready to deploy.',
-  ];
-
-  ngOnInit(): void {
-    this.typeTerminal();
+  open(slug: string): void {
+    this.opened.set(this.opened() === slug ? null : slug);
   }
 
-  ngOnDestroy(): void {
-    if (this.terminalTimer) clearTimeout(this.terminalTimer);
+  pad(n: number): string {
+    return n < 10 ? `0${n}` : String(n);
   }
 
-  toggleTech(index: number): void {
-    this.expandedTech.set(this.expandedTech() === index ? null : index);
-  }
-
-  private typeTerminal(): void {
-    let i = 0;
-    const addLine = (): void => {
-      if (i >= this.commands.length) {
-        this.terminalDone.set(true);
-        return;
-      }
-      this.terminalLines.update(lines => [...lines, this.commands[i]]);
-      i++;
-      const delay = this.commands[i - 1]?.startsWith('$') ? 600 : 300;
-      this.terminalTimer = setTimeout(addLine, delay);
-    };
-    this.terminalTimer = setTimeout(addLine, 800);
+  formatDate(iso: string): string {
+    return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   }
 }
