@@ -8,6 +8,9 @@ const { getSupabase } = require('./supabase');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Trust Render's reverse proxy so req.ip + X-Forwarded-For work for rate-limit
+app.set('trust proxy', 1);
+
 // Root route (before middleware)
 app.get('/', (_req, res) => {
   res.json({ message: 'Portfolio API', endpoints: ['/api/health', '/api/chat', '/api/roast', '/api/github/user/:username'] });
@@ -88,12 +91,16 @@ app.post('/api/analytics', async (req, res) => {
   const sanitizedPath = path.substring(0, 200);
   const sb = getSupabase();
   if (sb) {
-    await sb.from('page_views').insert({
-      path: sanitizedPath,
-      referrer: req.get('referer') || null,
-      user_agent: req.get('user-agent')?.substring(0, 500) || null,
-      ip: req.ip,
-    }).catch(() => {});
+    try {
+      await sb.from('page_views').insert({
+        path: sanitizedPath,
+        referrer: req.get('referer') || null,
+        user_agent: req.get('user-agent')?.substring(0, 500) || null,
+        ip: req.ip,
+      });
+    } catch (e) {
+      console.error('analytics insert failed:', e.message);
+    }
   }
 
   res.status(204).end();
