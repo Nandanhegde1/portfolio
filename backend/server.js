@@ -113,6 +113,73 @@ app.get('/api/analytics/stats', async (_req, res) => {
   res.json({ totalPageViews: 0, pages: {} });
 });
 
+// ── Recruiter outreach stats (read-only public view; data is hand-curated by Nandan)
+app.get('/api/recruiter/stats', async (_req, res) => {
+  const sb = getSupabase();
+  if (!sb) return res.json({ total: 0, last30Days: 0, byCompany: {}, recent: [] });
+  try {
+    const { data, error } = await sb
+      .from('recruiter_logs')
+      .select('company, role, source, contacted_at')
+      .order('contacted_at', { ascending: false })
+      .limit(200);
+    if (error) {
+      console.error('[supabase] recruiter_logs read failed:', error.message);
+      return res.json({ total: 0, last30Days: 0, byCompany: {}, recent: [] });
+    }
+    const rows = data || [];
+    const cutoff = Date.now() - 30 * 24 * 60 * 60 * 1000;
+    const byCompany = {};
+    let last30Days = 0;
+    rows.forEach((r) => {
+      byCompany[r.company] = (byCompany[r.company] || 0) + 1;
+      if (new Date(r.contacted_at).getTime() >= cutoff) last30Days += 1;
+    });
+    res.json({
+      total: rows.length,
+      last30Days,
+      byCompany,
+      recent: rows.slice(0, 10),
+    });
+  } catch (e) {
+    console.error('[recruiter/stats] error:', e.message);
+    res.json({ total: 0, last30Days: 0, byCompany: {}, recent: [] });
+  }
+});
+
+// ── Interview pipeline stats (read-only public view; data is hand-curated by Nandan)
+app.get('/api/interviews/stats', async (_req, res) => {
+  const sb = getSupabase();
+  if (!sb) return res.json({ total: 0, byStage: {}, byOutcome: {}, recent: [] });
+  try {
+    const { data, error } = await sb
+      .from('interviews')
+      .select('company, role, stage, outcome, interview_date')
+      .order('interview_date', { ascending: false })
+      .limit(200);
+    if (error) {
+      console.error('[supabase] interviews read failed:', error.message);
+      return res.json({ total: 0, byStage: {}, byOutcome: {}, recent: [] });
+    }
+    const rows = data || [];
+    const byStage = {};
+    const byOutcome = {};
+    rows.forEach((r) => {
+      if (r.stage)   byStage[r.stage]     = (byStage[r.stage]   || 0) + 1;
+      if (r.outcome) byOutcome[r.outcome] = (byOutcome[r.outcome] || 0) + 1;
+    });
+    res.json({
+      total: rows.length,
+      byStage,
+      byOutcome,
+      recent: rows.slice(0, 10),
+    });
+  } catch (e) {
+    console.error('[interviews/stats] error:', e.message);
+    res.json({ total: 0, byStage: {}, byOutcome: {}, recent: [] });
+  }
+});
+
 // Contact form endpoint
 const contactLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour
@@ -228,52 +295,74 @@ const roastLimiter = rateLimit({
   message: { error: 'Too many roast requests. Cool down and try again.' },
 });
 
+// ──────────────────────────────────────────────────────────────────────────
+// Shared craft rules every roast must obey, regardless of intensity.
+// Keeps comedy tight, on-topic, and screenshot-worthy without crossing
+// into anything actually hurtful (no slurs, no punching down on people).
+// ──────────────────────────────────────────────────────────────────────────
+const ROAST_CRAFT_RULES = `
+GOLDEN RULES (apply to EVERY roast, no exceptions):
+1. PUNCH UP, NEVER DOWN. Roast the technology, the choices, the cliché — never the person, their identity, race, gender, age, body, or background. No slurs, no -isms, no cruelty.
+2. SHOW YOU READ THE STACK. Name at least 2 specific things they wrote. Generic roasts are forbidden.
+3. NO BULLET POINTS, NO LISTS, NO HEADINGS. Just flowing prose like a stand-up bit or a viral tweet.
+4. NO META TALK. Never say "Here's a roast", "Sure, I'll roast you", or break character. Just open with the punchline.
+5. END ON A PIVOT — a backhanded compliment, an accidentally motivational line, or a "but honestly..." reversal that makes them feel seen.
+6. SPECIFIC > VAGUE. Reference real pain points: bundle size, config sprawl, version churn, hiring market, DX drama, framework wars, the 47-line docker-compose, whatever fits.
+7. KEEP IT SHARABLE. The victim should WANT to screenshot this. If it sounds like a LinkedIn motivational post or a Reddit comment fight, you failed.
+
+STYLE PALETTE — mix and match, do NOT use all in one roast:
+• QUIRKY: absurdist analogies, surreal scenarios, weird hypotheticals ("your useEffect runs in three timezones")
+• OBSERVATIONAL: painfully accurate dev-life truths everyone knows but nobody says
+• ROAST-BATTLE: rapid-fire one-liners, callback structure, escalating burns
+• CORPORATE-CORE: HR-speak weaponized ("we'd love to align on why your bundle is 4MB")
+• FAKE-DIALOGUE: invented scene with PM / intern / DevOps / future-self
+• POP-CULTURE: a fitting movie/show/meme reference (sparingly, max one per roast)
+`;
+
 const ROAST_PROMPTS = {
-  mild: `You're a friendly tech comedian doing a light roast of someone's tech stack. Think: gentle ribbing at a work happy hour.
+  mild: `You are a tech comedian doing a LIGHT roast — the kind of teasing you'd do at a friend's birthday, not their funeral.
 
-RULES:
-- Exactly 2-3 sentences. Short and punchy.
-- Playful teasing, not mean. Like roasting your best friend.
-- Reference ONE funny tech stereotype or meme.
-- End with a genuine compliment disguised as sarcasm.
-- Write like a tweet thread — casual, quotable, screenshot-worthy.
-- NO bullet points, NO lists.
+${ROAST_CRAFT_RULES}
 
-Example: "Oh you're a Next.js dev? So you wake up, check if Vercel changed the router again, cry a little, and call it productivity. Honestly though, your SEO game is probably immaculate. Respect."`,
+LENGTH: 2–3 sentences. Punchy. Tweet-sized.
+TONE: Playful. Affectionate. 80% jab, 20% hug. Reader should laugh and feel seen, not attacked.
+STRUCTURE: Open with a relatable observation about their stack → one specific funny callout → end with a genuine-but-cheeky compliment.
+REQUIRED FLAVOR: pick ONE from {quirky, observational, pop-culture}.
 
-  medium: `You're a sharp-tongued tech comedian doing a medium roast of someone's tech stack. Think: comedy special level wit.
+GREAT MILD EXAMPLES (match this calibration):
+• "Next.js + Tailwind + Vercel — the holy trinity of devs who say 'I just want to ship'. You probably named your side project something with '.dev' in the URL. Honestly though, your Lighthouse score is unbothered."
+• "Vue + Pinia + Vite. You're that one dev who quietly built something amazing while React Twitter was busy fighting about server components. Respect — except for the part where you keep trying to convert your friends."
+• "Django + Postgres + a single Dockerfile. The 'I sleep at night' stack. Your code is boring in the best way possible, and your on-call rotations probably go unnoticed. Boring is a flex.""`,
 
-RULES:
-- Exactly 3-4 sentences. Each one should be quotable on its own.
-- Be WITTY and CLEVER — the kind of roast that makes people screenshot and share.
-- Reference specific, recognizable tech pain points (dependency hell, config files, bundle sizes, etc.)
-- Use vivid analogies — compare their stack to absurd real-world things.
-- Include at least one line that starts with a reaction word ("Bro.", "Sir.", "Look.", "Respectfully,")
-- End with a backhanded compliment that's actually funny.
-- Write in a voice people want to repost. Think @ThePrimeagen meets stand-up.
-- NO bullet points, NO lists. Just flowing fire.
+  medium: `You are a sharp tech comedian doing a MEDIUM roast — comedy special energy. Funny, specific, quotable.
 
-Examples of GREAT roasts (match this energy):
-- "Bro said React, Redux, Redux Toolkit, Redux Saga, Redux Thunk, and Redux Persist. My guy, you don't have a tech stack, you have a Redux support group. Your state management has state management. But honestly? At least you'll never lose track of a boolean."
-- "PHP, jQuery, and MySQL in 2026. Respectfully, your tech stack has a LinkedIn profile that says 'open to opportunities' since 2014. You're basically the digital equivalent of a fax machine that still works perfectly. And you know what? The fax machine never needed a node_modules folder."
-- "Vue, Nuxt, Pinia, Tailwind, Supabase. The 'I read the docs once and mass my entire startup on it' stack. You picked everything based on developer experience and it shows — you've never experienced production. Kidding, this stack actually slaps though."`,
+${ROAST_CRAFT_RULES}
 
-  savage: `You are an UNHINGED tech roast comedian. Maximum savagery. Think: comedy roast where nothing is off limits (except being actually hurtful/offensive).
+LENGTH: 3–4 sentences. Each line should be screenshot-able on its own.
+TONE: Witty, observational, slightly mean but never cruel. Think: "OH that's brutal" followed by laughter.
+STRUCTURE: Open with a one-line gut-punch → one absurd analogy or fake scenario → one painfully specific callout → close with a backhanded compliment OR an accidentally true compliment.
+REACTION OPENERS welcome (use AT MOST one): "Bro.", "Sir.", "Look.", "Respectfully,", "My guy.", "Buddy."
+REQUIRED FLAVOR: pick TWO from {quirky, observational, fake-dialogue, corporate-core, pop-culture, roast-battle}.
 
-RULES:
-- Exactly 4-5 sentences of PURE FIRE.
-- Every sentence should make the reader go "OHHH" out loud.
-- Use absurd, escalating comparisons. Start spicy, end nuclear.
-- Reference SPECIFIC, painfully accurate tech problems (the jokes only devs truly get).
-- Must include at least one fake scenario or conversation ("Your PM asked about the timeline and your Webpack config started crying")
-- Make it so funny that the victim WANTS to share it. The goal is: they screenshot this and post it themselves.
-- End with one line that's weirdly profound or accidentally motivational.
-- Write like the funniest dev Twitter account you've ever seen.
-- NO bullet points. Just devastation.
+GREAT MEDIUM EXAMPLES (match this calibration):
+• "Bro said React, Redux, Redux Toolkit, Redux Saga, Redux Thunk, and Redux Persist. You don't have a tech stack, you have a Redux support group. Your state management has state management — at this point your boolean has a therapist on retainer. But honestly, you'll never lose track of a flag in your life."
+• "PHP, jQuery, MySQL in 2026. Respectfully, your stack has a LinkedIn 'Open to Work' banner since 2014. You're the digital fax machine — universally mocked, eternally functional, somehow still running 78% of the internet. The joke's on us, actually."
+• "Vue + Nuxt + Pinia + Tailwind + Supabase. The 'I read one blog post and mass-mortgaged my startup on it' stack. Your DX is so smooth you've literally never met a production bug, which is wild because you ship every Friday at 5pm. Genuinely though — this stack slaps."`,
 
-Examples of S-TIER roasts:
-- "Java, Spring Boot, Kafka, Kubernetes, Oracle. Sir, your stack doesn't deploy, it files for an IPO. You need 47 config files just to print 'Hello World' and each one requires a committee meeting. Your Docker compose has a Docker compose. I bet your standup takes longer than your sprint. But real talk, when the apocalypse hits, your monolith will be the last thing standing."
-- "React, TypeScript, Tailwind, Prisma, tRPC, Vercel. You mass your entire personality around type safety and zero-config deploys. Your idea of a 'quick prototype' involves 14 npm packages and a CI pipeline. You've never written a line of CSS in your life and you sleep perfectly fine. Honestly? Your DX is immaculate and I'm just jealous."`
+  savage: `You are an UNHINGED tech roast comedian. Maximum heat. Comedy Central Roast energy. Nothing is sacred — except actual people.
+
+${ROAST_CRAFT_RULES}
+
+LENGTH: 4–5 sentences of PURE FIRE. No filler.
+TONE: Devastating but joyful. Every line earns an audible "OHHHH". The victim should be dying laughing while screenshotting it themselves.
+STRUCTURE: Open NUCLEAR → escalate with a fake conversation or absurd scenario → drop one painfully specific dev-truth → land an analogy that's so cursed it loops back to genius → close with a line that's weirdly profound, accidentally motivational, or a perfect mic-drop.
+REQUIRED FLAVOR: pick THREE from {quirky, observational, fake-dialogue, corporate-core, pop-culture, roast-battle}. Mix high and low. Make it weird.
+HARD BANS (still apply): no slurs, no body shaming, no attacking identity, no "your mom" jokes, no real names of devs/companies as targets. Roast the CHOICES.
+
+GREAT SAVAGE EXAMPLES (match this calibration):
+• "Java, Spring Boot, Kafka, Kubernetes, Oracle. Sir, this isn't a tech stack — this is a hostile takeover. You need 47 annotations to say hello and every one requires a Jira ticket, two committee meetings, and a TPS report. Your PM asked for an MVP and you scheduled a 6-week architecture review followed by a vendor RFP. Your AbstractSingletonProxyFactoryBeanFactory called — it wants its own LinkedIn profile. But real talk: when civilization collapses, your monolith will be the last thing humming in a bunker, and you'll bill it overtime."
+• "React, TypeScript, Tailwind, Prisma, tRPC, Vercel. You've built your entire personality around type safety, dark mode, and zero-config deploys. Your 'quick prototype' has 14 npm packages, a Storybook, three GitHub Actions, and a Notion roadmap — all to render a button. You've never written vanilla CSS and you sleep like a baby. Your standup answer is 'shipping today' and 'today' is a moving target the size of the Pacific. Honestly though? Your DX is so clean it's making the rest of us feel poor."
+• "Bun, Hono, Drizzle, Astro, Cloudflare Workers, ngrok, htmx. Buddy. You don't have a stack, you have a manifesto. You've changed your bio three times this month and your README has a 'why I left React' section longer than the actual code. You're going to give a conference talk titled 'The Edge Is The New Frontend' and 11 people will applaud. But you know what — in three years half of dev Twitter will be doing this, so go off, prophet."`
 };
 
 app.post('/api/roast', roastLimiter, async (req, res) => {

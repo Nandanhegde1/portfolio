@@ -80,12 +80,13 @@ interface LogLine {
                     press <kbd>Enter</kbd> to send &uarr;
                   </button>
                 } @else if (step() === 'name') {
-                  <input #activeInput type="text" class="cli__input" formControlName="name" placeholder="e.g. Ada Lovelace" autocomplete="off" spellcheck="false" />
+                  <input #activeInput type="text" class="cli__input" formControlName="name" placeholder="e.g. Ada Lovelace" autocomplete="off" spellcheck="false" (keydown.enter)="$event.preventDefault(); advance()" />
                 } @else if (step() === 'email') {
-                  <input #activeInput type="email" class="cli__input" formControlName="email" placeholder="you&#64;company.com" autocomplete="off" spellcheck="false" />
+                  <input #activeInput type="email" class="cli__input" formControlName="email" placeholder="you&#64;company.com" autocomplete="off" spellcheck="false" (keydown.enter)="$event.preventDefault(); advance()" />
                 } @else if (step() === 'subject') {
-                  <input #activeInput type="text" class="cli__input" formControlName="subject" placeholder="collab / role / question" autocomplete="off" spellcheck="false" />
+                  <input #activeInput type="text" class="cli__input" formControlName="subject" placeholder="collab / role / question" autocomplete="off" spellcheck="false" (keydown.enter)="$event.preventDefault(); advance()" />
                 }
+                <button type="submit" class="cli__submit-hidden" tabindex="-1" aria-hidden="true"></button>
                 <span class="cli__caret" aria-hidden="true"></span>
               </form>
 
@@ -141,7 +142,7 @@ interface LogLine {
             <div class="cli__sidecard-block cli__sidecard-block--alt">
               <div class="cli__sidecard-label">// elsewhere</div>
               <a href="mailto:nandanhegde1096&#64;gmail.com">email me directly &rarr;</a>
-              <a href="https://github.com/nandanhegde1" target="_blank" rel="noopener">github.com/nandanhegde1 &rarr;</a>
+              <a href="https://github.com/Nandanhegde1" target="_blank" rel="noopener">github.com/Nandanhegde1 &rarr;</a>
               <a href="https://www.linkedin.com/in/nandan-hegde-3a7370166/" target="_blank" rel="noopener">linkedin &rarr;</a>
             </div>
           </aside>
@@ -185,7 +186,7 @@ export class ContactComponent implements AfterViewInit {
   });
 
   ngAfterViewInit(): void {
-    queueMicrotask(() => this.focusInput());
+    setTimeout(() => this.focusInput(), 0);
   }
 
   promptFor(s: Step): string {
@@ -230,7 +231,10 @@ export class ContactComponent implements AfterViewInit {
       s === 'subject' ? 'message' :
                         'review';
     this.step.set(next);
-    queueMicrotask(() => { this.scrollToBottom(); this.focusInput(); });
+    // Use setTimeout(0) so Angular renders the new input element before we try to focus it.
+    // queueMicrotask runs before the DOM update for the new @if branch, so the new input
+    // wouldn't exist yet and focus() would silently no-op.
+    setTimeout(() => { this.scrollToBottom(); this.focusInput(); }, 0);
   }
 
   private errorFor(s: Step): string {
@@ -287,7 +291,7 @@ export class ContactComponent implements AfterViewInit {
       { kind: 'sys', text: 'session reset.' },
       { kind: 'hint', text: 'press Enter after each field. type your message, then Ctrl+Enter to send.' },
     ]);
-    queueMicrotask(() => this.focusInput());
+    setTimeout(() => this.focusInput(), 0);
   }
 
   private scrollToBottom(): void {

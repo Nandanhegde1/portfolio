@@ -44,35 +44,47 @@ import { StatsService } from '../../core/services/stats.service';
         <!-- Recruiters -->
         <div class="live-stats__card live-stats__card--recruiter">
           <span class="live-stats__icon" aria-hidden="true">💼</span>
-          <span class="live-stats__value">{{ stats.recruiter()?.total ?? 0 }}</span>
-          <span class="live-stats__label">recruiter reach-outs</span>
-          <span class="live-stats__delta">{{ stats.recruiter()?.last30Days ?? 0 }} in last 30 days</span>
-          @if (recentRecruiters().length) {
-            <ul class="live-stats__list">
-              @for (r of recentRecruiters(); track r.company) {
-                <li>
-                  <span>{{ r.company }}</span>
-                  <strong class="live-stats__role">{{ r.role || '—' }}</strong>
-                </li>
-              }
-            </ul>
+          @if ((stats.recruiter()?.total ?? 0) > 0) {
+            <span class="live-stats__value">{{ stats.recruiter()?.total }}</span>
+            <span class="live-stats__label">recruiter reach-outs</span>
+            <span class="live-stats__delta">{{ stats.recruiter()?.last30Days ?? 0 }} in last 30 days</span>
+            @if (recentRecruiters().length) {
+              <ul class="live-stats__list">
+                @for (r of recentRecruiters(); track r.company) {
+                  <li>
+                    <span>{{ r.company }}</span>
+                    <strong class="live-stats__role">{{ r.role || '—' }}</strong>
+                  </li>
+                }
+              </ul>
+            }
+          } @else {
+            <span class="live-stats__value live-stats__value--soft">—</span>
+            <span class="live-stats__label">recruiter reach-outs</span>
+            <span class="live-stats__delta">No public outreach logged yet — be the first 👋</span>
           }
         </div>
 
         <!-- Interviews -->
         <div class="live-stats__card live-stats__card--interview">
           <span class="live-stats__icon" aria-hidden="true">🎯</span>
-          <span class="live-stats__value">{{ stats.interviews()?.total ?? 0 }}</span>
-          <span class="live-stats__label">interviews logged</span>
-          @if (interviewPipeline().length) {
-            <div class="live-stats__pipeline">
-              @for (s of interviewPipeline(); track s.stage) {
-                <div class="live-stats__stage" [title]="s.stage + ': ' + s.count">
-                  <span class="live-stats__stage-bar" [style.width.%]="s.pct"></span>
-                  <span class="live-stats__stage-label">{{ s.stage }} · {{ s.count }}</span>
-                </div>
-              }
-            </div>
+          @if ((stats.interviews()?.total ?? 0) > 0) {
+            <span class="live-stats__value">{{ stats.interviews()?.total }}</span>
+            <span class="live-stats__label">interviews logged</span>
+            @if (interviewPipeline().length) {
+              <div class="live-stats__pipeline">
+                @for (s of interviewPipeline(); track s.stage) {
+                  <div class="live-stats__stage" [title]="s.stage + ': ' + s.count">
+                    <span class="live-stats__stage-bar" [style.width.%]="s.pct"></span>
+                    <span class="live-stats__stage-label">{{ s.stage }} · {{ s.count }}</span>
+                  </div>
+                }
+              </div>
+            }
+          } @else {
+            <span class="live-stats__value live-stats__value--soft">—</span>
+            <span class="live-stats__label">interviews logged</span>
+            <span class="live-stats__delta">Pipeline starts here — ping me on /contact</span>
           }
         </div>
         }

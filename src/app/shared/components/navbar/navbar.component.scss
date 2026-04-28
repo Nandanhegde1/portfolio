@@ -104,10 +104,22 @@
     }
   }
 
+  &__dropdown-caret {
+    display: inline-block;
+    margin-left: 4px;
+    transition: transform 0.2s ease;
+  }
+
+  &__dropdown--open &__dropdown-caret {
+    transform: rotate(180deg);
+  }
+
   &__dropdown-menu {
     position: absolute;
     top: calc(100% + 8px);
     left: 50%;
+    // IMPORTANT: keep translateX(-50%) baked into the keyframe so the menu
+    // doesn't drift horizontally when the global fadeInDown animation finishes.
     transform: translateX(-50%);
     min-width: 200px;
     background: var(--card-bg);
@@ -117,7 +129,8 @@
     padding: $space-sm;
     list-style: none;
     z-index: $z-dropdown;
-    animation: fadeInDown 0.2s ease;
+    animation: navbarDropdownIn 0.18s ease both;
+    transform-origin: top center;
 
     li a {
       display: block;
@@ -252,6 +265,17 @@
         }
       }
     }
+  }
+}
+
+@keyframes navbarDropdownIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -8px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
   }
 }
 

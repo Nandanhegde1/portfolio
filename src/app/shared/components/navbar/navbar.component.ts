@@ -1,5 +1,6 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Component, inject, ChangeDetectionStrategy, HostListener, ElementRef, signal } from '@angular/core';
+import { Router, NavigationEnd, RouterLink, RouterLinkActive } from '@angular/router';
+import { filter } from 'rxjs/operators';
 import { ThemeService } from '../../../core/services';
 import { TooltipDirective } from '../../directives/tooltip.directive';
 
@@ -33,14 +34,14 @@ import { TooltipDirective } from '../../directives/tooltip.directive';
           <li><a routerLink="/dashboard" routerLinkActive="active">Dashboard</a></li>
           <li><a routerLink="/blog" routerLinkActive="active">Blog</a></li>
           <li><a routerLink="/under-the-hood" routerLinkActive="active">Under the Hood</a></li>
-          <li class="navbar__dropdown">
-            <button class="navbar__dropdown-trigger" (click)="dropdownOpen = !dropdownOpen">
-              Play \u25BE
+          <li class="navbar__dropdown" [class.navbar__dropdown--open]="dropdownOpen()">
+            <button class="navbar__dropdown-trigger" type="button" (click)="toggleDropdown($event)" [attr.aria-expanded]="dropdownOpen()">
+              Play <span class="navbar__dropdown-caret" aria-hidden="true">\u25BE</span>
             </button>
-            @if (dropdownOpen) {
+            @if (dropdownOpen()) {
               <ul class="navbar__dropdown-menu">
-                <li><a routerLink="/roast" routerLinkActive="active" (click)="dropdownOpen = false">\uD83D\uDD25 Roast My Stack</a></li>
-                <li><a routerLink="/quiz" routerLinkActive="active" (click)="dropdownOpen = false">\uD83C\uDFAF Team Quiz</a></li>
+                <li><a routerLink="/roast" routerLinkActive="active" (click)="dropdownOpen.set(false)">\uD83D\uDD25 Roast My Stack</a></li>
+                <li><a routerLink="/quiz" routerLinkActive="active" (click)="dropdownOpen.set(false)">\uD83C\uDFAF Team Quiz</a></li>
               </ul>
             }
           </li>
@@ -94,9 +95,41 @@ import { TooltipDirective } from '../../directives/tooltip.directive';
 })
 export class NavbarComponent {
   readonly themeService = inject(ThemeService);
+  private readonly host = inject(ElementRef<HTMLElement>);
+  private readonly router = inject(Router);
+
   themeSpinning = false;
-  dropdownOpen = false;
+  readonly dropdownOpen = signal(false);
   mobileOpen = false;
+
+  constructor() {
+    // Close the Play dropdown automatically on any route change
+    this.router.events
+      .pipe(filter((e) => e instanceof NavigationEnd))
+      .subscribe(() => this.dropdownOpen.set(false));
+  }
+
+  toggleDropdown(event: MouseEvent): void {
+    event.stopPropagation();
+    this.dropdownOpen.update((v) => !v);
+  }
+
+  /** Close dropdown when clicking outside the navbar dropdown region. */
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    if (!this.dropdownOpen()) return;
+    const target = event.target as HTMLElement | null;
+    if (!target) return;
+    if (!target.closest('.navbar__dropdown')) {
+      this.dropdownOpen.set(false);
+    }
+  }
+
+  /** Close on Escape for keyboard users. */
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    if (this.dropdownOpen()) this.dropdownOpen.set(false);
+  }
 
   toggleTheme(): void {
     this.themeSpinning = true;

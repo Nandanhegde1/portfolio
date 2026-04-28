@@ -219,7 +219,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private fortuneInterval: ReturnType<typeof setInterval> | null = null;
 
   ngOnInit(): void {
-    this.github.fetchAll('nandanhegde');
+    this.github.fetchAll('Nandanhegde1');
     this.rollFortune();
     this.fortuneInterval = setInterval(() => this.rollFortune(), 30000);
   }

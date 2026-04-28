@@ -162,7 +162,10 @@ export class GithubTickerComponent implements OnInit {
     switch (e.type) {
       case 'PushEvent': {
         const commits = e.payload.commits?.length ?? 0;
-        const last = e.payload.commits?.[0]?.message?.split('\n')[0] ?? 'commit';
+        const last = e.payload.commits?.[0]?.message?.split('\n')[0] ?? '';
+        // Some pushes (force-push, branch resets) report 0 commits in the public events feed.
+        // Don't surface those — they read as confusing noise.
+        if (commits === 0 || !last) return null;
         return { icon: '⚡', text: `Pushed ${commits} commit${commits === 1 ? '' : 's'}: "${this.truncate(last, 60)}"`, repo, url, time };
       }
       case 'CreateEvent':
