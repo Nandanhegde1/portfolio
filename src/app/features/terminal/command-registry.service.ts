@@ -22,7 +22,6 @@ export class CommandRegistryService {
   execute(input: string): string[] {
     const parts = input.trim().toLowerCase().split(/\s+/);
     const name = parts[0];
-    const args = parts.slice(1);
 
     if (!name) return [];
 

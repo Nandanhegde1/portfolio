@@ -2,7 +2,6 @@ import {
   Component,
   input,
   signal,
-  effect,
   ChangeDetectionStrategy,
   OnInit,
   OnDestroy,

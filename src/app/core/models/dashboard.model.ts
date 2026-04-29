@@ -78,7 +78,7 @@ export interface GuestbookEntry {
   message: string;
   emoji?: string;
   timestamp: Date | string;
-  reactions: { [key: string]: number };
+  reactions: Record<string, number>;
 }
 
 export type ThemeName = 'light' | 'dark' | 'synthwave' | 'nord' | 'dracula';

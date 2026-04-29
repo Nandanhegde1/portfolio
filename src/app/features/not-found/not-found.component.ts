@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 interface Cmd {
@@ -70,7 +70,7 @@ interface Cmd {
                 (keydown.arrowDown)="historyNext($event)"
                 (keydown.tab)="autocomplete($event)"
                 aria-label="Terminal input"
-                autofocus />
+                />
             </form>
           </div>
         </div>
@@ -85,7 +85,7 @@ interface Cmd {
   `,
   styleUrl: './not-found.component.scss',
 })
-export class NotFoundComponent implements OnInit, OnDestroy {
+export class NotFoundComponent implements OnInit {
   protected readonly glitchChars = '01<>{}[]/\\@#*&%01<>{}[]/\\@#*&%01'.split('');
 
   protected readonly history = signal<Cmd[]>([
@@ -135,7 +135,6 @@ export class NotFoundComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     setTimeout(() => (document.querySelector('.nf__input') as HTMLInputElement | null)?.focus(), 200);
   }
-  ngOnDestroy(): void { /* noop */ }
 
   protected run(e: Event): void {
     e.preventDefault();

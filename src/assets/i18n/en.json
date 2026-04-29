@@ -39,7 +39,7 @@
     }
   },
   "footer": {
-    "tagline": "Building the web, one component at a time.",
+    "tagline": "Built with too much coffee and Angular 19.",
     "viewSource": "View Source",
     "github": "GitHub profile",
     "linkedin": "Connect on LinkedIn",
@@ -69,14 +69,14 @@
     "hero": {
       "greeting": "Hi, I'm Nandan",
       "role": "Full-stack engineer · Angular specialist",
-      "lede": "I build fast, accessible, beautifully-engineered web apps.",
+      "lede": "I build web apps that actually work and don't hurt to look at.",
       "ctaProjects": "See projects",
       "ctaContact": "Get in touch"
     }
   },
   "contact": {
-    "title": "Let's build something",
-    "lede": "Drop a line. I read everything that lands here.",
+    "title": "Got a project? Let's talk shop.",
+    "lede": "Send a message. I promise it won't go into a black hole.",
     "name": "Your name",
     "email": "Email",
     "subject": "Subject",
@@ -105,7 +105,7 @@
   },
   "dashboard": {
     "title": "Live Dashboard",
-    "lede": "Real metrics from real systems. No vanity numbers.",
+    "lede": "Live data, not screenshots from last quarter.",
     "github": "GitHub activity",
     "coding": "Coding stats",
     "skills": "Skills",

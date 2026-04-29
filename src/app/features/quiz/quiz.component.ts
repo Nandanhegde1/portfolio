@@ -28,7 +28,7 @@ const QUESTIONS: QuizQuestion[] = [
     id: 1,
     scenario: "It\u2019s 4 PM Friday. A critical production bug drops. You...",
     options: [
-      { text: "Cancel plans, grab coffee, and deep-dive until it\u2019s fixed", traits: { firefighter: 3, architect: 1 } },
+      { text: "Cancel Friday night. It's just me and the debugger now.", traits: { firefighter: 3, architect: 1 } },
       { text: "Triage it \u2014 is it REALLY critical? Check metrics first", traits: { diplomat: 2, architect: 2 } },
       { text: "Rally the team, assign roles, coordinate the war room", traits: { captain: 3, diplomat: 1 } },
       { text: "Write a hotfix in 10 minutes, push to prod, worry later", traits: { maverick: 3, firefighter: 1 } },
@@ -324,9 +324,6 @@ export class QuizComponent {
   }
 
   getTraitValue(index: number): number {
-    const maxPossible = 21; // 7 questions * max 3 pts
-    const sorted = Object.entries(this.scores()).sort((a, b) => b[1] - a[1]);
-    const topScore = sorted[0]?.[1] || 1;
     const values = [95, 82, 68, 55];
     return values[index] || 55;
   }

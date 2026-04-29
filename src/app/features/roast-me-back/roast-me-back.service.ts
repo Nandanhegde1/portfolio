@@ -49,17 +49,20 @@ export class RoastMeBackService {
   }
 
   async submit(body: string, author_name?: string, author_link?: string): Promise<Roast | null> {
+    const linkRaw = author_link?.trim();
+    // Only send the link if it actually looks like a URL; otherwise drop it silently.
+    const looksLikeUrl = !!linkRaw && /^(https?:\/\/|www\.)/i.test(linkRaw);
     const payload = {
       body: body.trim(),
       author_name: author_name?.trim() || undefined,
-      author_link: author_link?.trim() || undefined,
+      author_link: looksLikeUrl ? (linkRaw!.startsWith('http') ? linkRaw : `https://${linkRaw}`) : undefined,
     };
     try {
       const saved = await firstValueFrom(this.http.post<Roast>(this.API, payload));
       this.roasts.update((list) => [saved, ...list]);
       return saved;
-    } catch (err: any) {
-      const msg = err?.error?.error || 'Could not post roast.';
+    } catch (err: unknown) {
+      const msg = (err as { error?: { error?: string } })?.error?.error || 'Could not post roast.';
       this.error.set(msg);
       return null;
     }

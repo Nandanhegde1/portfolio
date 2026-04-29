@@ -42,8 +42,8 @@ export class BackendWarmupService {
 
   private ping(): void {
     this.http.get(this.url, { responseType: 'text' }).subscribe({
-      next: () => {},
-      error: () => {},
+      next: () => { /* dyno warmed */ },
+      error: () => { /* warmup is non-critical; ignore */ },
     });
   }
 }

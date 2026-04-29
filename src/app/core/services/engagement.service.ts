@@ -59,7 +59,10 @@ export class EngagementService {
     if (typeof window === 'undefined') return;
     this.router.events
       .pipe(filter((e) => e instanceof NavigationEnd))
-      .subscribe((e: any) => this.recordVisit(e.urlAfterRedirects.split('?')[0].split('#')[0]));
+      .subscribe((e) => {
+        const nav = e as NavigationEnd;
+        this.recordVisit(nav.urlAfterRedirects.split('?')[0].split('#')[0]);
+      });
   }
 
   private recordVisit(path: string): void {

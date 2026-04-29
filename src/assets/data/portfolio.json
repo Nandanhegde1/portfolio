@@ -2,8 +2,8 @@
   "personal": {
     "name": "Nandan Hegde",
     "title": "Senior Software Engineer",
-    "tagline": "Driving web modernization from concept to deployment with Angular, Node.js & cloud technologies",
-    "bio": "Seasoned in driving web modernization projects from concept to deployment, leveraging Agile task estimation and cross-functional leadership to deliver high-impact solutions on time. Excel at translating client requirements into actionable sprints, mentoring junior developers, and enforcing code quality through rigorous testing.",
+    "tagline": "Modernizing legacy Angular apps without breaking what already ships.",
+    "bio": "5+ years turning legacy Angular into apps that don't fall over on release night. I translate vague requirements into shippable sprints, mentor juniors through their first PR reviews, and write enough tests to actually sleep on deploy days.",
     "email": "nandanhegde1096@gmail.com",
     "phone": "+918660441202",
     "location": "Bangalore, India",

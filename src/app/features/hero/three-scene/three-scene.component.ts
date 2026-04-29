@@ -86,7 +86,7 @@ export class ThreeSceneComponent implements AfterViewInit, OnDestroy {
   private createParticles(): void {
     // Halve particles on mobile / low-end devices for smoother frames.
     const isMobile = window.innerWidth < 768;
-    const lowEnd = (navigator as any).deviceMemory != null && (navigator as any).deviceMemory <= 4;
+    const lowEnd = (navigator as Navigator & { deviceMemory?: number }).deviceMemory != null && (navigator as Navigator & { deviceMemory?: number }).deviceMemory! <= 4;
     const count = isMobile || lowEnd ? 600 : 1500;
     const geometry = new THREE.BufferGeometry();
     const positions = new Float32Array(count * 3);

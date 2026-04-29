@@ -1,6 +1,6 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { catchError, map, of, tap } from 'rxjs';
+import { catchError, of, tap } from 'rxjs';
 import { GitHubUser, GitHubRepo, GitHubStats, ContributionDay } from '../models';
 
 @Injectable({ providedIn: 'root' })
@@ -37,7 +37,7 @@ export class GitHubService {
 
     this.http.get<GitHubUser>(`${this.API_BASE}/users/${username}`).pipe(
       tap(user => this.user.set(user)),
-      catchError(err => {
+      catchError(() => {
         this.error.set('Failed to fetch GitHub profile');
         return of(null);
       })

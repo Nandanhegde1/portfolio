@@ -12,14 +12,14 @@ export interface RecruiterStats {
   total: number;
   last30Days: number;
   byCompany: Record<string, number>;
-  recent: Array<{ company: string; role: string; contacted_at: string; source?: string }>;
+  recent: { company: string; role: string; contacted_at: string; source?: string }[];
 }
 
 export interface InterviewStats {
   total: number;
   byStage: Record<string, number>;
   byOutcome: Record<string, number>;
-  recent: Array<{ company: string; stage: string; outcome: string; interview_date: string }>;
+  recent: { company: string; stage: string; outcome: string; interview_date: string }[];
 }
 
 @Injectable({ providedIn: 'root' })
@@ -47,6 +47,6 @@ export class StatsService {
 
   /** Fire-and-forget page view ping. */
   trackPageView(path: string): void {
-    this.http.post(`${this.base}/api/analytics`, { path }).subscribe({ error: () => {} });
+    this.http.post(`${this.base}/api/analytics`, { path }).subscribe({ error: () => { /* analytics is best-effort */ } });
   }
 }

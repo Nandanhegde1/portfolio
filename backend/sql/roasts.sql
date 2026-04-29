@@ -29,3 +29,4 @@ insert into roasts (body, author_name, is_pinned, reply_body, reply_at) values
    'Nandan (self-roast)', false, null, null),
   ('The terminal command palette is showing off and I respect it.',
    'Nandan (self-roast)', false, null, null);
+yes main

@@ -271,7 +271,7 @@ interface InventoryItem {
           <div class="rpg__forge-grid">
             <div class="rpg__forge-form">
               <div class="rpg__forge-field">
-                <label class="rpg__forge-label">Avatar</label>
+                <span class="rpg__forge-label">Avatar</span>
                 <div class="rpg__forge-avatars">
                   <button
                     class="rpg__forge-avatar-btn"
@@ -296,7 +296,7 @@ interface InventoryItem {
                 </div>
               </div>
               <div class="rpg__forge-field">
-                <label class="rpg__forge-label">Character Name</label>
+                <span class="rpg__forge-label">Character Name</span>
                 <input
                   class="rpg__forge-input"
                   type="text"
@@ -307,7 +307,7 @@ interface InventoryItem {
                 />
               </div>
               <div class="rpg__forge-field">
-                <label class="rpg__forge-label">Class</label>
+                <span class="rpg__forge-label">Class</span>
                 <input
                   class="rpg__forge-input"
                   type="text"
@@ -318,7 +318,7 @@ interface InventoryItem {
                 />
               </div>
               <div class="rpg__forge-field">
-                <label class="rpg__forge-label">Skills (pick up to 6)</label>
+                <span class="rpg__forge-label">Skills (pick up to 6)</span>
                 <div class="rpg__forge-chips">
                   @for (skill of availableSkills; track skill) {
                     <button
@@ -330,7 +330,7 @@ interface InventoryItem {
                 </div>
               </div>
               <div class="rpg__forge-field">
-                <label class="rpg__forge-label">Card Style</label>
+                <span class="rpg__forge-label">Card Style</span>
                 <div class="rpg__forge-gradients">
                   @for (g of gradientOptions; track g.id) {
                     <button
@@ -345,7 +345,7 @@ interface InventoryItem {
                 </div>
               </div>
               <div class="rpg__forge-field">
-                <label class="rpg__forge-label">Card Color</label>
+                <span class="rpg__forge-label">Card Color</span>
                 <div class="rpg__forge-colors">
                   @for (color of forgeColors; track color.id) {
                     <button

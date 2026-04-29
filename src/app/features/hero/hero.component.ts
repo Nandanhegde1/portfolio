@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, ChangeDetectionStrategy, computed } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
+import { TranslocoPipe } from '@jsverse/transloco';
 import { PortfolioDataService, GitHubService } from '../../core/services';
 import { ThreeSceneComponent } from './three-scene/three-scene.component';
 import { TimeAgoPipe } from '../../shared/pipes/time-ago.pipe';

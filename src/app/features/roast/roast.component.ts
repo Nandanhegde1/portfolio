@@ -14,6 +14,7 @@ interface RoastResult {
   timestamp: number;
 }
 
+/* eslint-disable no-useless-escape -- preserve verbatim quote styling in roast strings */
 const FALLBACK_ROASTS: Record<string, string[]> = {
   react: [
     'Bro said React, Next.js, and Tailwind. So original. You and 47 million other devs picked the exact same stack after watching the same YouTube tutorial. Your create-next-app has more boilerplate than a legal contract. But honestly? Your Vercel deploy game is probably spotless.',
@@ -43,6 +44,7 @@ const FALLBACK_ROASTS: Record<string, string[]> = {
     'Look, I\'ve never seen this combination of technologies in the wild before, and I\'ve seen some things. Your stack has the energy of someone who googled \"best tech stack 2026\" and clicked \"I\'m feeling lucky.\" The audacity is honestly inspiring. Ship it.',
   ],
 };
+/* eslint-enable no-useless-escape */
 
 @Component({
   selector: 'app-roast',
@@ -505,6 +507,6 @@ export class RoastComponent {
   private incrementCount(): void {
     const next = this.roastCount() + 1;
     this.roastCount.set(next);
-    try { localStorage.setItem('roast-count', String(next)); } catch {}
+    try { localStorage.setItem('roast-count', String(next)); } catch { /* ignore quota / disabled storage */ }
   }
 }

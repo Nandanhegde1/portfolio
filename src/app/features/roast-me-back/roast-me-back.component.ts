@@ -38,44 +38,48 @@ import { ScrollRevealDirective } from '../../shared/directives/scroll-reveal.dir
             @if (svc.replyCount() > 0) {
               <div class="rmb__stat"><strong>{{ svc.replyCount() }}</strong> replied to</div>
             }
-            @if (svc.avgReplyMinutes() != null) {
+            @if (svc.avgReplyMinutes() !== null) {
               <div class="rmb__stat"><strong>{{ formatReply(svc.avgReplyMinutes()!) }}</strong> avg reply time</div>
             }
           </div>
         }
 
         <!-- Composer -->
-        <form class="rmb__composer" (ngSubmit)="submit()" appScrollReveal [delay]="80">
+        <form class="rmb__composer" (ngSubmit)="submit()" appScrollReveal [delay]="80" novalidate>
           <label class="rmb__label" for="rmb-body">Your roast</label>
           <textarea
             id="rmb-body"
             class="rmb__textarea"
-            [(ngModel)]="body"
+            [ngModel]="body()"
+            (ngModelChange)="body.set($event)"
             name="body"
             placeholder="e.g. The bento grid has more cards than your last project had requirements."
             maxlength="280"
             rows="3"
             required
           ></textarea>
-          <div class="rmb__counter" [class.rmb__counter--warn]="body.length > 240">
-            {{ body.length }} / 280
+          <div class="rmb__counter" [class.rmb__counter--warn]="body().length > 240">
+            {{ body().length }} / 280
           </div>
 
           <div class="rmb__row">
             <input
               class="rmb__input"
-              [(ngModel)]="authorName"
+              [ngModel]="authorName()"
+              (ngModelChange)="authorName.set($event)"
               name="authorName"
               placeholder="Your name (optional)"
               maxlength="60"
             />
             <input
               class="rmb__input"
-              [(ngModel)]="authorLink"
+              [ngModel]="authorLink()"
+              (ngModelChange)="authorLink.set($event)"
               name="authorLink"
               placeholder="https://twitter.com/you (optional)"
               maxlength="200"
-              type="url"
+              type="text"
+              inputmode="url"
             />
           </div>
 
@@ -149,14 +153,14 @@ import { ScrollRevealDirective } from '../../shared/directives/scroll-reveal.dir
 export class RoastMeBackComponent implements OnInit {
   readonly svc = inject(RoastMeBackService);
 
-  body = '';
-  authorName = '';
-  authorLink = '';
+  readonly body = signal('');
+  readonly authorName = signal('');
+  readonly authorLink = signal('');
 
   readonly posting = signal(false);
   readonly justPosted = signal(false);
 
-  readonly canSubmit = computed(() => this.body.trim().length >= 4);
+  readonly canSubmit = computed(() => this.body().trim().length >= 4);
 
   ngOnInit(): void {
     this.svc.load();
@@ -165,10 +169,10 @@ export class RoastMeBackComponent implements OnInit {
   async submit(): Promise<void> {
     if (!this.canSubmit() || this.posting()) return;
     this.posting.set(true);
-    const saved = await this.svc.submit(this.body, this.authorName, this.authorLink);
+    const saved = await this.svc.submit(this.body(), this.authorName(), this.authorLink());
     this.posting.set(false);
     if (saved) {
-      this.body = '';
+      this.body.set('');
       this.justPosted.set(true);
       setTimeout(() => this.justPosted.set(false), 4000);
     }

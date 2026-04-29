@@ -1,5 +1,5 @@
 import {
-  Component, ChangeDetectionStrategy, signal, inject,
+  Component, ChangeDetectionStrategy, signal,
   AfterViewInit, OnDestroy, ElementRef, viewChild
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
@@ -32,7 +32,7 @@ interface ValueProp {
             <span class="pitch__hero-line">127K lines.</span>
             <span class="pitch__hero-line pitch__hero-line--accent">1 mission.</span>
           </h1>
-          <p class="pitch__hero-sub">Building software that scales teams, products, and impact.</p>
+          <p class="pitch__hero-sub">Building software that doesn't fall over when more than 10 people use it.</p>
           <div class="pitch__scroll-hint">
             <span>Scroll to explore</span>
             <div class="pitch__scroll-arrow">
@@ -95,8 +95,8 @@ interface ValueProp {
               <div class="pitch__journey-dot"></div>
               <div class="pitch__journey-card">
                 <span class="pitch__journey-year">Now</span>
-                <h3>Ready for What\u2019s Next</h3>
-                <p>Looking for a team that moves fast, builds well, and cares about craft.</p>
+                <h3>What's next?</h3>
+                <p>Looking for a team that values clean code over 'just ship it' hacks.</p>
               </div>
             </div>
           </div>

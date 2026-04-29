@@ -278,7 +278,7 @@ export class ProjectsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   metricsFor(p: Project): { value: string; label: string }[] {
     const out: { value: string; label: string }[] = [];
-    const re = /(\d[\d,]*\+?%?)\s+([a-z][a-z\s\/]{2,30})/i;
+    const re = /(\d[\d,]*\+?%?)\s+([a-z][a-z\s/]{2,30})/i;
     for (const h of p.highlights ?? []) {
       const m = h.match(re);
       if (m) {

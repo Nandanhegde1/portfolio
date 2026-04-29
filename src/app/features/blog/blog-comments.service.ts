@@ -131,7 +131,7 @@ export class BlogCommentsService {
   }
 
   private rememberName(name: string): void {
-    try { localStorage.setItem(this.NAME_KEY, name); } catch {}
+    try { localStorage.setItem(this.NAME_KEY, name); } catch { /* ignore quota / disabled storage */ }
   }
 
   clearError(): void { this.error.set(null); }
