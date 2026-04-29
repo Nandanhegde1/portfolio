@@ -1,82 +1,82 @@
 ﻿// Theme Definitions - CSS Custom Properties
 // -------------------------------------------------------------
-// Default light = "Newsprint": warm cream paper, ink black, ember accent.
-// Default dark  = "Ember":     warm near-black, ember-orange accent, gold supporting.
+// Default light = "Bone":    off-white parchment, charcoal text, oxblood accent.
+// Default dark  = "Oxblood": near-black with red undertone, dried-blood accent.
 // Both share the SAME accent so brand reads consistently across modes.
 
 :root,
 [data-theme='light'] {
-  // -- Newsprint --
-  --bg-primary: #f5f0e6;        // warm cream paper
-  --bg-secondary: #ede5d3;      // recycled paper
-  --bg-tertiary: #e0d5bd;       // kraft
-  --text-primary: #1a1410;      // ink black, slight warm undertone
-  --text-secondary: #4a3f33;    // faded ink
-  --text-muted: #8b7d6b;        // pencil
-  --accent: #d94e1f;            // ember orange (signature)
-  --accent-hover: #b8400f;
-  --accent-light: rgba(217, 78, 31, 0.08);
-  --accent-glow: rgba(217, 78, 31, 0.25);
-  --accent-gradient: linear-gradient(135deg, #d94e1f 0%, #f59e0b 100%);
-  --success: #4d7c2a;           // moss
-  --warning: #c97a16;           // mustard
-  --danger: #b91c1c;            // bookbinder red
-  --info: #1e5680;              // ink-blue
-  --card-bg: #fbf6ec;           // cleaner paper
-  --card-shadow: 0 1px 2px rgba(26, 20, 16, 0.06), 0 6px 20px rgba(26, 20, 16, 0.08);
-  --card-shadow-hover: 0 4px 8px rgba(26, 20, 16, 0.1), 0 16px 40px rgba(217, 78, 31, 0.12);
-  --border: #d4c8b0;
-  --border-strong: #a89878;
-  --navbar-bg: rgba(245, 240, 230, 0.85);
-  --glass-bg: rgba(251, 246, 236, 0.7);
-  --glass-border: rgba(26, 20, 16, 0.08);
-  --code-bg: #ede5d3;
-  --heatmap-0: #e0d5bd;
-  --heatmap-1: #f5cba8;
-  --heatmap-2: #ed9a6c;
-  --heatmap-3: #d94e1f;
-  --heatmap-4: #8a2c0a;
-  --scrollbar-thumb: #a89878;
-  --selection-bg: rgba(217, 78, 31, 0.2);
-  --glow-color: rgba(217, 78, 31, 0.18);
-  --noise-opacity: 0.04;
+  // -- Bone --
+  --bg-primary: #ece6df;        // bone / unbleached linen
+  --bg-secondary: #e1d9ce;      // taupe paper
+  --bg-tertiary: #d4cabb;       // sand
+  --text-primary: #161210;      // near-black charcoal
+  --text-secondary: #3d3530;
+  --text-muted: #7a6f65;
+  --accent: #8b1e1e;            // dried blood / oxblood
+  --accent-hover: #6b1414;
+  --accent-light: rgba(139, 30, 30, 0.06);
+  --accent-glow: rgba(139, 30, 30, 0.18);
+  --accent-gradient: linear-gradient(135deg, #8b1e1e 0%, #4a0e0e 100%);
+  --success: #5a6e3a;           // muted olive
+  --warning: #a8741a;           // burnt mustard
+  --danger: #6b1414;            // deep crimson
+  --info: #3d4a5e;              // steel slate
+  --card-bg: #f0eae3;
+  --card-shadow: 0 1px 2px rgba(22, 18, 16, 0.08), 0 6px 20px rgba(22, 18, 16, 0.1);
+  --card-shadow-hover: 0 4px 8px rgba(22, 18, 16, 0.12), 0 16px 40px rgba(139, 30, 30, 0.1);
+  --border: #c8bda9;
+  --border-strong: #9c8e7a;
+  --navbar-bg: rgba(236, 230, 223, 0.85);
+  --glass-bg: rgba(240, 234, 227, 0.7);
+  --glass-border: rgba(22, 18, 16, 0.1);
+  --code-bg: #e1d9ce;
+  --heatmap-0: #d4cabb;
+  --heatmap-1: #c4a59e;
+  --heatmap-2: #a55c5c;
+  --heatmap-3: #8b1e1e;
+  --heatmap-4: #4a0e0e;
+  --scrollbar-thumb: #9c8e7a;
+  --selection-bg: rgba(139, 30, 30, 0.15);
+  --glow-color: rgba(139, 30, 30, 0.12);
+  --noise-opacity: 0.05;
 }
 
 [data-theme='dark'] {
-  // -- Ember --
-  --bg-primary: #0e0a07;        // warm near-black (NOT navy)
-  --bg-secondary: #181210;      // dark coffee
-  --bg-tertiary: #251c17;       // espresso
-  --text-primary: #f5ebd9;      // warm bone, not stark white
-  --text-secondary: #b8a890;
-  --text-muted: #6b5d4a;
-  --accent: #ff6a3d;            // ember orange (brighter for dark)
-  --accent-hover: #ff8a5f;
-  --accent-light: rgba(255, 106, 61, 0.1);
-  --accent-glow: rgba(255, 106, 61, 0.35);
-  --accent-gradient: linear-gradient(135deg, #ff6a3d 0%, #fbbf24 100%);
-  --success: #84cc16;           // electric lime
-  --warning: #fbbf24;           // gold
-  --danger: #f43f5e;            // rose-red (not generic red)
-  --info: #fbbf24;              // unify with warning to keep palette tight
-  --card-bg: #181210;
-  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.5), 0 8px 24px rgba(0, 0, 0, 0.5);
-  --card-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.5), 0 16px 40px rgba(255, 106, 61, 0.12);
-  --border: #2a201a;
-  --border-strong: #3d2e24;
-  --navbar-bg: rgba(14, 10, 7, 0.85);
-  --glass-bg: rgba(255, 235, 217, 0.03);
-  --glass-border: rgba(255, 106, 61, 0.08);
-  --code-bg: #1f1814;
-  --heatmap-0: #181210;
-  --heatmap-1: #3d1f0e;
-  --heatmap-2: #7a3815;
-  --heatmap-3: #c4521f;
-  --heatmap-4: #ff6a3d;
-  --scrollbar-thumb: #3d2e24;
-  --selection-bg: rgba(255, 106, 61, 0.3);
-  --glow-color: rgba(255, 106, 61, 0.15);
-  --noise-opacity: 0.06;
+  // -- Oxblood --
+  --bg-primary: #0d0708;        // black with the faintest red undertone
+  --bg-secondary: #16090b;      // dried-blood black
+  --bg-tertiary: #1f0d10;       // deeper crimson black
+  --text-primary: #e8dcd6;      // warm bone, not stark white
+  --text-secondary: #9a8a85;
+  --text-muted: #5c4f4c;
+  --accent: #a83232;            // muted brick / dried blood
+  --accent-hover: #c44848;
+  --accent-light: rgba(168, 50, 50, 0.08);
+  --accent-glow: rgba(168, 50, 50, 0.28);
+  --accent-gradient: linear-gradient(135deg, #a83232 0%, #5c1414 100%);
+  --success: #7a8a4a;           // dusty olive
+  --warning: #b88a2e;           // antique gold
+  --danger: #c44848;            // brick
+  --info: #6a7a8a;              // dusty steel
+  --card-bg: #16090b;
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.6), 0 8px 24px rgba(0, 0, 0, 0.6);
+  --card-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.6), 0 16px 40px rgba(168, 50, 50, 0.1);
+  --border: #2a161a;
+  --border-strong: #3d2025;
+  --navbar-bg: rgba(13, 7, 8, 0.88);
+  --glass-bg: rgba(232, 220, 214, 0.025);
+  --glass-border: rgba(168, 50, 50, 0.08);
+  --code-bg: #1a0c0e;
+  --heatmap-0: #16090b;
+  --heatmap-1: #2a0e10;
+  --heatmap-2: #5c1818;
+  --heatmap-3: #8a2424;
+  --heatmap-4: #c44848;
+  --scrollbar-thumb: #3d2025;
+  --selection-bg: rgba(168, 50, 50, 0.28);
+  --glow-color: rgba(168, 50, 50, 0.12);
+  --noise-opacity: 0.07;
 }
 [data-theme='synthwave'] {
   --bg-primary: #1a1025;
