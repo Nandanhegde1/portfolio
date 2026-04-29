@@ -1,83 +1,77 @@
-﻿// Theme Definitions - CSS Custom Properties
-// -------------------------------------------------------------
-// Default light = "Bone":    off-white parchment, charcoal text, oxblood accent.
-// Default dark  = "Oxblood": near-black with red undertone, dried-blood accent.
-// Both share the SAME accent so brand reads consistently across modes.
+// Theme Definitions — CSS Custom Properties
+// ──────────────────────────────────────────────
 
 :root,
 [data-theme='light'] {
-  // -- Bone --
-  --bg-primary: #ece6df;        // bone / unbleached linen
-  --bg-secondary: #e1d9ce;      // taupe paper
-  --bg-tertiary: #d4cabb;       // sand
-  --text-primary: #161210;      // near-black charcoal
-  --text-secondary: #3d3530;
-  --text-muted: #7a6f65;
-  --accent: #c1182a;            // dried blood / oxblood
-  --accent-hover: #9c1322;
-  --accent-light: rgba(193, 24, 42, 0.06);
-  --accent-glow: rgba(193, 24, 42, 0.18);
-  --accent-gradient: linear-gradient(135deg, #c1182a 0%, #5c0f1a 100%);
-  --success: #5a6e3a;           // muted olive
-  --warning: #a8741a;           // burnt mustard
-  --danger: #9c1322;            // deep crimson
-  --info: #3d4a5e;              // steel slate
-  --card-bg: #f0eae3;
-  --card-shadow: 0 1px 2px rgba(22, 18, 16, 0.08), 0 6px 20px rgba(22, 18, 16, 0.1);
-  --card-shadow-hover: 0 4px 8px rgba(22, 18, 16, 0.12), 0 16px 40px rgba(193, 24, 42, 0.1);
-  --border: #c8bda9;
-  --border-strong: #9c8e7a;
-  --navbar-bg: rgba(236, 230, 223, 0.85);
-  --glass-bg: rgba(240, 234, 227, 0.7);
-  --glass-border: rgba(22, 18, 16, 0.1);
-  --code-bg: #e1d9ce;
-  --heatmap-0: #d4cabb;
-  --heatmap-1: #c4a59e;
-  --heatmap-2: #c84858;
-  --heatmap-3: #c1182a;
-  --heatmap-4: #5c0f1a;
-  --scrollbar-thumb: #9c8e7a;
-  --selection-bg: rgba(193, 24, 42, 0.15);
-  --glow-color: rgba(193, 24, 42, 0.12);
-  --noise-opacity: 0.05;
+  --bg-primary: #fafaf9;
+  --bg-secondary: #f3f2f0;
+  --bg-tertiary: #e8e6e3;
+  --text-primary: #1c1917;
+  --text-secondary: #57534e;
+  --text-muted: #a8a29e;
+  --accent: #4f46e5;
+  --accent-hover: #4338ca;
+  --accent-light: rgba(79, 70, 229, 0.08);
+  --accent-glow: rgba(79, 70, 229, 0.25);
+  --accent-gradient: linear-gradient(135deg, #4f46e5, #7c3aed);
+  --success: #16a34a;
+  --warning: #ea580c;
+  --danger: #dc2626;
+  --info: #0891b2;
+  --card-bg: #ffffff;
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.06);
+  --card-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.08), 0 12px 32px rgba(0, 0, 0, 0.1);
+  --border: #e7e5e4;
+  --border-strong: #d6d3d1;
+  --navbar-bg: rgba(250, 250, 249, 0.8);
+  --glass-bg: rgba(255, 255, 255, 0.65);
+  --glass-border: rgba(0, 0, 0, 0.05);
+  --code-bg: #f5f5f4;
+  --heatmap-0: #ebedf0;
+  --heatmap-1: #c6dbef;
+  --heatmap-2: #6baed6;
+  --heatmap-3: #3182bd;
+  --heatmap-4: #4f46e5;
+  --scrollbar-thumb: #d6d3d1;
+  --selection-bg: rgba(79, 70, 229, 0.15);
+  --glow-color: rgba(79, 70, 229, 0.15);
 }
 
 [data-theme='dark'] {
-  // -- Oxblood --
-  --bg-primary: #0d0708;        // black with the faintest red undertone
-  --bg-secondary: #16090b;      // dried-blood black
-  --bg-tertiary: #1f0d10;       // deeper crimson black
-  --text-primary: #e8dcd6;      // warm bone, not stark white
-  --text-secondary: #9a8a85;
-  --text-muted: #5c4f4c;
-  --accent: #dc2f3e;            // muted brick / dried blood
-  --accent-hover: #ef4459;
-  --accent-light: rgba(220, 47, 62, 0.08);
-  --accent-glow: rgba(220, 47, 62, 0.28);
-  --accent-gradient: linear-gradient(135deg, #dc2f3e 0%, #7a1722 100%);
-  --success: #7a8a4a;           // dusty olive
-  --warning: #b88a2e;           // antique gold
-  --danger: #ef4459;            // brick
-  --info: #6a7a8a;              // dusty steel
-  --card-bg: #16090b;
-  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.6), 0 8px 24px rgba(0, 0, 0, 0.6);
-  --card-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.6), 0 16px 40px rgba(220, 47, 62, 0.1);
-  --border: #2e1216;
-  --border-strong: #4a1820;
-  --navbar-bg: rgba(13, 7, 8, 0.88);
-  --glass-bg: rgba(232, 220, 214, 0.025);
-  --glass-border: rgba(220, 47, 62, 0.08);
-  --code-bg: #1a0c0e;
-  --heatmap-0: #16090b;
-  --heatmap-1: #2a0e10;
-  --heatmap-2: #6e1a22;
-  --heatmap-3: #a52030;
-  --heatmap-4: #ef4459;
-  --scrollbar-thumb: #4a1820;
-  --selection-bg: rgba(220, 47, 62, 0.28);
-  --glow-color: rgba(220, 47, 62, 0.12);
-  --noise-opacity: 0.07;
+  --bg-primary: #0a0e1a;
+  --bg-secondary: #111827;
+  --bg-tertiary: #1e293b;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #475569;
+  --accent: #22d3ee;
+  --accent-hover: #67e8f9;
+  --accent-light: rgba(34, 211, 238, 0.1);
+  --accent-glow: rgba(34, 211, 238, 0.3);
+  --accent-gradient: linear-gradient(135deg, #22d3ee, #818cf8);
+  --success: #34d399;
+  --warning: #fbbf24;
+  --danger: #f87171;
+  --info: #60a5fa;
+  --card-bg: #111827;
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.4);
+  --card-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.4), 0 12px 32px rgba(34, 211, 238, 0.08);
+  --border: #1e293b;
+  --border-strong: #334155;
+  --navbar-bg: rgba(10, 14, 26, 0.85);
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --code-bg: #1e293b;
+  --heatmap-0: #111827;
+  --heatmap-1: #0e3a4a;
+  --heatmap-2: #0e7490;
+  --heatmap-3: #06b6d4;
+  --heatmap-4: #22d3ee;
+  --scrollbar-thumb: #334155;
+  --selection-bg: rgba(34, 211, 238, 0.2);
+  --glow-color: rgba(34, 211, 238, 0.12);
 }
+
 [data-theme='synthwave'] {
   --bg-primary: #1a1025;
   --bg-secondary: #241734;
