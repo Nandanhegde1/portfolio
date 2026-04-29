@@ -29,4 +29,3 @@ insert into roasts (body, author_name, is_pinned, reply_body, reply_at) values
    'Nandan (self-roast)', false, null, null),
   ('opened the terminal page expecting a gimmick. typed sudo hire-me. now i feel things.',
    'Nandan (self-roast)', false, null, null);
-yes main
