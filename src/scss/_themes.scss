@@ -1,77 +1,83 @@
-// Theme Definitions — CSS Custom Properties
-// ──────────────────────────────────────────────
+﻿// Theme Definitions - CSS Custom Properties
+// -------------------------------------------------------------
+// Default light = "Newsprint": warm cream paper, ink black, ember accent.
+// Default dark  = "Ember":     warm near-black, ember-orange accent, gold supporting.
+// Both share the SAME accent so brand reads consistently across modes.
 
 :root,
 [data-theme='light'] {
-  --bg-primary: #fafaf9;
-  --bg-secondary: #f3f2f0;
-  --bg-tertiary: #e8e6e3;
-  --text-primary: #1c1917;
-  --text-secondary: #57534e;
-  --text-muted: #a8a29e;
-  --accent: #4f46e5;
-  --accent-hover: #4338ca;
-  --accent-light: rgba(79, 70, 229, 0.08);
-  --accent-glow: rgba(79, 70, 229, 0.25);
-  --accent-gradient: linear-gradient(135deg, #4f46e5, #7c3aed);
-  --success: #16a34a;
-  --warning: #ea580c;
-  --danger: #dc2626;
-  --info: #0891b2;
-  --card-bg: #ffffff;
-  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.06);
-  --card-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.08), 0 12px 32px rgba(0, 0, 0, 0.1);
-  --border: #e7e5e4;
-  --border-strong: #d6d3d1;
-  --navbar-bg: rgba(250, 250, 249, 0.8);
-  --glass-bg: rgba(255, 255, 255, 0.65);
-  --glass-border: rgba(0, 0, 0, 0.05);
-  --code-bg: #f5f5f4;
-  --heatmap-0: #ebedf0;
-  --heatmap-1: #c6dbef;
-  --heatmap-2: #6baed6;
-  --heatmap-3: #3182bd;
-  --heatmap-4: #4f46e5;
-  --scrollbar-thumb: #d6d3d1;
-  --selection-bg: rgba(79, 70, 229, 0.15);
-  --glow-color: rgba(79, 70, 229, 0.15);
+  // -- Newsprint --
+  --bg-primary: #f5f0e6;        // warm cream paper
+  --bg-secondary: #ede5d3;      // recycled paper
+  --bg-tertiary: #e0d5bd;       // kraft
+  --text-primary: #1a1410;      // ink black, slight warm undertone
+  --text-secondary: #4a3f33;    // faded ink
+  --text-muted: #8b7d6b;        // pencil
+  --accent: #d94e1f;            // ember orange (signature)
+  --accent-hover: #b8400f;
+  --accent-light: rgba(217, 78, 31, 0.08);
+  --accent-glow: rgba(217, 78, 31, 0.25);
+  --accent-gradient: linear-gradient(135deg, #d94e1f 0%, #f59e0b 100%);
+  --success: #4d7c2a;           // moss
+  --warning: #c97a16;           // mustard
+  --danger: #b91c1c;            // bookbinder red
+  --info: #1e5680;              // ink-blue
+  --card-bg: #fbf6ec;           // cleaner paper
+  --card-shadow: 0 1px 2px rgba(26, 20, 16, 0.06), 0 6px 20px rgba(26, 20, 16, 0.08);
+  --card-shadow-hover: 0 4px 8px rgba(26, 20, 16, 0.1), 0 16px 40px rgba(217, 78, 31, 0.12);
+  --border: #d4c8b0;
+  --border-strong: #a89878;
+  --navbar-bg: rgba(245, 240, 230, 0.85);
+  --glass-bg: rgba(251, 246, 236, 0.7);
+  --glass-border: rgba(26, 20, 16, 0.08);
+  --code-bg: #ede5d3;
+  --heatmap-0: #e0d5bd;
+  --heatmap-1: #f5cba8;
+  --heatmap-2: #ed9a6c;
+  --heatmap-3: #d94e1f;
+  --heatmap-4: #8a2c0a;
+  --scrollbar-thumb: #a89878;
+  --selection-bg: rgba(217, 78, 31, 0.2);
+  --glow-color: rgba(217, 78, 31, 0.18);
+  --noise-opacity: 0.04;
 }
 
 [data-theme='dark'] {
-  --bg-primary: #0a0e1a;
-  --bg-secondary: #111827;
-  --bg-tertiary: #1e293b;
-  --text-primary: #f1f5f9;
-  --text-secondary: #94a3b8;
-  --text-muted: #475569;
-  --accent: #22d3ee;
-  --accent-hover: #67e8f9;
-  --accent-light: rgba(34, 211, 238, 0.1);
-  --accent-glow: rgba(34, 211, 238, 0.3);
-  --accent-gradient: linear-gradient(135deg, #22d3ee, #818cf8);
-  --success: #34d399;
-  --warning: #fbbf24;
-  --danger: #f87171;
-  --info: #60a5fa;
-  --card-bg: #111827;
-  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.4);
-  --card-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.4), 0 12px 32px rgba(34, 211, 238, 0.08);
-  --border: #1e293b;
-  --border-strong: #334155;
-  --navbar-bg: rgba(10, 14, 26, 0.85);
-  --glass-bg: rgba(255, 255, 255, 0.03);
-  --glass-border: rgba(255, 255, 255, 0.06);
-  --code-bg: #1e293b;
-  --heatmap-0: #111827;
-  --heatmap-1: #0e3a4a;
-  --heatmap-2: #0e7490;
-  --heatmap-3: #06b6d4;
-  --heatmap-4: #22d3ee;
-  --scrollbar-thumb: #334155;
-  --selection-bg: rgba(34, 211, 238, 0.2);
-  --glow-color: rgba(34, 211, 238, 0.12);
+  // -- Ember --
+  --bg-primary: #0e0a07;        // warm near-black (NOT navy)
+  --bg-secondary: #181210;      // dark coffee
+  --bg-tertiary: #251c17;       // espresso
+  --text-primary: #f5ebd9;      // warm bone, not stark white
+  --text-secondary: #b8a890;
+  --text-muted: #6b5d4a;
+  --accent: #ff6a3d;            // ember orange (brighter for dark)
+  --accent-hover: #ff8a5f;
+  --accent-light: rgba(255, 106, 61, 0.1);
+  --accent-glow: rgba(255, 106, 61, 0.35);
+  --accent-gradient: linear-gradient(135deg, #ff6a3d 0%, #fbbf24 100%);
+  --success: #84cc16;           // electric lime
+  --warning: #fbbf24;           // gold
+  --danger: #f43f5e;            // rose-red (not generic red)
+  --info: #fbbf24;              // unify with warning to keep palette tight
+  --card-bg: #181210;
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.5), 0 8px 24px rgba(0, 0, 0, 0.5);
+  --card-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.5), 0 16px 40px rgba(255, 106, 61, 0.12);
+  --border: #2a201a;
+  --border-strong: #3d2e24;
+  --navbar-bg: rgba(14, 10, 7, 0.85);
+  --glass-bg: rgba(255, 235, 217, 0.03);
+  --glass-border: rgba(255, 106, 61, 0.08);
+  --code-bg: #1f1814;
+  --heatmap-0: #181210;
+  --heatmap-1: #3d1f0e;
+  --heatmap-2: #7a3815;
+  --heatmap-3: #c4521f;
+  --heatmap-4: #ff6a3d;
+  --scrollbar-thumb: #3d2e24;
+  --selection-bg: rgba(255, 106, 61, 0.3);
+  --glow-color: rgba(255, 106, 61, 0.15);
+  --noise-opacity: 0.06;
 }
-
 [data-theme='synthwave'] {
   --bg-primary: #1a1025;
   --bg-secondary: #241734;
