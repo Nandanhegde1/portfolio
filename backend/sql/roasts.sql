@@ -21,12 +21,12 @@ create index if not exists roasts_pinned_idx
 
 -- Seed a few self-roasts so the wall is never empty.
 insert into roasts (body, author_name, is_pinned, reply_body, reply_at) values
-  ('Your bento grid has more cards than my last project had requirements.',
+  ('bro really built a /lab page just to flex he can stream tokens',
    'Nandan (self-roast)', true,
-   'Fair. I got carried away. Three of them are getting cut next sprint.',
+   'guilty. it took 3 evenings and i refuse to take it down.',
    now()),
-  ('If I see one more "powered by AI" portfolio I''m switching careers.',
+  ('the bento grid is fine but did you really need 4 different gradient styles',
    'Nandan (self-roast)', false, null, null),
-  ('The terminal command palette is showing off and I respect it.',
+  ('opened the terminal page expecting a gimmick. typed sudo hire-me. now i feel things.',
    'Nandan (self-roast)', false, null, null);
 yes main
