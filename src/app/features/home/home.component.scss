@@ -671,6 +671,119 @@
 }
 
 // -----------------------------------------------
+// FEATURED PROJECTS (3 across, full-width card)
+// -----------------------------------------------
+.bento__card--projects {
+  grid-column: span 3;
+
+  @include tablet { grid-column: span 2; }
+  @include mobile { grid-column: span 1; }
+}
+
+.bento__projects-title {
+  font-family: $font-heading;
+  font-size: $fs-xl;
+  font-weight: $fw-bold;
+  color: var(--text-primary);
+  margin: 0 0 $space-lg;
+  line-height: 1.2;
+}
+
+.bento__projects-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $space-md;
+
+  @include tablet { grid-template-columns: 1fr; }
+}
+
+.bento__project {
+  display: flex;
+  flex-direction: column;
+  gap: $space-sm;
+  padding: $space-lg;
+  border-radius: $radius-lg;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  text-decoration: none;
+  color: inherit;
+  transition: transform $transition-base, border-color $transition-base, box-shadow $transition-base;
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  }
+}
+
+.bento__project-head {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.bento__project-title {
+  font-family: $font-heading;
+  font-size: $fs-md;
+  font-weight: $fw-bold;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.bento__project-client {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: var(--text-muted);
+}
+
+.bento__project-line {
+  font-size: $fs-sm;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.bento__project-metric {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  font-weight: $fw-semibold;
+  color: var(--accent);
+  padding: $space-xs $space-sm;
+  background: var(--accent-light);
+  border-radius: $radius-sm;
+  align-self: flex-start;
+}
+
+.bento__project-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: auto;
+
+  span {
+    font-family: $font-mono;
+    font-size: 11px;
+    color: var(--text-muted);
+    padding: 2px 6px;
+    background: var(--bg-primary);
+    border-radius: $radius-sm;
+  }
+}
+
+.bento__projects-link {
+  display: inline-block;
+  margin-top: $space-lg;
+  font-family: $font-mono;
+  font-size: $fs-sm;
+  font-weight: $fw-semibold;
+  color: var(--accent);
+  text-decoration: none;
+  transition: transform $transition-base;
+
+  &:hover { transform: translateX(4px); }
+}
+
+// -----------------------------------------------
 // FEATURED ROAST HERO + WALL OF WOW
 // -----------------------------------------------
 .bento__card--roast-hero {

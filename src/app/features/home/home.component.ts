@@ -13,18 +13,19 @@ interface HomeStat {
   icon: string;
 }
 
-interface ValueProp {
-  icon: string;
-  title: string;
-  description: string;
-  highlight: string;
-}
-
 interface JourneyNode {
   year: string;
   title: string;
   description: string;
   side: 'left' | 'right';
+}
+
+interface FeaturedProject {
+  title: string;
+  client: string;
+  oneLiner: string;
+  metric: string;
+  stack: string[];
 }
 
 @Component({
@@ -39,19 +40,39 @@ interface JourneyNode {
     <section class="bento">
       <div class="bento__inner">
 
-        <!-- Row 1: Name card + Status + Stats -->
+        <!-- Row 1: Identity (compact) -->
         <div class="bento__card bento__card--name" appScrollReveal>
           <span class="bento__card-tag">// hello-world</span>
           <h2 class="bento__name">Nandan Hegde</h2>
           <p class="bento__role">Senior Software Engineer</p>
-          <p class="bento__guild">Thinkbridge \u00B7 PSG Global Solutions</p>
+          <p class="bento__guild">Thinkbridge · PSG Global Solutions</p>
           <div class="bento__available">
             <span class="bento__pulse"></span>
             Open to opportunities
           </div>
         </div>
 
-        <div class="bento__card bento__card--status" appScrollReveal [delay]="80">
+        <!-- Row 2: Roast My Stack — lead with the weirdest thing -->
+        <a routerLink="/lab" class="bento__card bento__card--roast-hero" appScrollReveal [delay]="80">
+          <div class="bento__roast-hero-bg" aria-hidden="true">
+            <span></span><span></span><span></span><span></span>
+          </div>
+          <div class="bento__roast-hero-content">
+            <span class="bento__roast-hero-eyebrow">// the lab · ai experiment</span>
+            <h3 class="bento__roast-hero-title">
+              <span class="bento__roast-hero-emoji">🔥</span>
+              Roast My Tech Stack
+            </h3>
+            <p class="bento__roast-hero-desc">
+              Drop your stack. Claude roasts it in three intensities. Source linked.
+              The system prompt took 3 rewrites — the first version only generated compliments.
+            </p>
+            <span class="bento__roast-hero-cta">Open the lab →</span>
+          </div>
+        </a>
+
+        <!-- Row 3: Stats + Stack (combined) -->
+        <div class="bento__card bento__card--status" appScrollReveal [delay]="120">
           <div class="bento__status-grid">
             @for (stat of stats; track stat.label) {
               <div class="bento__stat">
@@ -68,8 +89,7 @@ interface JourneyNode {
           </div>
         </div>
 
-        <!-- Row 2: Stack cloud + What I bring (one card) -->
-        <div class="bento__card bento__card--stack" appScrollReveal [delay]="120">
+        <div class="bento__card bento__card--stack" appScrollReveal [delay]="160">
           <span class="bento__card-tag">// tech-stack</span>
           <div class="bento__stack-cloud">
             @for (tech of techStack; track tech.name) {
@@ -81,95 +101,32 @@ interface JourneyNode {
           </div>
         </div>
 
-        <div class="bento__card bento__card--value" appScrollReveal [delay]="160">
-          @for (prop of valueProps; track prop.title) {
-            <div class="bento__value-item">
-              <span class="bento__value-icon">{{ prop.icon }}</span>
-              <div>
-                <h4 class="bento__value-title">{{ prop.title }}</h4>
-                <p class="bento__value-desc">{{ prop.description }}</p>
-              </div>
-            </div>
-          }
-        </div>
-
-        <!-- Skills Marquee -->
-        <div class="bento__marquee-wrap" appScrollReveal [delay]="180">
-          <div class="bento__marquee">
-            <div class="bento__marquee-track">
-              @for (tech of marqueeSkills; track tech + '-1-' + $index) {
-                <span class="bento__marquee-item">{{ tech }}</span>
-              }
-              @for (tech of marqueeSkills; track tech + '-2-' + $index) {
-                <span class="bento__marquee-item" aria-hidden="true">{{ tech }}</span>
-              }
-            </div>
-          </div>
-        </div>
-
-        <!-- Row 3: Featured Roast CTA (the wow CTA) -->
-        <a routerLink="/lab" class="bento__card bento__card--roast-hero" appScrollReveal [delay]="200">
-          <div class="bento__roast-hero-bg" aria-hidden="true">
-            <span></span><span></span><span></span><span></span>
-          </div>
-          <div class="bento__roast-hero-content">
-            <span class="bento__roast-hero-eyebrow">// the lab · ai experiment</span>
-            <h3 class="bento__roast-hero-title">
-              <span class="bento__roast-hero-emoji">🔥</span>
-              Roast My Tech Stack
-            </h3>
-            <p class="bento__roast-hero-desc">
-              A weekend experiment. Claude, a streaming endpoint, and three intensities of mean.
-              Source linked. The system prompt took 3 rewrites — the first version only generated compliments.
-            </p>
-            <span class="bento__roast-hero-cta">Open the lab →</span>
-          </div>
-        </a>
-
-        <!-- Row 3b: Wall of Wow (devs love this, recruiters skip) -->
-        <div class="bento__card bento__card--wow" appScrollReveal [delay]="240">
-          <span class="bento__card-tag">// for the curious</span>
-          <h3 class="bento__wow-title">Try something fun</h3>
-          <div class="bento__wow-grid">
-            <a routerLink="/quiz" class="bento__wow-tile">
-              <span class="bento__wow-tile-icon">🎯</span>
-              <h4 class="bento__wow-tile-title">Team Quiz</h4>
-              <p class="bento__wow-tile-desc">Find your dev archetype in 60 seconds.</p>
-              <span class="bento__wow-tile-cta">Take it →</span>
-            </a>
-            <a routerLink="/about" class="bento__wow-tile">
-              <span class="bento__wow-tile-icon">🎮</span>
-              <h4 class="bento__wow-tile-title">Character Sheet</h4>
-              <p class="bento__wow-tile-desc">RPG-style about page. Forge your card.</p>
-              <span class="bento__wow-tile-cta">View →</span>
-            </a>
-            <a routerLink="/404" class="bento__wow-tile">
-              <span class="bento__wow-tile-icon">⌨️</span>
-              <h4 class="bento__wow-tile-title">Live Terminal</h4>
-              <p class="bento__wow-tile-desc">Type <code>help</code>, <code>ls</code>, or <code>sudo hire-me</code>.</p>
-              <span class="bento__wow-tile-cta">Open →</span>
-            </a>
-          </div>
-        </div>
-
-        <!-- Row 4: Achievements -->
-        <div class="bento__card bento__card--achievements" appScrollReveal [delay]="300">
-          <span class="bento__card-tag">// achievements</span>
-          <div class="bento__achievements-grid">
-            @for (ach of achievements; track ach.title) {
-              <div class="bento__achievement">
-                <span class="bento__achievement-icon">{{ ach.icon }}</span>
-                <div>
-                  <h4 class="bento__achievement-title">{{ ach.title }}</h4>
-                  <p class="bento__achievement-desc">{{ ach.desc }}</p>
+        <!-- Row 4: 3 best projects (full width) -->
+        <div class="bento__card bento__card--projects" appScrollReveal [delay]="200">
+          <span class="bento__card-tag">// shipped · production</span>
+          <h3 class="bento__projects-title">Three things I built that actually run</h3>
+          <div class="bento__projects-grid">
+            @for (p of featuredProjects; track p.title) {
+              <a routerLink="/projects" class="bento__project">
+                <div class="bento__project-head">
+                  <h4 class="bento__project-title">{{ p.title }}</h4>
+                  <span class="bento__project-client">{{ p.client }}</span>
                 </div>
-              </div>
+                <p class="bento__project-line">{{ p.oneLiner }}</p>
+                <div class="bento__project-metric">{{ p.metric }}</div>
+                <div class="bento__project-stack">
+                  @for (s of p.stack; track s) {
+                    <span>{{ s }}</span>
+                  }
+                </div>
+              </a>
             }
           </div>
+          <a routerLink="/projects" class="bento__projects-link">See all projects →</a>
         </div>
 
         <!-- Row 5: Journey timeline (full width) -->
-        <div class="bento__card bento__card--journey" appScrollReveal [delay]="340">
+        <div class="bento__card bento__card--journey" appScrollReveal [delay]="240">
           <span class="bento__card-tag">// journey</span>
           <div class="bento__timeline">
             @for (node of journey; track node.year + node.title) {
@@ -185,16 +142,16 @@ interface JourneyNode {
           </div>
         </div>
 
-        <!-- Row 6: CTA -->
-        <div class="bento__card bento__card--cta" appScrollReveal [delay]="380">
-          <h2 class="bento__cta-text">Let\u2019s build something.</h2>
-          <p class="bento__cta-sub">Open to senior frontend, full-stack, and lead roles.</p>
+        <!-- Row 6: Single CTA -->
+        <div class="bento__card bento__card--cta" appScrollReveal [delay]="280">
+          <h2 class="bento__cta-text">Got a project? Let's talk shop.</h2>
+          <p class="bento__cta-sub">Senior frontend, full-stack, or lead roles. Or just say hi.</p>
           <div class="bento__cta-buttons">
             <a routerLink="/contact" class="bento__cta-btn bento__cta-btn--primary">
               Get in Touch
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </a>
-            <a routerLink="/dashboard" class="bento__cta-btn bento__cta-btn--secondary">Dev Dashboard</a>
+            <a routerLink="/roast-me-back" class="bento__cta-btn bento__cta-btn--secondary">Or roast me back</a>
           </div>
         </div>
 
@@ -211,24 +168,27 @@ export class HomeComponent {
     { value: 5, suffix: 'K+', label: 'Test Lines Written', icon: '\u2705' },
   ];
 
-  readonly valueProps: ValueProp[] = [
+  readonly featuredProjects: FeaturedProject[] = [
     {
-      icon: '\u26A1',
-      title: 'I Ship Fast, Cleanly',
-      description: 'AngularJS to Angular 17 migration that cut load times by 30%. 100% sprint deadlines across 5 two-week sprints.',
-      highlight: 'Code splitting \u2022 CI/CD pipelines \u2022 100% branch coverage',
+      title: 'Compass',
+      client: 'PSG Global Solutions',
+      oneLiner: 'Migrated a 7-year-old AngularJS recruiting platform to Angular 17 without a single hour of downtime.',
+      metric: '~30% faster load · 10K+ monthly users',
+      stack: ['Angular 17', 'TypeScript', 'Power BI', 'Azure DevOps'],
     },
     {
-      icon: '\uD83E\uDDE9',
-      title: 'I Think in Systems',
-      description: 'From real-time data sync engines to browser extensions serving 500+ users \u2014 I architect solutions, not just features.',
-      highlight: 'Azure DevOps \u2022 Power BI integration \u2022 Multi-cloud (AWS/Azure/GCP)',
+      title: 'Anna (AI Calling Agent)',
+      client: 'PSG Global Solutions',
+      oneLiner: 'React prototype for an AI recruiter that calls candidates. Demoed live at a tradeshow in Austin.',
+      metric: 'Shipped tradeshow-ready in 6 weeks',
+      stack: ['React', 'JavaScript', 'AI/ML'],
     },
     {
-      icon: '\uD83E\uDD1D',
-      title: 'I Multiply Teams',
-      description: 'Mentoring juniors, translating business needs into sprints, and bridging stakeholders with engineering.',
-      highlight: 'Cross-functional leadership \u2022 Agile estimation \u2022 Code reviews',
+      title: 'Corflow Claims',
+      client: 'Swiss Re',
+      oneLiner: 'Modernized the UI for a global insurance claims tool serving 40+ countries on legacy infrastructure.',
+      metric: '40+ countries · lazy-loaded · AOT',
+      stack: ['Angular', 'TypeScript', 'SCSS'],
     },
   ];
 
@@ -256,36 +216,6 @@ export class HomeComponent {
     { name: 'Git', primary: false },
     { name: 'REST APIs', primary: false },
     { name: 'Tailwind CSS', primary: false },
-  ];
-
-  readonly marqueeSkills = [
-    'Angular', 'TypeScript', 'RxJS', 'SCSS', 'Node.js', 'Express',
-    'React.js', 'JavaScript', 'MongoDB', 'Azure DevOps', 'Power BI',
-    'AWS', 'Azure', 'GCP', 'Docker', 'Kubernetes', 'Terraform',
-    'Jenkins', 'Git', 'REST APIs', 'CI/CD', 'Three.js', 'Canvas API',
-  ];
-
-  readonly achievements = [
-    {
-      icon: '\u2601\uFE0F',
-      title: 'AWS Certified',
-      desc: 'Solutions Architect Associate \u2014 multi-cloud infrastructure',
-    },
-    {
-      icon: '\u2B50',
-      title: 'High Performer',
-      desc: 'Infosys rating 82% \u2014 top-tier across 40+ country platform',
-    },
-    {
-      icon: '\uD83D\uDE80',
-      title: '10K+ Users Impacted',
-      desc: 'PSG recruiting platform with SSO + Power BI for enterprise',
-    },
-    {
-      icon: '\uD83C\uDFC6',
-      title: '100% Sprint Delivery',
-      desc: '5 consecutive two-week sprints with zero deadline misses',
-    },
   ];
 
   readonly journey: JourneyNode[] = [
