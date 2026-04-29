@@ -13,18 +13,18 @@
   --text-primary: #161210;      // near-black charcoal
   --text-secondary: #3d3530;
   --text-muted: #7a6f65;
-  --accent: #8b1e1e;            // dried blood / oxblood
-  --accent-hover: #6b1414;
-  --accent-light: rgba(139, 30, 30, 0.06);
-  --accent-glow: rgba(139, 30, 30, 0.18);
-  --accent-gradient: linear-gradient(135deg, #8b1e1e 0%, #4a0e0e 100%);
+  --accent: #c1182a;            // dried blood / oxblood
+  --accent-hover: #9c1322;
+  --accent-light: rgba(193, 24, 42, 0.06);
+  --accent-glow: rgba(193, 24, 42, 0.18);
+  --accent-gradient: linear-gradient(135deg, #c1182a 0%, #5c0f1a 100%);
   --success: #5a6e3a;           // muted olive
   --warning: #a8741a;           // burnt mustard
-  --danger: #6b1414;            // deep crimson
+  --danger: #9c1322;            // deep crimson
   --info: #3d4a5e;              // steel slate
   --card-bg: #f0eae3;
   --card-shadow: 0 1px 2px rgba(22, 18, 16, 0.08), 0 6px 20px rgba(22, 18, 16, 0.1);
-  --card-shadow-hover: 0 4px 8px rgba(22, 18, 16, 0.12), 0 16px 40px rgba(139, 30, 30, 0.1);
+  --card-shadow-hover: 0 4px 8px rgba(22, 18, 16, 0.12), 0 16px 40px rgba(193, 24, 42, 0.1);
   --border: #c8bda9;
   --border-strong: #9c8e7a;
   --navbar-bg: rgba(236, 230, 223, 0.85);
@@ -33,12 +33,12 @@
   --code-bg: #e1d9ce;
   --heatmap-0: #d4cabb;
   --heatmap-1: #c4a59e;
-  --heatmap-2: #a55c5c;
-  --heatmap-3: #8b1e1e;
-  --heatmap-4: #4a0e0e;
+  --heatmap-2: #c84858;
+  --heatmap-3: #c1182a;
+  --heatmap-4: #5c0f1a;
   --scrollbar-thumb: #9c8e7a;
-  --selection-bg: rgba(139, 30, 30, 0.15);
-  --glow-color: rgba(139, 30, 30, 0.12);
+  --selection-bg: rgba(193, 24, 42, 0.15);
+  --glow-color: rgba(193, 24, 42, 0.12);
   --noise-opacity: 0.05;
 }
 
@@ -50,32 +50,32 @@
   --text-primary: #e8dcd6;      // warm bone, not stark white
   --text-secondary: #9a8a85;
   --text-muted: #5c4f4c;
-  --accent: #a83232;            // muted brick / dried blood
-  --accent-hover: #c44848;
-  --accent-light: rgba(168, 50, 50, 0.08);
-  --accent-glow: rgba(168, 50, 50, 0.28);
-  --accent-gradient: linear-gradient(135deg, #a83232 0%, #5c1414 100%);
+  --accent: #dc2f3e;            // muted brick / dried blood
+  --accent-hover: #ef4459;
+  --accent-light: rgba(220, 47, 62, 0.08);
+  --accent-glow: rgba(220, 47, 62, 0.28);
+  --accent-gradient: linear-gradient(135deg, #dc2f3e 0%, #7a1722 100%);
   --success: #7a8a4a;           // dusty olive
   --warning: #b88a2e;           // antique gold
-  --danger: #c44848;            // brick
+  --danger: #ef4459;            // brick
   --info: #6a7a8a;              // dusty steel
   --card-bg: #16090b;
   --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.6), 0 8px 24px rgba(0, 0, 0, 0.6);
-  --card-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.6), 0 16px 40px rgba(168, 50, 50, 0.1);
-  --border: #2a161a;
-  --border-strong: #3d2025;
+  --card-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.6), 0 16px 40px rgba(220, 47, 62, 0.1);
+  --border: #2e1216;
+  --border-strong: #4a1820;
   --navbar-bg: rgba(13, 7, 8, 0.88);
   --glass-bg: rgba(232, 220, 214, 0.025);
-  --glass-border: rgba(168, 50, 50, 0.08);
+  --glass-border: rgba(220, 47, 62, 0.08);
   --code-bg: #1a0c0e;
   --heatmap-0: #16090b;
   --heatmap-1: #2a0e10;
-  --heatmap-2: #5c1818;
-  --heatmap-3: #8a2424;
-  --heatmap-4: #c44848;
-  --scrollbar-thumb: #3d2025;
-  --selection-bg: rgba(168, 50, 50, 0.28);
-  --glow-color: rgba(168, 50, 50, 0.12);
+  --heatmap-2: #6e1a22;
+  --heatmap-3: #a52030;
+  --heatmap-4: #ef4459;
+  --scrollbar-thumb: #4a1820;
+  --selection-bg: rgba(220, 47, 62, 0.28);
+  --glow-color: rgba(220, 47, 62, 0.12);
   --noise-opacity: 0.07;
 }
 [data-theme='synthwave'] {
