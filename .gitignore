@@ -45,3 +45,8 @@ Thumbs.db
 # Environment variables
 .env
 backend/.env
+
+# log files
+build.log
+test.log
+*.log
