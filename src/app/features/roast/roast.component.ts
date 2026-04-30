@@ -5,6 +5,7 @@ import { RouterLink } from '@angular/router';
 import { ScrollRevealDirective } from '../../shared/directives/scroll-reveal.directive';
 import { environment } from '../../../environments/environment';
 import { SoundService } from '../../core/services/sound.service';
+import { ToastService } from '../../core/services/toast.service';
 import { LanguageService } from '../../core/i18n/language.service';
 
 interface RoastResult {
@@ -185,6 +186,12 @@ const FALLBACK_ROASTS: Record<string, string[]> = {
                 </svg>
                 Share on LinkedIn
               </button>
+              <button class="roast__action-btn roast__action-btn--reddit" (click)="shareOnReddit()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 01-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.04 1.605a3.32 3.32 0 01.043.555c0 2.812-3.273 5.092-7.308 5.092-4.036 0-7.31-2.28-7.31-5.092 0-.187.014-.37.04-.552-.61-.27-1.040-.892-1.040-1.608 0-.967.786-1.754 1.754-1.754.477 0 .9.182 1.207.49 1.207-.86 2.876-1.424 4.744-1.488l.9-4.222a.345.345 0 01.18-.225.355.355 0 01.286-.005l2.97.628a1.25 1.25 0 011.137-.722zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 00-.231.094.33.33 0 000 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 00.029-.463.33.33 0 00-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 00-.232-.095z"/>
+                </svg>
+                Share on Reddit
+              </button>
               <button class="roast__action-btn roast__action-btn--again" (click)="result.set(null)">
                 \u21BB Try Another
               </button>
@@ -211,6 +218,7 @@ const FALLBACK_ROASTS: Record<string, string[]> = {
 export class RoastComponent {
   private readonly http = inject(HttpClient);
   private readonly sound = inject(SoundService);
+  private readonly toast = inject(ToastService);
   private readonly language = inject(LanguageService);
   readonly roastCardRef = viewChild<ElementRef<HTMLDivElement>>('roastCard');
 
@@ -453,15 +461,43 @@ export class RoastComponent {
   shareOnTwitter(): void {
     const r = this.result();
     if (!r) return;
-    const text = encodeURIComponent(`\uD83D\uDD25 My tech stack (${r.stack}) just got roasted:\n\n"${r.roast.substring(0, 180)}..."\n\nGet yours roasted \u2192 nandanhegde.dev/roast`);
+    // X/Twitter intent honors the `text` param. Quote a sizeable chunk so the
+    // post still reads as a punchline if the user posts without editing.
+    const quote = r.roast.length > 220 ? `${r.roast.slice(0, 217)}...` : r.roast;
+    const text = encodeURIComponent(`\uD83D\uDD25 My tech stack (${r.stack}) just got roasted:\n\n"${quote}"\n\nGet yours roasted \u2192 nandanhegde.dev/roast`);
     window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank', 'noopener');
   }
 
+  // LinkedIn's share-offsite endpoint silently drops any `text`/`summary`/`title`
+  // params (deprecated since 2022). It only previews the URL via OpenGraph tags,
+  // so the roast itself never makes it to the composer. Workaround: stash the
+  // roast on the clipboard *before* opening LinkedIn so the user just hits paste.
   shareOnLinkedIn(): void {
     const r = this.result();
     if (!r) return;
-    const url = encodeURIComponent('https://nandanhegde.dev/roast');
-    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank', 'noopener');
+    const text = `\uD83D\uDD25 My tech stack (${r.stack}) just got roasted:\n\n"${r.roast}"\n\nGet yours roasted \u2192 https://nandanhegde.dev/roast`;
+    const open = () => {
+      const url = encodeURIComponent('https://nandanhegde.dev/roast');
+      window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank', 'noopener');
+    };
+    if (navigator.clipboard?.writeText) {
+      navigator.clipboard.writeText(text)
+        .then(() => this.toast.info('Roast copied!', 'LinkedIn won\u2019t prefill text \u2014 just paste into the post.'))
+        .catch(() => { /* ignore */ })
+        .finally(open);
+    } else {
+      open();
+    }
+  }
+
+  shareOnReddit(): void {
+    const r = this.result();
+    if (!r) return;
+    // Reddit's submit URL accepts `title` + `text` for self-posts. We point
+    // selftext='1' so it opens the text editor (not the link form).
+    const title = encodeURIComponent(`My ${r.stack.split(',')[0].trim()} stack got roasted by an AI \uD83D\uDD25`);
+    const body = encodeURIComponent(`**The stack:** ${r.stack}\n\n**The roast:**\n\n> ${r.roast.split('\n').join('\n> ')}\n\n---\n\nGet yours obliterated \u2192 https://nandanhegde.dev/roast`);
+    window.open(`https://www.reddit.com/submit?selftext=true&title=${title}&text=${body}`, '_blank', 'noopener');
   }
 
   onEnterKey(event: Event): void {

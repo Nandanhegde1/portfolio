@@ -460,6 +460,12 @@
       background: rgba(10, 102, 194, 0.08);
     }
 
+    &--reddit:hover {
+      border-color: #FF4500;
+      color: #FF4500;
+      background: rgba(255, 69, 0, 0.08);
+    }
+
     &--copy:hover {
       border-color: #10b981;
       color: #10b981;

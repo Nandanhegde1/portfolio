@@ -652,6 +652,10 @@ export class AboutComponent implements OnInit {
     // artifact actually looks like the live preview: real gradients, an
     // animated glare sweep, and a slow tilt. SVG opens in any browser and
     // keeps the animation — far better than a flat PNG.
+    void this.buildAndDownloadCard();
+  }
+
+  private async buildAndDownloadCard(): Promise<void> {
     const name = (this.visitorName || 'Your Name').slice(0, 30);
     const title = (this.visitorTitle || 'Developer').slice(0, 40);
     const skills = this.visitorSkills().slice(0, 6);
@@ -659,6 +663,22 @@ export class AboutComponent implements OnInit {
     const fc = this.activeForgeColor();
     const gradient = this.forgeGradient();
     const useDicebear = this.forgeAvatar() === 'dicebear';
+
+    // DiceBear is fetched as a data URI so the standalone SVG works offline.
+    // (External <image href> doesn't render when the file is opened from disk
+    // or imported into design tools — which is what made the download look
+    // "not proper" before.)
+    let avatarDataUri: string | null = null;
+    if (useDicebear) {
+      try {
+        const res = await fetch(this.getDiceBearUrl(name || 'guest'));
+        const svgText = await res.text();
+        avatarDataUri = `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svgText)))}`;
+      } catch {
+        // network failed — fall through to initials
+        avatarDataUri = null;
+      }
+    }
 
     const W = 600, H = 360;
     const cx = W / 2;
@@ -703,10 +723,12 @@ export class AboutComponent implements OnInit {
         </g>`;
     }).join('');
 
-    // Avatar — DiceBear is fetched as data URI when chosen so it renders
-    // inside the standalone SVG; otherwise initials.
-    const avatarInner = useDicebear
-      ? `<image href="${this.getDiceBearUrl(name || 'guest')}" x="${cx - 32}" y="80" width="64" height="64" clip-path="circle(32px at 32px 32px)"/>`
+    // Avatar — DiceBear embedded as data URI (so it renders offline) clipped
+    // to a circle via a real <clipPath>. The CSS shape syntax `clip-path="circle(...)"`
+    // doesn't work as an SVG attribute and was the reason the avatar was
+    // missing/squared in the downloaded card.
+    const avatarInner = avatarDataUri
+      ? `<image href="${avatarDataUri}" x="${cx - 32}" y="80" width="64" height="64" clip-path="url(#avatarClip)" preserveAspectRatio="xMidYMid slice"/>`
       : `<text x="${cx}" y="124" text-anchor="middle"
               font-family="ui-monospace, 'SF Mono', Menlo, monospace"
               font-size="24" font-weight="800" fill="#fff">${this.escapeXml(initials)}</text>`;
@@ -761,6 +783,9 @@ export class AboutComponent implements OnInit {
     </filter>
     <clipPath id="cardClip">
       <rect x="2" y="2" width="${W - 4}" height="${H - 4}" rx="22" ry="22"/>
+    </clipPath>
+    <clipPath id="avatarClip">
+      <circle cx="${cx}" cy="112" r="32"/>
     </clipPath>
   </defs>
 
