@@ -18,6 +18,10 @@ body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   transition: background-color 0.3s ease, color 0.3s ease;
+  // Belt-and-braces: any rogue absolute-positioned decoration that overflows
+  // the viewport on a phone (gradient orbs, aurora layers, tilted cards)
+  // will trigger horizontal scroll and break the layout. Clamp it here.
+  overflow-x: hidden;
 }
 
 img, svg, video, canvas {
@@ -26,9 +30,26 @@ img, svg, video, canvas {
   height: auto;
 }
 
+// Long URLs, code samples, and paste-bin roast text used to push cards wider
+// than the phone viewport. This is the modern, opt-in safe wrap.
+p, li, h1, h2, h3, h4, h5, h6, span, div {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+pre, code {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
 button, input, select, textarea {
   font: inherit;
   color: inherit;
+}
+
+// 16px input font-size prevents iOS Safari from auto-zooming on focus.
+input, select, textarea {
+  font-size: max(16px, 1rem);
 }
 
 button {

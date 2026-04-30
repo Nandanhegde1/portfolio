@@ -8,6 +8,10 @@
   position: relative;
   overflow: hidden;
 
+  @include mobile {
+    padding: $space-xl $space-md;
+  }
+
   // Ambient glow
   &::before {
     content: '';
@@ -435,6 +439,13 @@
     font-weight: $fw-medium;
     cursor: pointer;
     transition: all $transition-fast;
+    min-height: 44px; // iOS touch-target minimum
+
+    @include mobile {
+      // 5 share buttons need to fit comfortably; trim padding & font.
+      padding: $space-sm $space-md;
+      font-size: $fs-xs;
+    }
 
     &:hover {
       transform: translateY(-1px);

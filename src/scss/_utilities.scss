@@ -34,6 +34,12 @@
   @include tablet {
     padding-block: $space-2xl;
   }
+
+  @include mobile {
+    // Reclaim ~32px of vertical space per section on phones — stops
+    // every page feeling 4-5 screens long when scrolled on mobile.
+    padding-block: $space-xl;
+  }
 }
 
 .section-header {

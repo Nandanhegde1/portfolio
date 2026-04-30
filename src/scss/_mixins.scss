@@ -53,6 +53,12 @@
   max-width: $content-max-width;
   margin-inline: auto;
   padding-inline: $space-lg;
+
+  @include mobile {
+    // Phones with ~360-390px viewports lose too much real estate to 24px
+    // gutters; 16px is the comfortable mobile standard.
+    padding-inline: $space-md;
+  }
 }
 
 @mixin container-narrow {
@@ -60,6 +66,10 @@
   max-width: $content-narrow;
   margin-inline: auto;
   padding-inline: $space-lg;
+
+  @include mobile {
+    padding-inline: $space-md;
+  }
 }
 
 // ──────────────────────────────────────────────
