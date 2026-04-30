@@ -123,6 +123,10 @@
     gap: $space-lg;
 
     @include mobile {
+      // 4 labels (\"Years Experience\", \"Test Lines Written\") + 44px icon
+      // + animated counter were overflowing 2 columns at ~360px and pushing
+      // the whole card past the viewport. One column on phones, tighter gap.
+      grid-template-columns: 1fr;
       gap: $space-md;
     }
   }
@@ -131,6 +135,7 @@
     display: flex;
     align-items: center;
     gap: $space-md;
+    min-width: 0; // let the content shrink instead of pushing the grid wider
   }
 
   &__stat-icon {
@@ -148,6 +153,8 @@
   &__stat-content {
     display: flex;
     flex-direction: column;
+    min-width: 0;
+    flex: 1 1 auto;
   }
 
   &__stat-value {
@@ -167,6 +174,7 @@
     font-size: $fs-xs;
     color: var(--text-secondary);
     margin-top: 2px;
+    line-height: 1.2;
   }
 
   // ═══════════════════════════════════════════════

@@ -426,8 +426,9 @@ export class AboutComponent implements OnInit {
   readonly xpYears = 6;
   readonly xpPercent = 82;
 
-  // Collapsed by default \u2014 the page is dense; let visitors choose what to expand.
-  readonly openSections = signal<Set<string>>(new Set());
+  // Attributes open by default (it's the character sheet hook); the rest
+  // are dense, optional reading and start collapsed.
+  readonly openSections = signal<Set<string>>(new Set(['attributes']));
 
   // ── Forge customization ──
   readonly forgeColors: CardColor[] = [
