@@ -97,6 +97,31 @@
   </script>
 </head>
 <body>
+  <!--
+    GitHub Pages SPA redirect decoder.
+    public/404.html rewrites /portfolio/<route>?<query> to
+    /portfolio/?p=/<route>&q=<query>. We rewrite the URL back BEFORE
+    Angular bootstraps so Router parses the real path. Without this,
+    direct visits / refreshes / shared links to /lab, /about, /blog,
+    etc. all land on the home component because Angular sees `/`.
+  -->
+  <script>
+    (function () {
+      var l = window.location;
+      if (!l.search) return;
+      var params = new URLSearchParams(l.search);
+      var p = params.get('p');
+      if (!p) return;
+      var q = params.get('q');
+      var hash = l.hash || '';
+      var path = p.replace(/~and~/g, '&');
+      var query = q ? '?' + q.replace(/~and~/g, '&') : '';
+      // l.pathname here is the base href (e.g. "/portfolio/"). Strip the
+      // trailing slash, then append the decoded path + restored query.
+      var base = l.pathname.replace(/\/$/, '');
+      window.history.replaceState(null, '', base + path + query + hash);
+    }());
+  </script>
   <app-root></app-root>
 </body>
 </html>
