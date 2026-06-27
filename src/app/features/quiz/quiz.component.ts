@@ -240,7 +240,7 @@ const ARCHETYPES: Record<string, Archetype> = {
                 }
 
                 <div class="quiz__archetype-footer">
-                  <span>nandanhegde.dev/quiz</span>
+                  <span>nandanhegde1.github.io/portfolio/quiz</span>
                 </div>
               </div>
             </div>
@@ -331,19 +331,19 @@ export class QuizComponent {
   shareOnTwitter(): void {
     const arch = this.resultArchetype();
     if (!arch) return;
-    const text = encodeURIComponent(`${arch.emoji} I'm "${arch.name}" \u2014 ${arch.tagline}\n\nTook the "Would I Survive Your Team?" quiz on @nandanhegde's portfolio.\n\nFind your archetype \u2192 nandanhegde.dev/quiz`);
+    const text = encodeURIComponent(`${arch.emoji} I'm "${arch.name}" \u2014 ${arch.tagline}\n\nTook the "Would I Survive Your Team?" quiz on @nandanhegde's portfolio.\n\nFind your archetype \u2192 nandanhegde1.github.io/portfolio/quiz`);
     window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank', 'noopener');
   }
 
   shareOnLinkedIn(): void {
-    const url = encodeURIComponent('https://nandanhegde.dev/quiz');
+    const url = encodeURIComponent('https://nandanhegde1.github.io/portfolio/quiz');
     window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank', 'noopener');
   }
 
   copyResult(): void {
     const arch = this.resultArchetype();
     if (!arch) return;
-    const text = `${arch.emoji} ${arch.name} \u2014 ${arch.tagline}\n\n${arch.description}\n\nTake the quiz: nandanhegde.dev/quiz`;
+    const text = `${arch.emoji} ${arch.name} \u2014 ${arch.tagline}\n\n${arch.description}\n\nTake the quiz: nandanhegde1.github.io/portfolio/quiz`;
     navigator.clipboard.writeText(text).then(() => {
       this.copied.set(true);
       setTimeout(() => this.copied.set(false), 2000);
@@ -446,7 +446,7 @@ export class QuizComponent {
     // Footer
     ctx.font = '12px "Inter", sans-serif';
     ctx.fillStyle = '#484f58';
-    ctx.fillText('nandanhegde.dev/quiz', 30, H - 25);
+    ctx.fillText('nandanhegde1.github.io/portfolio/quiz', 30, H - 25);
     ctx.textAlign = 'right';
     ctx.fillText('"Would I Survive Your Team?"', W - 30, H - 25);
     ctx.textAlign = 'left';

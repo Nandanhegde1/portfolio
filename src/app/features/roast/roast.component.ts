@@ -153,7 +153,7 @@ const FALLBACK_ROASTS: Record<string, string[]> = {
                   <p>{{ result()!.roast }}<span class="roast__caret" [class.roast__caret--hidden]="!streaming()">&#9608;</span></p>
                 </div>
                 <div class="roast__card-footer">
-                  <span>nandanhegde.dev/roast</span>
+                  <span>nandanhegde1.github.io/portfolio/roast</span>
                   <span>{{ getTimestamp() }}</span>
                 </div>
               </div>
@@ -419,7 +419,7 @@ export class RoastComponent {
     // Footer
     ctx.font = '12px "Inter", sans-serif';
     ctx.fillStyle = '#484f58';
-    ctx.fillText('nandanhegde.dev/roast', 30, H - 25);
+    ctx.fillText('nandanhegde1.github.io/portfolio/roast', 30, H - 25);
     ctx.textAlign = 'right';
     ctx.fillText(new Date(r.timestamp).toLocaleDateString(), W - 30, H - 25);
     ctx.textAlign = 'left';
@@ -451,7 +451,7 @@ export class RoastComponent {
   copyRoast(): void {
     const r = this.result();
     if (!r) return;
-    const text = `\uD83D\uDD25 My tech stack got roasted!\n\nStack: ${r.stack}\n\nRoast: "${r.roast}"\n\nGet roasted: nandanhegde.dev/roast`;
+    const text = `\uD83D\uDD25 My tech stack got roasted!\n\nStack: ${r.stack}\n\nRoast: "${r.roast}"\n\nGet roasted: nandanhegde1.github.io/portfolio/roast`;
     navigator.clipboard.writeText(text).then(() => {
       this.copied.set(true);
       setTimeout(() => this.copied.set(false), 2000);
@@ -464,7 +464,7 @@ export class RoastComponent {
     // X/Twitter intent honors the `text` param. Quote a sizeable chunk so the
     // post still reads as a punchline if the user posts without editing.
     const quote = r.roast.length > 220 ? `${r.roast.slice(0, 217)}...` : r.roast;
-    const text = encodeURIComponent(`\uD83D\uDD25 My tech stack (${r.stack}) just got roasted:\n\n"${quote}"\n\nGet yours roasted \u2192 nandanhegde.dev/roast`);
+    const text = encodeURIComponent(`\uD83D\uDD25 My tech stack (${r.stack}) just got roasted:\n\n"${quote}"\n\nGet yours roasted \u2192 nandanhegde1.github.io/portfolio/roast`);
     window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank', 'noopener');
   }
 
@@ -475,9 +475,9 @@ export class RoastComponent {
   shareOnLinkedIn(): void {
     const r = this.result();
     if (!r) return;
-    const text = `\uD83D\uDD25 My tech stack (${r.stack}) just got roasted:\n\n"${r.roast}"\n\nGet yours roasted \u2192 https://nandanhegde.dev/roast`;
+    const text = `\uD83D\uDD25 My tech stack (${r.stack}) just got roasted:\n\n"${r.roast}"\n\nGet yours roasted \u2192 https://nandanhegde1.github.io/portfolio/roast`;
     const open = () => {
-      const url = encodeURIComponent('https://nandanhegde.dev/roast');
+      const url = encodeURIComponent('https://nandanhegde1.github.io/portfolio/roast');
       window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank', 'noopener');
     };
     if (navigator.clipboard?.writeText) {
@@ -496,7 +496,7 @@ export class RoastComponent {
     // Reddit's submit URL accepts `title` + `text` for self-posts. We point
     // selftext='1' so it opens the text editor (not the link form).
     const title = encodeURIComponent(`My ${r.stack.split(',')[0].trim()} stack got roasted by an AI \uD83D\uDD25`);
-    const body = encodeURIComponent(`**The stack:** ${r.stack}\n\n**The roast:**\n\n> ${r.roast.split('\n').join('\n> ')}\n\n---\n\nGet yours obliterated \u2192 https://nandanhegde.dev/roast`);
+    const body = encodeURIComponent(`**The stack:** ${r.stack}\n\n**The roast:**\n\n> ${r.roast.split('\n').join('\n> ')}\n\n---\n\nGet yours obliterated \u2192 https://nandanhegde1.github.io/portfolio/roast`);
     window.open(`https://www.reddit.com/submit?selftext=true&title=${title}&text=${body}`, '_blank', 'noopener');
   }
 
