@@ -834,6 +834,7 @@
 @include mobile {
   .hood {
     padding: $space-md $space-sm;
+    overflow-x: hidden;
 
     &__header { padding: $space-lg 0; }
     &__lede   { font-size: $fs-md; }
@@ -843,6 +844,7 @@
     &__tabs {
       // horizontal scroll instead of wrap to keep all tabs reachable
       flex-wrap: nowrap;
+      max-width: 100%;
       overflow-x: auto;
       justify-content: flex-start;
       scroll-snap-type: x mandatory;
@@ -899,6 +901,12 @@
     &__stage {
       grid-template-columns: 1fr;
       gap: $space-sm;
+    }
+
+    &__svg-wrap {
+      max-width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
     // Let the SVG scroll horizontally if needed; preserves diagram readability.
