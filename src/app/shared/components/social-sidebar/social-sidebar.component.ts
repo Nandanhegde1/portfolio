@@ -49,8 +49,8 @@ interface SocialLink {
 })
 export class SocialSidebarComponent {
   readonly links: SocialLink[] = [
-    { label: 'GitHub', url: 'https://github.com/nandanhegde', icon: 'github' },
-    { label: 'LinkedIn', url: 'https://linkedin.com/in/nandan-hegde-195020168', icon: 'linkedin' },
+    { label: 'GitHub', url: 'https://github.com/nandanhegde1', icon: 'github' },
+    { label: 'LinkedIn', url: 'https://linkedin.com/in/nandanhegde1096', icon: 'linkedin' },
     { label: 'Email', url: 'mailto:nandanhegde1096@gmail.com', icon: 'email' },
     { label: 'Resume', url: 'assets/Nandan_Hegde_Resume.pdf', icon: 'resume' },
   ];

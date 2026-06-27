@@ -11,8 +11,8 @@
     "resumeUrl": "/assets/resume/Nandan_Hegde_Resume.pdf"
   },
   "social": {
-    "github": "https://github.com/nandanhegde",
-    "linkedin": "https://linkedin.com/in/nandan-hegde-195020168",
+    "github": "https://github.com/nandanhegde1",
+    "linkedin": "https://linkedin.com/in/nandanhegde1096",
     "twitter": "",
     "email": "mailto:nandanhegde1096@gmail.com"
   },
@@ -223,7 +223,7 @@
     { "date": "2022-03", "title": "Joined Thinkbridge", "description": "Senior Software Engineer leading Angular frontend for PSG Global Solutions", "category": "career", "icon": "rocket" }
   ],
   "github": {
-    "username": "nandanhegde"
+    "username": "nandanhegde1"
   },
   "terminal": {
     "welcomeMessage": "Welcome to Nandan's Terminal v1.0.0\nType 'help' for available commands.",

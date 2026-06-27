@@ -407,7 +407,7 @@ interface InventoryItem {
                       }
                     </div>
                   }
-                  <p class="rpg__forge-watermark">forged on nandan.dev</p>
+                  <p class="rpg__forge-watermark">forged on nandanhegde1.github.io/portfolio</p>
                 </div>
               </div>
             </div>
@@ -858,7 +858,7 @@ export class AboutComponent implements OnInit {
       <!-- watermark -->
       <text x="${cx}" y="${H - 28}" text-anchor="middle"
             font-family="ui-monospace, 'SF Mono', Menlo, monospace"
-            font-size="10.5" fill="rgba(255,255,255,0.35)">forged on nandan.dev</text>
+            font-size="10.5" fill="rgba(255,255,255,0.35)">forged on nandanhegde1.github.io/portfolio</text>
 
       <!-- animated glare sweep -->
       <rect class="glare-bar" x="-${W}" y="-50" width="220" height="${H + 100}" fill="url(#glare)"/>
