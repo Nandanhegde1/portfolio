@@ -87,7 +87,9 @@ export class GitHubService {
       .sort((a, b) => b.count - a.count)
       .slice(0, 6);
 
-    const contributionData = this.generateMockContributions();
+    // Real contribution history needs an authenticated GitHub GraphQL call
+    // via a backend proxy; until that exists we ship no graph rather than fake one.
+    const contributionData: ContributionDay[] = [];
 
     const result: GitHubStats = {
       totalRepos: repos.length,
@@ -100,24 +102,6 @@ export class GitHubService {
 
     this.stats.set(result);
     this.setCache(result);
-  }
-
-  // Mock contribution data until we set up the backend proxy for GraphQL
-  private generateMockContributions(): ContributionDay[] {
-    const days: ContributionDay[] = [];
-    const now = new Date();
-    for (let i = 364; i >= 0; i--) {
-      const date = new Date(now);
-      date.setDate(date.getDate() - i);
-      const count = Math.floor(Math.random() * 12);
-      const level = count === 0 ? 0 : count <= 3 ? 1 : count <= 6 ? 2 : count <= 9 ? 3 : 4;
-      days.push({
-        date: date.toISOString().split('T')[0],
-        count,
-        level: level as 0 | 1 | 2 | 3 | 4,
-      });
-    }
-    return days;
   }
 
   private getCached(): GitHubStats | null {

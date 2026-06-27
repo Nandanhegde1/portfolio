@@ -99,7 +99,7 @@ export class UnderTheHoodComponent {
     },
     {
       id: 'github', label: 'GitHub REST API', icon: '🐙', layer: 'data',
-      desc: 'Live repo activity, contribution heatmap, language stats. Cached 1h in localStorage.',
+      desc: 'Live repo activity, language and star stats. Cached 1h in localStorage.',
       tech: ['REST v3', 'localStorage cache', 'Conditional GET'],
     },
     {
