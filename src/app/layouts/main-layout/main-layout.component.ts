@@ -55,6 +55,11 @@ import { ToastHostComponent } from '../../shared/components/toast-host/toast-hos
       left: 24px;
       z-index: 50;
     }
+
+    /* Ambient now-playing card overlaps content on small screens — desktop-only flourish */
+    @media (max-width: 768px) {
+      .spotify-fixed { display: none; }
+    }
   `],
 })
 export class MainLayoutComponent implements AfterViewInit, OnDestroy {
