@@ -32,8 +32,8 @@ export const routes: Routes = [
         loadComponent: () => import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent),
         data: {
           seo: {
-            title: 'Dashboard — Live Coding Stats',
-            description: 'Live GitHub activity, coding heatmap, language breakdown, and project timeline.',
+            title: 'Dashboard — UI Playground',
+            description: 'A playground dashboard: live GitHub stats plus illustrative UI widgets and animations.',
             url: 'https://nandanhegde1.github.io/portfolio/dashboard',
           },
         },

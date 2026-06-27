@@ -23,6 +23,11 @@ import { StatsService } from '../../core/services/stats.service';
           <p class="dash__subtitle">{{ 'dashboard.lede' | transloco }}</p>
         </div>
 
+        <!-- Demo notice: this page is a UI playground; non-GitHub figures are sample data -->
+        <div appScrollReveal style="margin:0 0 1.75rem;padding:.7rem 1rem;border:1px solid rgba(245,158,11,.45);background:rgba(245,158,11,.1);border-radius:10px;color:#fbbf24;font-size:.88rem;line-height:1.5;">
+          ⚠️ <strong>Demo dashboard</strong> — a playground for UI &amp; animation ideas. The GitHub stats are live; the other figures (visits, vitals, hire-meter) are illustrative sample data, not real metrics.
+        </div>
+
         <!-- Live GitHub Activity Ticker -->
         <div appScrollReveal>
           <app-github-ticker />
@@ -38,7 +43,7 @@ import { StatsService } from '../../core/services/stats.service';
           <div class="dash__visitors" appScrollReveal>
             <div class="dash__visitors-glow"></div>
             <app-animated-counter [targetValue]="visitorCount()" size="lg" label="page views & counting" />
-            <p class="dash__visitors-sub">Real traffic. No bots. No vanity multipliers.</p>
+            <p class="dash__visitors-sub">Illustrative sample figure — not live traffic.</p>
           </div>
         }
 
