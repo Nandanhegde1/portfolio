@@ -159,6 +159,10 @@ const FALLBACK_ROASTS: Record<string, string[]> = {
               </div>
             </div>
 
+            @if (isFallback()) {
+              <p class="roast__fallback-note" style="margin: 0 0 12px; font-size: 13px; color: #fbbf24; text-align: center;">⚠ AI offline — sample roast shown, not a live Claude response.</p>
+            }
+
             <!-- Action buttons -->
             <div class="roast__actions">
               <button class="roast__action-btn roast__action-btn--download" (click)="downloadCard()">
@@ -206,10 +210,6 @@ const FALLBACK_ROASTS: Record<string, string[]> = {
           </div>
         }
 
-        <!-- Roast counter -->
-        <div class="roast__counter" appScrollReveal [delay]="200">
-          <p><strong>{{ roastCount() }}</strong> stacks roasted and counting \uD83D\uDD25</p>
-        </div>
       </div>
     </section>
   `,
@@ -227,6 +227,7 @@ export class RoastComponent {
   readonly loading = signal(false);
   readonly streaming = signal(false);
   readonly result = signal<RoastResult | null>(null);
+  readonly isFallback = signal(false);
   readonly error = signal<string | null>(null);
   readonly copied = signal(false);
   readonly roastCount = signal(this.getStoredCount());
@@ -255,9 +256,11 @@ export class RoastComponent {
     this.loading.set(true);
     this.error.set(null);
     this.result.set(null);
+    this.isFallback.set(false);
 
     this.streamRoast(stack, intensity).catch(() => {
       const roast = this.getLocalRoast(stack);
+      this.isFallback.set(true);
       this.result.set({ stack, roast, intensity, timestamp: Date.now() });
       this.incrementCount();
       this.loading.set(false);

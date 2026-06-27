@@ -119,6 +119,17 @@ export const routes: Routes = [
         },
       },
       {
+        path: 'projects',
+        loadComponent: () => import('./features/projects/projects.component').then(m => m.ProjectsComponent),
+        data: {
+          seo: {
+            title: 'Projects — Case Studies',
+            description: 'A reel of the projects I have shipped — the stack, the metrics, and the calls I made along the way.',
+            url: 'https://nandanhegde1.github.io/portfolio/projects',
+          },
+        },
+      },
+      {
         path: '404',
         loadComponent: () => import('./features/not-found/not-found.component').then(m => m.NotFoundComponent),
         data: {

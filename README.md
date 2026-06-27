@@ -18,11 +18,9 @@ A data-rich, interactive developer portfolio built with **Angular 19** + **SCSS*
 | | |
 |---|---|
 | 🎨 **Interactive 3D Hero** | Three.js particles with mouse parallax, theme-reactive |
-| 🤖 **AI Chatbot** | Claude Sonnet, knows my full resume, conversation memory |
-| 🔥 **Roast My Stack** | Claude Opus 4 roasts your tech choices with 3 intensity levels |
-| 📊 **Live Dashboard** | GitHub heatmap, code vitals, tech orbit, real-time stats |
+| 🔥 **Roast My Stack** | Claude roasts your tech choices with 3 intensity levels (token streaming) |
+| 📊 **Dashboard (demo)** | A UI playground — tech orbit, animations, and live GitHub stats |
 | 📈 **Visitor Analytics** | Self-hosted via Supabase, no cookies, GDPR-friendly |
-| 💼 **Recruiter Tracker** | Real recruiter reach-outs + interview pipeline visualization |
 | 📝 **Guestbook** | Backed by Supabase, optimistic UI, DiceBear avatars |
 | 💌 **Contact Form** | Persisted to Supabase, rate-limited, validated |
 | 🎴 **Card Forge** | Generate & download a custom holographic dev card (Canvas API) |
@@ -39,7 +37,7 @@ A data-rich, interactive developer portfolio built with **Angular 19** + **SCSS*
 ```
 Frontend  ─ Angular 19, TypeScript, SCSS, RxJS, Signals, Three.js
 Backend   ─ Express 4, Supabase (Postgres), Helmet, rate limiting
-AI        ─ Anthropic Claude Sonnet 4 (chat) + Opus 4 (roast)
+AI        ─ Anthropic Claude (Roast My Stack — token streaming)
 Hosting   ─ GitHub Pages (frontend) + Render (API)
 CI/CD     ─ GitHub Actions
 ```
