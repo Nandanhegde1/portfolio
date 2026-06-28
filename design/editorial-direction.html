@@ -1,0 +1,147 @@
+<title>Nandan Hegde — Editorial Direction</title>
+<style>
+  :root {
+    --paper: #ECEAE2;
+    --paper-raised: #F6F4EE;
+    --ink: #1A1815;
+    --ink-muted: #565148;
+    --rule: #D2CEC2;
+    --accent: #29408F;        /* blueprint ultramarine — the one bold note */
+    --accent-soft: #29408f14;
+    --display: 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Hoefler Text', Charter, Georgia, serif;
+    --body: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  .ed { background: var(--paper); color: var(--ink); font-family: var(--body); line-height: 1.6;
+        -webkit-font-smoothing: antialiased; max-width: 100%; overflow-x: hidden; }
+  .ed .wrap { max-width: 1040px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 56px); }
+  .ed a { color: var(--accent); text-decoration: none; }
+  .ed a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+  /* labels / metadata in mono */
+  .ed .label { font-family: var(--mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-muted); }
+  .ed .accentword { color: var(--accent); }
+
+  /* masthead */
+  .ed .masthead { display: flex; align-items: baseline; justify-content: space-between; gap: 24px;
+                  padding: 22px 0 16px; border-bottom: 1px solid var(--ink); flex-wrap: wrap; }
+  .ed .brand { font-family: var(--display); font-weight: 700; font-size: 22px; letter-spacing: .01em; }
+  .ed .brand .dot { color: var(--accent); }
+  .ed .nav { display: flex; gap: 22px; }
+  .ed .nav a { font-family: var(--mono); font-size: 12.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink); }
+  .ed .dateline { border-bottom: 1px solid var(--rule); padding: 7px 0; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+
+  /* hero / thesis */
+  .ed .hero { padding: clamp(40px, 8vw, 96px) 0 clamp(36px, 6vw, 72px); }
+  .ed .hero h1 { font-family: var(--display); font-weight: 700; font-size: clamp(2.6rem, 6.4vw, 5.1rem);
+                 line-height: 1.02; letter-spacing: -0.015em; margin: 18px 0 0; text-wrap: balance; max-width: 16ch; }
+  .ed .standfirst { font-size: clamp(1.05rem, 1.6vw, 1.3rem); color: var(--ink-muted); max-width: 56ch; margin: 26px 0 0; line-height: 1.55; }
+  .ed .standfirst b { color: var(--ink); font-weight: 600; }
+  .ed .stats { display: flex; flex-wrap: wrap; gap: 0; margin-top: 40px; border-top: 1px solid var(--rule); }
+  .ed .stat { flex: 1 1 160px; padding: 16px 22px 16px 0; border-right: 1px solid var(--rule); }
+  .ed .stat:last-child { border-right: 0; }
+  .ed .stat .n { font-family: var(--display); font-size: 1.9rem; font-variant-numeric: tabular-nums; }
+  .ed .stat .k { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-muted); margin-top: 4px; }
+
+  /* section heading */
+  .ed .sec { padding: clamp(34px, 5vw, 60px) 0; border-top: 1px solid var(--ink); }
+  .ed .sec-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 30px; }
+  .ed .sec-head h2 { font-family: var(--display); font-size: 1.5rem; font-weight: 700; margin: 0; }
+
+  /* work entries */
+  .ed .entry { display: grid; grid-template-columns: minmax(0,1fr) 200px; gap: 28px; padding: 26px 0; border-top: 1px solid var(--rule); align-items: start; }
+  .ed .entry:first-of-type { border-top: 0; }
+  .ed .entry h3 { font-family: var(--display); font-size: 1.65rem; font-weight: 700; margin: 6px 0 8px; line-height: 1.12; }
+  .ed .entry p { margin: 0; color: var(--ink-muted); max-width: 60ch; }
+  .ed .entry .meta { font-family: var(--mono); font-size: 12px; line-height: 1.9; color: var(--ink-muted); text-align: right; }
+  .ed .entry .meta .tag { color: var(--ink); }
+  .ed .entry .more { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; margin-top: 12px; display: inline-block; }
+
+  /* pull quote */
+  .ed .pull { font-family: var(--display); font-size: clamp(1.5rem, 3.2vw, 2.4rem); line-height: 1.22; max-width: 22ch;
+              border-left: 3px solid var(--accent); padding-left: 26px; margin: 0; }
+
+  /* footer */
+  .ed .foot { border-top: 1px solid var(--ink); padding: 26px 0 56px; display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap;
+              font-family: var(--mono); font-size: 12px; letter-spacing: .04em; color: var(--ink-muted); }
+
+  @media (max-width: 640px) {
+    .ed .entry { grid-template-columns: 1fr; gap: 10px; }
+    .ed .entry .meta { text-align: left; }
+    .ed .stat { flex-basis: 50%; border-right: 0; }
+  }
+</style>
+
+<div class="ed">
+  <div class="wrap">
+
+    <header class="masthead">
+      <div class="brand">Nandan Hegde<span class="dot">.</span></div>
+      <nav class="nav">
+        <a href="#">Work</a><a href="#">Writing</a><a href="#">About</a><a href="#">Contact</a>
+      </nav>
+    </header>
+    <div class="dateline">
+      <span class="label">Software &amp; AI — Bengaluru</span>
+      <span class="label">Open to relocation · Dubai / UK / US</span>
+    </div>
+
+    <section class="hero">
+      <span class="label">Senior Software Engineer — LLM / AI Product</span>
+      <h1>I build full-stack products — and the <span class="accentword">AI</span> inside them.</h1>
+      <p class="standfirst">I design and architect the AI workstream on a recruiting platform used by 10,000+ people — an AI that interviews candidates and scores their fit — and I <b>build the product layer myself</b>. I turn vague, constrained problems into systems that ship and hold up in production.</p>
+      <div class="stats">
+        <div class="stat"><div class="n">10,000+</div><div class="k">Users on the platform</div></div>
+        <div class="stat"><div class="n">~10</div><div class="k">Engineers I lead</div></div>
+        <div class="stat"><div class="n">6 yrs</div><div class="k">Shipping in production</div></div>
+        <div class="stat"><div class="n">~30</div><div class="k">Engineers onto Claude</div></div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="sec-head"><span class="label">№ 01</span><h2>Selected Work</h2></div>
+
+      <article class="entry">
+        <div>
+          <span class="label">Side project · live</span>
+          <h3>Ask GovAI — RAG over federal AI contracts</h3>
+          <p>A measured retrieval system over 670 U.S. federal AI/ML contract awards: BM25 retrieval feeds grounded LLM synthesis with citations and a refuse-to-invent guardrail — with a published eval, not a demo.</p>
+          <a class="more" href="#">Read the case →</a>
+        </div>
+        <div class="meta"><span class="tag">RAG · BM25 · Claude</span><br>Recall@8 measured<br>2026 · TypeScript</div>
+      </article>
+
+      <article class="entry">
+        <div>
+          <span class="label">thinkbridge · production</span>
+          <h3>AI interviewing &amp; fit-scoring</h3>
+          <p>An AI voice agent interviews each candidate; the transcript is scored into a fit score against the role across skills, experience, location, availability and tenure — the interview weighted over the résumé. I designed how it interviews and how it scores.</p>
+          <a class="more" href="#">Read the case →</a>
+        </div>
+        <div class="meta"><span class="tag">LLMs · FastAPI</span><br>10,000-user platform<br>Azure OpenAI · Claude</div>
+      </article>
+
+      <article class="entry">
+        <div>
+          <span class="label">thinkbridge · in progress</span>
+          <h3>Candidate-ranking engine</h3>
+          <p>Architecting a retrieval-and-ranking engine that scores a person against a job from their résumé, screening and history — owning the ranking approach, the vector database, and a model-cost strategy that keeps it affordable at scale.</p>
+          <a class="more" href="#">Read the case →</a>
+        </div>
+        <div class="meta"><span class="tag">Retrieval · Ranking</span><br>Vector DB · cost strategy<br>Angular · TypeScript</div>
+      </article>
+    </section>
+
+    <section class="sec">
+      <div class="sec-head"><span class="label">№ 02</span><h2>Approach</h2></div>
+      <blockquote class="pull">The interesting part is never the model. It's the design calls that make it ship — and survive real users.</blockquote>
+    </section>
+
+    <footer class="foot">
+      <span>© 2026 Nandan Hegde</span>
+      <span>LinkedIn / GitHub / nandanhegde1.github.io</span>
+    </footer>
+
+  </div>
+</div>

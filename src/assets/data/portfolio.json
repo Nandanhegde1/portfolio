@@ -1,9 +1,9 @@
 {
   "personal": {
     "name": "Nandan Hegde",
-    "title": "Senior Software Engineer",
-    "tagline": "Modernizing legacy Angular apps without breaking what already ships.",
-    "bio": "5+ years turning legacy Angular into apps that don't fall over on release night. I translate vague requirements into shippable sprints, mentor juniors through their first PR reviews, and write enough tests to actually sleep on deploy days.",
+    "title": "Senior Full-Stack Engineer · AI Products",
+    "tagline": "I build full-stack products — and the AI inside them.",
+    "bio": "Senior engineer (~6 years) who designs and architects the AI workstream behind a product — and builds the product itself. I turn vague, constrained problems into AI features that ship and hold up in production, and I lead the team that delivers them.",
     "email": "nandanhegde1096@gmail.com",
     "phone": "+918660441202",
     "location": "Bangalore, India",
@@ -26,18 +26,17 @@
       "startDate": "2022-03",
       "endDate": null,
       "current": true,
-      "description": "Led frontend development for Compass Application (Angular 17), modernizing a recruitment operations platform serving 10,000+ monthly users.",
+      "description": "Lead the AI workstream on a recruiting platform used by 10,000+ people — full-stack, from the Angular product layer to the AI services behind it.",
       "highlights": [
-        "Migrated legacy AngularJS to Angular 9, reduced initial load time by ~30% through code splitting and caching strategies",
-        "Delivered 15+ features within deadlines across 5 two-week sprints",
-        "Engineered a browser extension (jQuery/JavaScript) to automate recruiting data collection for 500+ users",
-        "Designed real-time candidate data sync engine using Lodash merging and RESTful APIs, eliminating duplicate entries",
-        "Authored 5,000+ test lines using Karma/Jasmine with 100% branch coverage for critical modules",
-        "Integrated Power BI, Microsoft SSO, and BandAI for 10,000+ monthly users",
-        "Architected end-to-end CI/CD pipelines using Azure DevOps",
-        "Built a React.js prototype for AI calling agent showcased at tradeshow in Austin, US"
+        "Designed an AI interviewing system: an AI voice agent interviews candidates and the transcript is scored into a fit score across skills, experience, location, availability and tenure (interview weighted over the résumé)",
+        "Architecting a candidate-ranking engine (retrieval + ranking) that surfaces the strongest candidates for a job — owning the ranking approach, vector-database selection, and a model-cost strategy",
+        "Designed the conversation pathways for a multilingual voice agent that automates candidate follow-ups (documents, bookings, reminders)",
+        "Led the Compass modernization: legacy AngularJS to modern Angular 19, ~30% faster loads for 10,000+ monthly users; integrated Power BI, Microsoft SSO, and Bland AI; delivered 15+ features across 5 sprints",
+        "Set the team's testing standard — 5,000+ Karma/Jasmine test lines, 100% branch coverage on critical modules — and built the Azure DevOps CI/CD pipelines",
+        "Drove adoption of Claude across 30+ engineers and authored the team's AI-usage guidelines",
+        "Built a browser extension automating recruiting data capture for 500+ users, and a real-time candidate-data sync engine in Angular"
       ],
-      "technologies": ["Angular 17", "TypeScript", "RxJS", "SCSS", "Azure DevOps", "Power BI", "React.js", "Karma/Jasmine"]
+      "technologies": ["Angular 19", "TypeScript", "RxJS", "Node.js", "LLM integration (Azure OpenAI, Claude)", "Azure DevOps", "Power BI"]
     },
     {
       "id": "infosys-swissre",
@@ -98,15 +97,15 @@
       "id": "compass",
       "title": "Compass Application",
       "client": "PSG Global Solutions",
-      "description": "Recruitment operations platform modernized from AngularJS to Angular 17. Led frontend development, performance optimization, and CI/CD pipeline architecture serving 10,000+ monthly users.",
+      "description": "Recruitment operations platform modernized from AngularJS to Angular 19. Led frontend development, performance optimization, and CI/CD pipeline architecture serving 10,000+ monthly users.",
       "highlights": [
-        "AngularJS to Angular 9 migration with ~30% load time reduction",
+        "AngularJS to Angular 19 migration with ~30% load time reduction",
         "Browser extension automating data collection for 500+ recruiters",
         "Real-time candidate sync engine eliminating duplicate entries",
-        "Power BI, Microsoft SSO, and BandAI integration",
+        "Power BI, Microsoft SSO, and Bland AI integration",
         "5,000+ test lines with 100% branch coverage"
       ],
-      "technologies": ["Angular 17", "TypeScript", "Azure DevOps", "Power BI", "RxJS", "Karma/Jasmine"],
+      "technologies": ["Angular 19", "TypeScript", "Azure DevOps", "Power BI", "RxJS", "Karma/Jasmine"],
       "imageUrl": "",
       "liveUrl": "",
       "githubUrl": "",
@@ -115,15 +114,16 @@
     },
     {
       "id": "ai-calling-agent",
-      "title": "AI Calling Agent (Anna)",
+      "title": "AI Interview & Fit-Scoring (Anna)",
       "client": "PSG Global Solutions",
-      "description": "React.js prototype for an AI-powered calling agent, showcased at a tradeshow in Austin, US.",
+      "description": "An AI voice agent that interviews candidates in their language, then scores how well they fit a role from the transcript — across skills, experience, location, availability and tenure. I designed how it interviews and how the fit score is computed.",
       "highlights": [
-        "Cross-framework versatility with React.js",
-        "Showcased at industry tradeshow in Austin, US",
-        "AI-powered recruiting automation"
+        "AI voice agent conducts a real, role-specific interview",
+        "Transcript scored into a fit score (interview weighted over the résumé)",
+        "Designed the interview structure and the scoring model",
+        "Live on a recruiting platform used by 10,000+ people"
       ],
-      "technologies": ["React.js", "JavaScript", "AI/ML"],
+      "technologies": ["LLMs", "Azure OpenAI", "Claude", "Voice AI", "FastAPI"],
       "imageUrl": "",
       "liveUrl": "",
       "githubUrl": "",
@@ -248,7 +248,7 @@
     "prompt": "nandan@portfolio:~$"
   },
   "chatbot": {
-    "systemPrompt": "You are an AI assistant for Nandan Hegde's portfolio. He is a Senior Software Engineer at Thinkbridge (client: PSG Global Solutions) with 6+ years of experience. Core stack: Angular 17, TypeScript, RxJS, Node.js, Azure DevOps. Key achievements: migrated AngularJS to Angular cutting load times 30%, built CI/CD pipelines, 5000+ test lines with 100% branch coverage, integrated Power BI and SSO for 10,000+ users. Previously at Infosys on Swiss Re's global claims platform (40+ countries) and a cloud migration accelerator. AWS Certified Solutions Architect. Built a React AI agent prototype showcased at a US tradeshow. Open to senior frontend, full-stack, and lead roles. Answer professionally and concisely.",
+    "systemPrompt": "You are an AI assistant for Nandan Hegde's portfolio. He is a senior full-stack engineer (~6 years) at Thinkbridge (client: PSG Global Solutions) who leads and architects the AI workstream on a recruiting platform used by 10,000+ people. He designed an AI interviewing + fit-scoring system (an AI voice agent interviews candidates; the transcript is scored against the role), is architecting a candidate-ranking/retrieval engine, integrates LLMs (Azure OpenAI, Claude), and builds the product in Angular 19 / TypeScript / Node.js. He drove Claude adoption across 30+ engineers and authored the team's AI-usage guidelines, set the testing standard (5,000+ Karma/Jasmine lines, 100% branch coverage), built Azure DevOps CI/CD, and led an AngularJS-to-Angular 19 modernization. Previously at Infosys (Swiss Re global claims platform across 40+ countries; a multi-cloud accelerator). AWS Certified Solutions Architect. Open to senior/lead full-stack and AI-product roles, including relocation. Note: he designs, architects, and integrates AI systems rather than training models. Answer professionally and concisely.",
     "quickQuestions": [
       "What's your tech stack?",
       "Tell me about your experience",
