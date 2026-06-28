@@ -59,14 +59,16 @@ interface InventoryItem {
           <span class="rpg__tag">// character-select</span>
           <h1 class="rpg__title">Character Sheet</h1>
           <p class="rpg__subtitle">Level {{ level }} · Senior Developer · {{ xpYears }}+ years of adventure</p>
-          <button
-            type="button"
+          <a
             class="rpg__print-btn"
-            (click)="printResume()"
-            aria-label="Save this page as PDF resume"
+            href="assets/Nandan_Hegde_Resume.pdf"
+            download
+            target="_blank"
+            rel="noopener"
+            aria-label="Download résumé PDF"
           >
-            📄 Save as PDF Resume
-          </button>
+            📄 Download Résumé (PDF)
+          </a>
         </div>
 
         <!-- Two-column: Card sidebar + Content -->
