@@ -65,15 +65,6 @@
     "updated": "updated",
     "scroll": "Scroll"
   },
-  "home": {
-    "hero": {
-      "greeting": "Hi, I'm Nandan",
-      "role": "Full-stack engineer · Angular specialist",
-      "lede": "I build web apps that actually work and don't hurt to look at.",
-      "ctaProjects": "See projects",
-      "ctaContact": "Get in touch"
-    }
-  },
   "contact": {
     "title": "Got a project? Let's talk shop.",
     "lede": "Send a message. I promise it won't go into a black hole.",

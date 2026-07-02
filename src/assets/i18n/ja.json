@@ -65,15 +65,6 @@
     "updated": "更新",
     "scroll": "スクロール"
   },
-  "home": {
-    "hero": {
-      "greeting": "こんにちは、Nandan です",
-      "role": "フルスタックエンジニア · Angular スペシャリスト",
-      "lede": "高速で、アクセシブルで、美しく作られた Web アプリを作っています。",
-      "ctaProjects": "プロジェクトを見る",
-      "ctaContact": "連絡する"
-    }
-  },
   "contact": {
     "title": "一緒に何かを作りましょう",
     "lede": "メッセージをどうぞ。ここに届いたものは全部読みます。",

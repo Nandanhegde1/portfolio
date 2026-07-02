@@ -65,15 +65,6 @@
     "updated": "aktualisiert",
     "scroll": "Scrollen"
   },
-  "home": {
-    "hero": {
-      "greeting": "Hi, ich bin Nandan",
-      "role": "Full-Stack-Entwickler · Angular-Spezialist",
-      "lede": "Ich baue schnelle, barrierefreie, schön gestaltete Web-Apps.",
-      "ctaProjects": "Projekte ansehen",
-      "ctaContact": "Kontakt aufnehmen"
-    }
-  },
   "contact": {
     "title": "Lass uns etwas bauen",
     "lede": "Schreib eine Nachricht. Ich lese alles, was hier ankommt.",

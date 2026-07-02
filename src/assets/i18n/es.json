@@ -65,15 +65,6 @@
     "updated": "actualizado",
     "scroll": "Desplázate"
   },
-  "home": {
-    "hero": {
-      "greeting": "Hola, soy Nandan",
-      "role": "Ingeniero full-stack · Especialista en Angular",
-      "lede": "Construyo apps web rápidas, accesibles y bellamente diseñadas.",
-      "ctaProjects": "Ver proyectos",
-      "ctaContact": "Contáctame"
-    }
-  },
   "contact": {
     "title": "Construyamos algo",
     "lede": "Escríbeme. Leo todo lo que llega aquí.",
