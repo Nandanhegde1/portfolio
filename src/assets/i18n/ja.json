@@ -36,7 +36,9 @@
     "theme": {
       "switchToLight": "ライトテーマに切替",
       "switchToDark": "ダークテーマに切替"
-    }
+    },
+    "projects": "プロジェクト",
+    "hireMe": "採用について"
   },
   "footer": {
     "tagline": "ウェブを、コンポーネント単位で。",

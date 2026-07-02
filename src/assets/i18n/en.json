@@ -36,7 +36,9 @@
     "theme": {
       "switchToLight": "Switch to light theme",
       "switchToDark": "Switch to dark theme"
-    }
+    },
+    "projects": "Projects",
+    "hireMe": "Hire Me"
   },
   "footer": {
     "tagline": "Built with too much coffee and Angular 19.",

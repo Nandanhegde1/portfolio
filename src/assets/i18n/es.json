@@ -36,7 +36,9 @@
     "theme": {
       "switchToLight": "Cambiar a tema claro",
       "switchToDark": "Cambiar a tema oscuro"
-    }
+    },
+    "projects": "Proyectos",
+    "hireMe": "Contrátame"
   },
   "footer": {
     "tagline": "Construyendo la web, un componente a la vez.",

@@ -31,10 +31,11 @@ import { TooltipDirective } from '../../directives/tooltip.directive';
 
         <ul class="navbar__links">
           <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">{{ 'nav.home' | transloco }}</a></li>
+          <li><a routerLink="/projects" routerLinkActive="active">{{ 'nav.projects' | transloco }}</a></li>
           <li><a routerLink="/about" routerLinkActive="active">{{ 'nav.about' | transloco }}</a></li>
-          <li><a routerLink="/dashboard" routerLinkActive="active">{{ 'nav.dashboard' | transloco }}</a></li>
           <li><a routerLink="/blog" routerLinkActive="active">{{ 'nav.blog' | transloco }}</a></li>
           <li><a routerLink="/under-the-hood" routerLinkActive="active">{{ 'nav.underTheHood' | transloco }}</a></li>
+          <li><a routerLink="/pitch" routerLinkActive="active">{{ 'nav.hireMe' | transloco }}</a></li>
           <li class="navbar__dropdown" [class.navbar__dropdown--open]="dropdownOpen()">
             <button class="navbar__dropdown-trigger" type="button" (click)="toggleDropdown($event)" [attr.aria-expanded]="dropdownOpen()">
               {{ 'nav.play' | transloco }} <span class="navbar__dropdown-caret" aria-hidden="true">\u25BE</span>
@@ -44,6 +45,7 @@ import { TooltipDirective } from '../../directives/tooltip.directive';
                 <li><a routerLink="/lab" routerLinkActive="active" (click)="dropdownOpen.set(false)">🧪 The Lab · Roast My Stack</a></li>
                 <li><a routerLink="/roast-me-back" routerLinkActive="active" (click)="dropdownOpen.set(false)">🔥 Roast Me Back</a></li>
                 <li><a routerLink="/quiz" routerLinkActive="active" (click)="dropdownOpen.set(false)">🎯 Team Quiz</a></li>
+                <li><a routerLink="/dashboard" routerLinkActive="active" (click)="dropdownOpen.set(false)">📊 UI Playground</a></li>
               </ul>
             }
           </li>
@@ -80,7 +82,9 @@ import { TooltipDirective } from '../../directives/tooltip.directive';
         <div class="navbar__mobile-overlay" (click)="mobileOpen = false"></div>
         <ul class="navbar__mobile-menu">
           <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="mobileOpen = false">{{ 'nav.home' | transloco }}</a></li>
+          <li><a routerLink="/projects" routerLinkActive="active" (click)="mobileOpen = false">{{ 'nav.projects' | transloco }}</a></li>
           <li><a routerLink="/about" routerLinkActive="active" (click)="mobileOpen = false">{{ 'nav.about' | transloco }}</a></li>
+          <li><a routerLink="/pitch" routerLinkActive="active" (click)="mobileOpen = false">{{ 'nav.hireMe' | transloco }}</a></li>
           <li><a routerLink="/dashboard" routerLinkActive="active" (click)="mobileOpen = false">{{ 'nav.dashboard' | transloco }}</a></li>
           <li><a routerLink="/blog" routerLinkActive="active" (click)="mobileOpen = false">{{ 'nav.blog' | transloco }}</a></li>
           <li><a routerLink="/under-the-hood" routerLinkActive="active" (click)="mobileOpen = false">{{ 'nav.underTheHood' | transloco }}</a></li>

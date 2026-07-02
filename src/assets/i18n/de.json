@@ -36,7 +36,9 @@
     "theme": {
       "switchToLight": "Zum hellen Design wechseln",
       "switchToDark": "Zum dunklen Design wechseln"
-    }
+    },
+    "projects": "Projekte",
+    "hireMe": "Stell mich ein"
   },
   "footer": {
     "tagline": "Das Web bauen, eine Komponente nach der anderen.",

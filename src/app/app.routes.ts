@@ -10,8 +10,8 @@ export const routes: Routes = [
         loadComponent: () => import('./features/home/home.component').then(m => m.HomeComponent),
         data: {
           seo: {
-            title: 'Senior Software Engineer',
-            description: '6+ years building enterprise Angular apps. AWS Certified. Open to senior frontend, full-stack & lead roles.',
+            title: 'Senior Full-Stack Engineer · AI Products',
+            description: 'I build full-stack products — and the AI inside them. AI voice-interview + fit-scoring on a 10,000-user platform. Angular, TypeScript, Node, LLMs. Open to senior/lead roles.',
             url: 'https://nandanhegde1.github.io/portfolio/',
           },
         },
@@ -22,7 +22,7 @@ export const routes: Routes = [
         data: {
           seo: {
             title: 'About — Career, Skills & Story',
-            description: 'Career timeline, tech stack, and story of Nandan Hegde — Senior Software Engineer with 6+ years in enterprise Angular development.',
+            description: 'Career timeline, tech stack, and story of Nandan Hegde — senior full-stack engineer (~6 years) who designs the AI workstream and builds the product around it.',
             url: 'https://nandanhegde1.github.io/portfolio/about',
           },
         },
@@ -67,7 +67,7 @@ export const routes: Routes = [
         data: {
           seo: {
             title: 'Contact — Let\'s Build Something',
-            description: 'Get in touch for senior frontend, full-stack, or lead roles. Available for new opportunities.',
+            description: 'Get in touch for senior and lead full-stack / AI-product roles. Available for new opportunities.',
             url: 'https://nandanhegde1.github.io/portfolio/contact',
           },
         },

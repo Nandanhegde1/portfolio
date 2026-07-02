@@ -52,24 +52,29 @@ interface FeaturedProject {
           </div>
         </div>
 
-        <!-- Row 2: Roast My Stack — lead with the weirdest thing -->
-        <a routerLink="/lab" class="bento__card bento__card--roast-hero" appScrollReveal [delay]="80">
-          <div class="bento__roast-hero-bg" aria-hidden="true">
-            <span></span><span></span><span></span><span></span>
+        <!-- Row 2: 3 best projects (full width) — the work leads, the gimmicks follow -->
+        <div class="bento__card bento__card--projects" appScrollReveal [delay]="80">
+          <span class="bento__card-tag">// shipped · production</span>
+          <h3 class="bento__projects-title">Three things I built that actually run</h3>
+          <div class="bento__projects-grid">
+            @for (p of featuredProjects; track p.title) {
+              <a routerLink="/projects" class="bento__project">
+                <div class="bento__project-head">
+                  <h4 class="bento__project-title">{{ p.title }}</h4>
+                  <span class="bento__project-client">{{ p.client }}</span>
+                </div>
+                <p class="bento__project-line">{{ p.oneLiner }}</p>
+                <div class="bento__project-metric">{{ p.metric }}</div>
+                <div class="bento__project-stack">
+                  @for (s of p.stack; track s) {
+                    <span>{{ s }}</span>
+                  }
+                </div>
+              </a>
+            }
           </div>
-          <div class="bento__roast-hero-content">
-            <span class="bento__roast-hero-eyebrow">// the lab · ai experiment</span>
-            <h3 class="bento__roast-hero-title">
-              <span class="bento__roast-hero-emoji">🔥</span>
-              Roast My Tech Stack
-            </h3>
-            <p class="bento__roast-hero-desc">
-              Drop your stack. Claude roasts it in three intensities. Source linked.
-              The system prompt took 3 rewrites — the first version only generated compliments.
-            </p>
-            <span class="bento__roast-hero-cta">Open the lab →</span>
-          </div>
-        </a>
+          <a routerLink="/projects" class="bento__projects-link">See all projects →</a>
+        </div>
 
         <!-- Row 3: Stats + Stack (combined) -->
         <div class="bento__card bento__card--status" appScrollReveal [delay]="120">
@@ -101,29 +106,24 @@ interface FeaturedProject {
           </div>
         </div>
 
-        <!-- Row 4: 3 best projects (full width) -->
-        <div class="bento__card bento__card--projects" appScrollReveal [delay]="200">
-          <span class="bento__card-tag">// shipped · production</span>
-          <h3 class="bento__projects-title">Three things I built that actually run</h3>
-          <div class="bento__projects-grid">
-            @for (p of featuredProjects; track p.title) {
-              <a routerLink="/projects" class="bento__project">
-                <div class="bento__project-head">
-                  <h4 class="bento__project-title">{{ p.title }}</h4>
-                  <span class="bento__project-client">{{ p.client }}</span>
-                </div>
-                <p class="bento__project-line">{{ p.oneLiner }}</p>
-                <div class="bento__project-metric">{{ p.metric }}</div>
-                <div class="bento__project-stack">
-                  @for (s of p.stack; track s) {
-                    <span>{{ s }}</span>
-                  }
-                </div>
-              </a>
-            }
+        <!-- Row 4: Roast My Stack — the AI experiment, after the real work -->
+        <a routerLink="/lab" class="bento__card bento__card--roast-hero" appScrollReveal [delay]="200">
+          <div class="bento__roast-hero-bg" aria-hidden="true">
+            <span></span><span></span><span></span><span></span>
           </div>
-          <a routerLink="/projects" class="bento__projects-link">See all projects →</a>
-        </div>
+          <div class="bento__roast-hero-content">
+            <span class="bento__roast-hero-eyebrow">// the lab · ai experiment</span>
+            <h3 class="bento__roast-hero-title">
+              <span class="bento__roast-hero-emoji">🔥</span>
+              Roast My Tech Stack
+            </h3>
+            <p class="bento__roast-hero-desc">
+              Drop your stack. Claude roasts it in three intensities. Source linked.
+              The system prompt took 3 rewrites — the first version only generated compliments.
+            </p>
+            <span class="bento__roast-hero-cta">Open the lab →</span>
+          </div>
+        </a>
 
         <!-- Row 5: Journey timeline (full width) -->
         <div class="bento__card bento__card--journey" appScrollReveal [delay]="240">
@@ -170,13 +170,6 @@ export class HomeComponent {
 
   readonly featuredProjects: FeaturedProject[] = [
     {
-      title: 'Compass',
-      client: 'PSG Global Solutions',
-      oneLiner: 'Migrated a 7-year-old AngularJS recruiting platform to Angular 19 without a single hour of downtime.',
-      metric: '~30% faster load · 10K+ monthly users',
-      stack: ['Angular 19', 'TypeScript', 'Power BI', 'Azure DevOps'],
-    },
-    {
       title: 'AI Interview & Fit-Scoring (Anna)',
       client: 'PSG Global Solutions',
       oneLiner: 'An AI voice agent interviews each candidate; the transcript is scored into a fit score against the role.',
@@ -184,11 +177,18 @@ export class HomeComponent {
       stack: ['LLMs', 'Azure OpenAI', 'Voice AI', 'FastAPI'],
     },
     {
-      title: 'Corflow Claims',
-      client: 'Swiss Re',
-      oneLiner: 'Modernized the UI for a global insurance claims tool serving 40+ countries on legacy infrastructure.',
-      metric: '40+ countries · lazy-loaded · AOT',
-      stack: ['Angular', 'TypeScript', 'SCSS'],
+      title: 'Ask GovAI',
+      client: 'Side project · live',
+      oneLiner: 'A measured RAG over 670+ federal AI/ML contract awards — BM25 retrieval feeding grounded, cited LLM synthesis with a refuse-to-invent guardrail.',
+      metric: 'Reproducible eval · honest failure analysis',
+      stack: ['TypeScript', 'RAG', 'BM25', 'Evals'],
+    },
+    {
+      title: 'Compass',
+      client: 'PSG Global Solutions',
+      oneLiner: 'Migrated a 7-year-old AngularJS recruiting platform to Angular 19 without a single hour of downtime.',
+      metric: '~30% faster load · 10K+ monthly users',
+      stack: ['Angular 19', 'TypeScript', 'Power BI', 'Azure DevOps'],
     },
   ];
 
