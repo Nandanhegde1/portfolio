@@ -36,7 +36,15 @@
         "Drove adoption of Claude across 30+ engineers and authored the team's AI-usage guidelines",
         "Built a browser extension automating recruiting data capture for 500+ users, and a real-time candidate-data sync engine in Angular"
       ],
-      "technologies": ["Angular 19", "TypeScript", "RxJS", "Node.js", "LLM integration (Azure OpenAI, Claude)", "Azure DevOps", "Power BI"]
+      "technologies": [
+        "Angular 19",
+        "TypeScript",
+        "RxJS",
+        "Node.js",
+        "LLM integration (Azure OpenAI, Claude)",
+        "Azure DevOps",
+        "Power BI"
+      ]
     },
     {
       "id": "infosys-swissre",
@@ -54,7 +62,13 @@
         "Authored unit and E2E tests for critical UI components",
         "Conducted user feedback sessions and usability testing"
       ],
-      "technologies": ["Angular", "TypeScript", "SCSS", "Node.js", "REST APIs"]
+      "technologies": [
+        "Angular",
+        "TypeScript",
+        "SCSS",
+        "Node.js",
+        "REST APIs"
+      ]
     },
     {
       "id": "infosys-internal",
@@ -71,7 +85,15 @@
         "Implemented CI/CD pipelines with Jenkins",
         "Completed Infosys Foundation Program as High Performer (82%) with MEAN Stack specialization"
       ],
-      "technologies": ["Angular", "Node.js", "Terraform", "AWS", "Azure", "GCP", "Jenkins"]
+      "technologies": [
+        "Angular",
+        "Node.js",
+        "Terraform",
+        "AWS",
+        "Azure",
+        "GCP",
+        "Jenkins"
+      ]
     }
   ],
   "projects": [
@@ -86,7 +108,13 @@
         "Honest failure-mode analysis (superlative queries need a structured path) + a hybrid-retrieval roadmap",
         "Zero dependencies — raw fetch, provider-agnostic synthesis (free Gemini or paid Claude)"
       ],
-      "technologies": ["TypeScript", "RAG", "BM25", "LLM (Gemini / Claude)", "Evals"],
+      "technologies": [
+        "TypeScript",
+        "RAG",
+        "BM25",
+        "LLM (Gemini / Claude)",
+        "Evals"
+      ],
       "imageUrl": "",
       "liveUrl": "https://govai-contracts.nandanhegde1096.workers.dev/",
       "githubUrl": "https://github.com/Nandanhegde1/govai-contracts/tree/main/ask",
@@ -105,7 +133,14 @@
         "Power BI, Microsoft SSO, and Bland AI integration",
         "5,000+ test lines with 100% branch coverage"
       ],
-      "technologies": ["Angular 19", "TypeScript", "Azure DevOps", "Power BI", "RxJS", "Karma/Jasmine"],
+      "technologies": [
+        "Angular 19",
+        "TypeScript",
+        "Azure DevOps",
+        "Power BI",
+        "RxJS",
+        "Karma/Jasmine"
+      ],
       "imageUrl": "",
       "liveUrl": "",
       "githubUrl": "",
@@ -123,11 +158,40 @@
         "Designed the interview structure and the scoring model",
         "Live on a recruiting platform used by 10,000+ people"
       ],
-      "technologies": ["LLMs", "Azure OpenAI", "Claude", "Voice AI", "FastAPI"],
+      "technologies": [
+        "LLMs",
+        "Azure OpenAI",
+        "Claude",
+        "Voice AI",
+        "FastAPI"
+      ],
       "imageUrl": "",
       "liveUrl": "",
       "githubUrl": "",
       "featured": true,
+      "category": "innovation"
+    },
+    {
+      "id": "mcp-directory",
+      "title": "MCP Directory — Zero-Touch Data Pipeline",
+      "description": "An automated index of ~1,800 metadata-verified Model Context Protocol servers. A weekly GitHub Actions cron searches, dedupes, filters, and classifies GitHub repos, commits the data, and redeploys the Astro static site — fully unattended since April 2026. An automation/ops project, deliberately not an AI one.",
+      "highlights": [
+        "Weekly scrape -> filter -> classify -> commit -> deploy, zero-touch on GitHub Actions",
+        "Precision filter: a repo must identify itself as MCP in its own metadata (topic-spam from 100k-star unrelated repos gets rejected)",
+        "~1,800 static pages, client-side weighted search, programmatic SEO",
+        "Runs itself: the only human input since launch has been quality tuning"
+      ],
+      "technologies": [
+        "Astro",
+        "TypeScript",
+        "GitHub Actions",
+        "Cloudflare Workers",
+        "Tailwind"
+      ],
+      "imageUrl": "",
+      "liveUrl": "https://mcp-directory.nandanhegde1096.workers.dev/",
+      "githubUrl": "https://github.com/Nandanhegde1/mcp-directory",
+      "featured": false,
       "category": "innovation"
     },
     {
@@ -141,7 +205,12 @@
         "Responsive cross-device design",
         "Unit and E2E testing for critical components"
       ],
-      "technologies": ["Angular", "TypeScript", "SCSS", "REST APIs"],
+      "technologies": [
+        "Angular",
+        "TypeScript",
+        "SCSS",
+        "REST APIs"
+      ],
       "imageUrl": "",
       "liveUrl": "",
       "githubUrl": "",
@@ -158,7 +227,15 @@
         "Multi-cloud: Azure, AWS, GCP via Terraform",
         "CI/CD automation with Jenkins"
       ],
-      "technologies": ["Angular", "Node.js", "Terraform", "AWS", "Azure", "GCP", "Jenkins"],
+      "technologies": [
+        "Angular",
+        "Node.js",
+        "Terraform",
+        "AWS",
+        "Azure",
+        "GCP",
+        "Jenkins"
+      ],
       "imageUrl": "",
       "liveUrl": "",
       "githubUrl": "",
@@ -168,50 +245,168 @@
   ],
   "skills": {
     "frontend": [
-      { "name": "Angular", "level": 95, "icon": "angular" },
-      { "name": "TypeScript", "level": 92, "icon": "typescript" },
-      { "name": "JavaScript", "level": 90, "icon": "javascript" },
-      { "name": "RxJS", "level": 85, "icon": "rxjs" },
-      { "name": "HTML/CSS", "level": 90, "icon": "html5" },
-      { "name": "SCSS", "level": 88, "icon": "sass" },
-      { "name": "React.js", "level": 60, "icon": "react" },
-      { "name": "Tailwind CSS", "level": 65, "icon": "tailwind" }
+      {
+        "name": "Angular",
+        "level": 95,
+        "icon": "angular"
+      },
+      {
+        "name": "TypeScript",
+        "level": 92,
+        "icon": "typescript"
+      },
+      {
+        "name": "JavaScript",
+        "level": 90,
+        "icon": "javascript"
+      },
+      {
+        "name": "RxJS",
+        "level": 85,
+        "icon": "rxjs"
+      },
+      {
+        "name": "HTML/CSS",
+        "level": 90,
+        "icon": "html5"
+      },
+      {
+        "name": "SCSS",
+        "level": 88,
+        "icon": "sass"
+      },
+      {
+        "name": "React.js",
+        "level": 60,
+        "icon": "react"
+      },
+      {
+        "name": "Tailwind CSS",
+        "level": 65,
+        "icon": "tailwind"
+      }
     ],
     "backend": [
-      { "name": "Node.js", "level": 78, "icon": "nodejs" },
-      { "name": "Express.js", "level": 72, "icon": "express" }
+      {
+        "name": "Node.js",
+        "level": 78,
+        "icon": "nodejs"
+      },
+      {
+        "name": "Express.js",
+        "level": 72,
+        "icon": "express"
+      }
     ],
     "database": [
-      { "name": "MongoDB", "level": 70, "icon": "mongodb" },
-      { "name": "MS-SQL", "level": 60, "icon": "mssql" }
+      {
+        "name": "MongoDB",
+        "level": 70,
+        "icon": "mongodb"
+      },
+      {
+        "name": "MS-SQL",
+        "level": 60,
+        "icon": "mssql"
+      }
     ],
     "devops": [
-      { "name": "Azure DevOps", "level": 85, "icon": "azure" },
-      { "name": "CI/CD", "level": 82, "icon": "cicd" },
-      { "name": "Jenkins", "level": 72, "icon": "jenkins" },
-      { "name": "Git", "level": 88, "icon": "git" },
-      { "name": "Docker", "level": 65, "icon": "docker" },
-      { "name": "Kubernetes", "level": 55, "icon": "kubernetes" },
-      { "name": "Terraform", "level": 60, "icon": "terraform" }
+      {
+        "name": "Azure DevOps",
+        "level": 85,
+        "icon": "azure"
+      },
+      {
+        "name": "CI/CD",
+        "level": 82,
+        "icon": "cicd"
+      },
+      {
+        "name": "Jenkins",
+        "level": 72,
+        "icon": "jenkins"
+      },
+      {
+        "name": "Git",
+        "level": 88,
+        "icon": "git"
+      },
+      {
+        "name": "Docker",
+        "level": 65,
+        "icon": "docker"
+      },
+      {
+        "name": "Kubernetes",
+        "level": 55,
+        "icon": "kubernetes"
+      },
+      {
+        "name": "Terraform",
+        "level": 60,
+        "icon": "terraform"
+      }
     ],
     "cloud": [
-      { "name": "AWS", "level": 72, "icon": "aws" },
-      { "name": "Azure", "level": 70, "icon": "azure" },
-      { "name": "GCP", "level": 50, "icon": "gcp" }
+      {
+        "name": "AWS",
+        "level": 72,
+        "icon": "aws"
+      },
+      {
+        "name": "Azure",
+        "level": 70,
+        "icon": "azure"
+      },
+      {
+        "name": "GCP",
+        "level": 50,
+        "icon": "gcp"
+      }
     ],
     "testing": [
-      { "name": "Karma/Jasmine", "level": 88, "icon": "jasmine" },
-      { "name": "Unit Testing", "level": 85, "icon": "testing" },
-      { "name": "E2E Testing", "level": 70, "icon": "testing" }
+      {
+        "name": "Karma/Jasmine",
+        "level": 88,
+        "icon": "jasmine"
+      },
+      {
+        "name": "Unit Testing",
+        "level": 85,
+        "icon": "testing"
+      },
+      {
+        "name": "E2E Testing",
+        "level": 70,
+        "icon": "testing"
+      }
     ]
   },
   "skillsRadar": [
-    { "category": "Frontend", "value": 93 },
-    { "category": "Backend", "value": 72 },
-    { "category": "DevOps", "value": 75 },
-    { "category": "Cloud", "value": 68 },
-    { "category": "Testing", "value": 82 },
-    { "category": "Leadership", "value": 80 }
+    {
+      "category": "Frontend",
+      "value": 93
+    },
+    {
+      "category": "Backend",
+      "value": 72
+    },
+    {
+      "category": "DevOps",
+      "value": 75
+    },
+    {
+      "category": "Cloud",
+      "value": 68
+    },
+    {
+      "category": "Testing",
+      "value": 82
+    },
+    {
+      "category": "Leadership",
+      "value": 80
+    }
   ],
   "education": [
     {
@@ -230,15 +425,48 @@
     }
   ],
   "languages": [
-    { "name": "English", "proficiency": "Native or Bilingual" },
-    { "name": "Hindi", "proficiency": "Professional Working" },
-    { "name": "Kannada", "proficiency": "Professional Working" }
+    {
+      "name": "English",
+      "proficiency": "Native or Bilingual"
+    },
+    {
+      "name": "Hindi",
+      "proficiency": "Professional Working"
+    },
+    {
+      "name": "Kannada",
+      "proficiency": "Professional Working"
+    }
   ],
   "timeline": [
-    { "date": "2019-07", "title": "Graduated", "description": "B.E. in Electronics and Telecommunication from Dayananda Sagar College of Engineering", "category": "education", "icon": "graduation-cap" },
-    { "date": "2020-01", "title": "Joined Infosys", "description": "Senior System Engineer - High Performer in Foundation Program (82%)", "category": "career", "icon": "briefcase" },
-    { "date": "2021", "title": "AWS Certified", "description": "Earned AWS Solutions Architect Associate certification", "category": "achievement", "icon": "certificate" },
-    { "date": "2022-03", "title": "Joined Thinkbridge", "description": "Senior Software Engineer leading Angular frontend for PSG Global Solutions", "category": "career", "icon": "rocket" }
+    {
+      "date": "2019-07",
+      "title": "Graduated",
+      "description": "B.E. in Electronics and Telecommunication from Dayananda Sagar College of Engineering",
+      "category": "education",
+      "icon": "graduation-cap"
+    },
+    {
+      "date": "2020-01",
+      "title": "Joined Infosys",
+      "description": "Senior System Engineer - High Performer in Foundation Program (82%)",
+      "category": "career",
+      "icon": "briefcase"
+    },
+    {
+      "date": "2021",
+      "title": "AWS Certified",
+      "description": "Earned AWS Solutions Architect Associate certification",
+      "category": "achievement",
+      "icon": "certificate"
+    },
+    {
+      "date": "2022-03",
+      "title": "Joined Thinkbridge",
+      "description": "Senior Software Engineer leading Angular frontend for PSG Global Solutions",
+      "category": "career",
+      "icon": "rocket"
+    }
   ],
   "github": {
     "username": "nandanhegde1"

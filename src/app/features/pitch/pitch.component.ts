@@ -149,7 +149,7 @@ interface ValueProp {
               LinkedIn
             </a>
           </div>
-          <p class="pitch__cta-or">or explore the <a routerLink="/">full portfolio</a></p>
+          <p class="pitch__cta-or">or read the <a routerLink="/case-study/ai-interview">AI interview case study</a> · explore the <a routerLink="/">full portfolio</a></p>
         </div>
       </section>
     </div>

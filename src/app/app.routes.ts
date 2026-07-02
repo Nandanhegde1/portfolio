@@ -119,6 +119,18 @@ export const routes: Routes = [
         },
       },
       {
+        path: 'case-study/ai-interview',
+        loadComponent: () => import('./features/case-study/ai-interview.component').then(m => m.AiInterviewCaseStudyComponent),
+        data: {
+          seo: {
+            title: 'Case Study — AI Interview & Fit-Scoring',
+            description: 'How a 10,000-user recruiting platform got an AI that interviews candidates — signal design, the fit-score model, the ranking engine, and the model-cost strategy.',
+            url: 'https://nandanhegde1.github.io/portfolio/case-study/ai-interview',
+            type: 'article',
+          },
+        },
+      },
+      {
         path: 'projects',
         loadComponent: () => import('./features/projects/projects.component').then(m => m.ProjectsComponent),
         data: {

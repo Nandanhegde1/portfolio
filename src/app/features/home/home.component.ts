@@ -26,6 +26,7 @@ interface FeaturedProject {
   oneLiner: string;
   metric: string;
   stack: string[];
+  link: string;
 }
 
 @Component({
@@ -58,7 +59,7 @@ interface FeaturedProject {
           <h3 class="bento__projects-title">Three things I built that actually run</h3>
           <div class="bento__projects-grid">
             @for (p of featuredProjects; track p.title) {
-              <a routerLink="/projects" class="bento__project">
+              <a [routerLink]="p.link" class="bento__project">
                 <div class="bento__project-head">
                   <h4 class="bento__project-title">{{ p.title }}</h4>
                   <span class="bento__project-client">{{ p.client }}</span>
@@ -175,6 +176,7 @@ export class HomeComponent {
       oneLiner: 'An AI voice agent interviews each candidate; the transcript is scored into a fit score against the role.',
       metric: '10K+ user platform · demoed live in Austin',
       stack: ['LLMs', 'Azure OpenAI', 'Voice AI', 'FastAPI'],
+      link: '/case-study/ai-interview',
     },
     {
       title: 'Ask GovAI',
@@ -182,6 +184,7 @@ export class HomeComponent {
       oneLiner: 'A measured RAG over 670+ federal AI/ML contract awards — BM25 retrieval feeding grounded, cited LLM synthesis with a refuse-to-invent guardrail.',
       metric: 'Reproducible eval · honest failure analysis',
       stack: ['TypeScript', 'RAG', 'BM25', 'Evals'],
+      link: '/projects',
     },
     {
       title: 'Compass',
@@ -189,6 +192,7 @@ export class HomeComponent {
       oneLiner: 'Migrated a 7-year-old AngularJS recruiting platform to Angular 19 without a single hour of downtime.',
       metric: '~30% faster load · 10K+ monthly users',
       stack: ['Angular 19', 'TypeScript', 'Power BI', 'Azure DevOps'],
+      link: '/projects',
     },
   ];
 
