@@ -78,15 +78,15 @@
     {
       "id": "ask-govai",
       "title": "Ask GovAI — RAG over Federal AI Contracts",
-      "description": "A retrieval-augmented Q&A layer over a live index of 670 U.S. federal AI/ML contract awards. BM25 lexical retrieval (key-free) feeds grounded Claude synthesis with citations and a refuse-to-invent guardrail — backed by a measured eval harness, not a demo.",
+      "description": "A retrieval-augmented Q&A layer over a live index of 670+ U.S. federal AI/ML contract awards. BM25 lexical retrieval (key-free) feeds grounded, provider-agnostic LLM synthesis (free Gemini or Claude) with citations and a refuse-to-invent guardrail — backed by a measured eval harness (recall@8 = 69%), not a demo.",
       "highlights": [
         "Cost-aware by design: cheap lexical retrieval finds the documents; the LLM only synthesizes",
         "Grounded answers cite the award_id and refuse when the dataset doesn't support a claim",
         "Eval harness with a natural-language gold set — retrieval recall@8 measured; answer accuracy + cost scored with a key",
         "Honest failure-mode analysis (superlative queries need a structured path) + a hybrid-retrieval roadmap",
-        "Zero dependencies — raw fetch to the Anthropic API"
+        "Zero dependencies — raw fetch, provider-agnostic synthesis (free Gemini or paid Claude)"
       ],
-      "technologies": ["TypeScript", "RAG", "BM25", "Claude", "Anthropic API", "Evals"],
+      "technologies": ["TypeScript", "RAG", "BM25", "LLM (Gemini / Claude)", "Evals"],
       "imageUrl": "",
       "liveUrl": "https://govai-contracts.nandanhegde1096.workers.dev/",
       "githubUrl": "https://github.com/Nandanhegde1/govai-contracts/tree/main/ask",
