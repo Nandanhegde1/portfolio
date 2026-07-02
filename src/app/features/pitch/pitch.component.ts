@@ -28,11 +28,11 @@ interface ValueProp {
         <div class="pitch__scene-inner">
           <p class="pitch__eyebrow">NANDAN HEGDE</p>
           <h1 class="pitch__hero-text">
-            <span class="pitch__hero-line">5+ years.</span>
-            <span class="pitch__hero-line">127K lines.</span>
+            <span class="pitch__hero-line">6+ years.</span>
+            <span class="pitch__hero-line">10,000+ users.</span>
             <span class="pitch__hero-line pitch__hero-line--accent">1 mission.</span>
           </h1>
-          <p class="pitch__hero-sub">Building software that doesn't fall over when more than 10 people use it.</p>
+          <p class="pitch__hero-sub">I build full-stack products — and the AI inside them — that hold up when thousands of people rely on them.</p>
           <div class="pitch__scroll-hint">
             <span>Scroll to explore</span>
             <div class="pitch__scroll-arrow">
@@ -70,7 +70,7 @@ interface ValueProp {
             <div class="pitch__journey-node">
               <div class="pitch__journey-dot"></div>
               <div class="pitch__journey-card">
-                <span class="pitch__journey-year">2019</span>
+                <span class="pitch__journey-year">2020</span>
                 <h3>Started at Infosys</h3>
                 <p>Built enterprise-grade apps for Swiss Re. Learned what "scale" really means.</p>
               </div>
@@ -86,9 +86,9 @@ interface ValueProp {
             <div class="pitch__journey-node">
               <div class="pitch__journey-dot"></div>
               <div class="pitch__journey-card">
-                <span class="pitch__journey-year">2021</span>
+                <span class="pitch__journey-year">2022</span>
                 <h3>Joined Thinkbridge</h3>
-                <p>Senior Engineer. Led Angular migration, integrated PowerBI, built recruiting platform.</p>
+                <p>Senior Engineer leading the AI workstream — an AI voice-interview + fit-scoring system and a candidate-ranking engine — on a 10,000-user recruiting platform.</p>
               </div>
             </div>
             <div class="pitch__journey-node pitch__journey-node--right">
@@ -96,7 +96,7 @@ interface ValueProp {
               <div class="pitch__journey-card">
                 <span class="pitch__journey-year">Now</span>
                 <h3>What's next?</h3>
-                <p>Looking for a team that values clean code over 'just ship it' hacks.</p>
+                <p>Ready to lead AI-product work at a bigger scale — open to senior and lead roles abroad.</p>
               </div>
             </div>
           </div>
@@ -140,12 +140,12 @@ interface ValueProp {
       <section class="pitch__scene pitch__scene--cta">
         <div class="pitch__scene-inner">
           <h2 class="pitch__cta-text">Let\u2019s build something.</h2>
-          <p class="pitch__cta-sub">I\u2019m open to senior frontend, full-stack, and lead roles.</p>
+          <p class="pitch__cta-sub">I\u2019m open to senior and lead roles in full-stack and AI product.</p>
           <div class="pitch__cta-buttons">
             <a routerLink="/contact" class="pitch__cta-btn pitch__cta-btn--primary">
               Get in Touch
             </a>
-            <a href="https://linkedin.com/in/nandanhegde" target="_blank" rel="noopener" class="pitch__cta-btn pitch__cta-btn--secondary">
+            <a href="https://linkedin.com/in/nandanhegde1096" target="_blank" rel="noopener" class="pitch__cta-btn pitch__cta-btn--secondary">
               LinkedIn
             </a>
           </div>
@@ -167,29 +167,29 @@ export class PitchComponent implements AfterViewInit, OnDestroy {
   readonly animatedStats = signal<number[]>([0, 0, 0, 0, 0, 0]);
 
   readonly stats: PitchStat[] = [
-    { value: 5, suffix: '+', label: 'Years Experience' },
-    { value: 12, suffix: '+', label: 'Projects Delivered' },
+    { value: 6, suffix: '+', label: 'Years Experience' },
+    { value: 10000, suffix: '+', label: 'Platform Users' },
+    { value: 10, suffix: '+', label: 'Engineers Led' },
     { value: 3, suffix: '', label: 'Cloud Platforms' },
     { value: 1, suffix: '', label: 'AWS Certification' },
-    { value: 127, suffix: 'K', label: 'Lines Shipped' },
-    { value: 2, suffix: '', label: 'Companies Impacted' },
+    { value: 12, suffix: '+', label: 'Projects Delivered' },
   ];
 
   readonly valueProps: ValueProp[] = [
     {
       icon: '\u26A1',
       title: 'I Ship Fast, Cleanly',
-      description: 'I don\u2019t just write code that works \u2014 I write code that the next developer will thank me for. Angular migrations, CI pipelines, component libraries \u2014 all shipped on time.',
+      description: 'I don\u2019t just write code that works \u2014 I write code the next developer thanks me for. AngularJS\u2192Angular 19 migration, CI/CD, LLM integration in production \u2014 all shipped.',
     },
     {
       icon: '\uD83E\uDDE9',
       title: 'I Think in Systems',
-      description: 'From microservices to design systems, I see the big picture. I\u2019ve led architecture decisions that reduced build times by 40% and onboarding time from weeks to days.',
+      description: 'From LLM systems to design systems, I see the big picture \u2014 I architect the AI (voice-interview + fit-scoring, retrieval and ranking, a model-cost strategy) and the product it lives in.',
     },
     {
       icon: '\uD83E\uDD1D',
       title: 'I Multiply Teams',
-      description: 'Mentoring juniors, running code reviews, bridging design and engineering \u2014 I make the people around me better. That\u2019s the multiplier effect recruiters look for.',
+      description: 'Leading a ~10-engineer team, running design and code reviews, and driving Claude adoption across 30+ engineers \u2014 I make the people around me better. That\u2019s the multiplier effect recruiters look for.',
     },
   ];
 

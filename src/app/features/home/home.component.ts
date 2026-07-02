@@ -44,7 +44,7 @@ interface FeaturedProject {
         <div class="bento__card bento__card--name" appScrollReveal>
           <span class="bento__card-tag">// hello-world</span>
           <h2 class="bento__name">Nandan Hegde</h2>
-          <p class="bento__role">Senior Software Engineer</p>
+          <p class="bento__role">Senior Full-Stack Engineer · AI Products</p>
           <p class="bento__guild">Thinkbridge · PSG Global Solutions</p>
           <div class="bento__available">
             <span class="bento__pulse"></span>
@@ -145,7 +145,7 @@ interface FeaturedProject {
         <!-- Row 6: Single CTA -->
         <div class="bento__card bento__card--cta" appScrollReveal [delay]="280">
           <h2 class="bento__cta-text">Got a project? Let's talk shop.</h2>
-          <p class="bento__cta-sub">Senior frontend, full-stack, or lead roles. Or just say hi.</p>
+          <p class="bento__cta-sub">Senior and lead full-stack / AI-product roles. Or just say hi.</p>
           <div class="bento__cta-buttons">
             <a routerLink="/contact" class="bento__cta-btn bento__cta-btn--primary">
               Get in Touch
@@ -172,16 +172,16 @@ export class HomeComponent {
     {
       title: 'Compass',
       client: 'PSG Global Solutions',
-      oneLiner: 'Migrated a 7-year-old AngularJS recruiting platform to Angular 17 without a single hour of downtime.',
+      oneLiner: 'Migrated a 7-year-old AngularJS recruiting platform to Angular 19 without a single hour of downtime.',
       metric: '~30% faster load · 10K+ monthly users',
-      stack: ['Angular 17', 'TypeScript', 'Power BI', 'Azure DevOps'],
+      stack: ['Angular 19', 'TypeScript', 'Power BI', 'Azure DevOps'],
     },
     {
-      title: 'Anna (AI Calling Agent)',
+      title: 'AI Interview & Fit-Scoring (Anna)',
       client: 'PSG Global Solutions',
-      oneLiner: 'React prototype for an AI recruiter that calls candidates. Demoed live at a tradeshow in Austin.',
-      metric: 'Shipped tradeshow-ready in 6 weeks',
-      stack: ['React', 'JavaScript', 'AI/ML'],
+      oneLiner: 'An AI voice agent interviews each candidate; the transcript is scored into a fit score against the role.',
+      metric: '10K+ user platform · demoed live in Austin',
+      stack: ['LLMs', 'Azure OpenAI', 'Voice AI', 'FastAPI'],
     },
     {
       title: 'Corflow Claims',
@@ -193,7 +193,7 @@ export class HomeComponent {
   ];
 
   readonly techStack = [
-    { name: 'Angular 17', primary: true },
+    { name: 'Angular 19', primary: true },
     { name: 'TypeScript', primary: true },
     { name: 'RxJS', primary: true },
     { name: 'SCSS', primary: true },
@@ -234,13 +234,13 @@ export class HomeComponent {
     {
       year: '2022',
       title: 'Joined Thinkbridge',
-      description: 'Senior Engineer. Led Angular migration for PSG, integrated Power BI and SSO for 10,000+ users, built React AI prototype.',
+      description: 'Senior Engineer leading the AI workstream — an AI voice-interview + fit-scoring system and a candidate-ranking engine — and modernized PSG’s platform to Angular 19 for 10,000+ users.',
       side: 'left',
     },
     {
       year: 'Now',
       title: 'Ready for What\u2019s Next',
-      description: 'Looking for senior frontend, full-stack, or lead roles. Let\u2019s build something great.',
+      description: 'Open to senior and lead roles in full-stack and AI product. Let\u2019s build something great.',
       side: 'right',
     },
   ];

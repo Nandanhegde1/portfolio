@@ -121,9 +121,9 @@ export class CommandRegistryService {
       description: 'Display current user info',
       action: () => [
         'Nandan Hegde',
-        'Full Stack Developer | Senior Software Engineer',
+        'Senior Full-Stack Engineer · AI Products',
         'Location: Bangalore, India',
-        'Stack: Angular, TypeScript, Node.js, AWS',
+        'Stack: Angular, TypeScript, Node.js, LLMs (Azure OpenAI, Claude), AWS',
         '',
         'Currently @ Thinkbridge Software Pvt Ltd',
       ],
@@ -198,7 +198,7 @@ export class CommandRegistryService {
         '  DE:       VS Code',
         '  WM:       SCSS + CSS Grid',
         '  Terminal: This one!',
-        '  CPU:      5+ years experience',
+        '  CPU:      6+ years experience',
         '  Memory:   Unlimited curiosity',
       ],
     });

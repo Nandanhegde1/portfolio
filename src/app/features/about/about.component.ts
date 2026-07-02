@@ -1,11 +1,9 @@
 import {
   Component,
   ChangeDetectionStrategy,
-  ElementRef,
   inject,
   OnInit,
   signal,
-  ViewChild,
 } from '@angular/core';
 import { PortfolioDataService } from '../../core/services';
 import { ScrollRevealDirective } from '../../shared/directives/scroll-reveal.directive';
@@ -245,7 +243,7 @@ interface InventoryItem {
                       <div class="rpg__achievement-icon">\uD83C\uDFAA</div>
                       <div class="rpg__achievement-info">
                         <h4>Tradeshow Demo</h4>
-                        <p>Built React AI agent showcased in Austin, US</p>
+                        <p>Demoed the AI voice-interview agent live in Austin, US</p>
                       </div>
                     </div>
                     <div class="rpg__achievement rpg__achievement--legendary">
@@ -414,7 +412,6 @@ interface InventoryItem {
               </div>
             </div>
           </div>
-          <canvas #downloadCanvas style="display: none;"></canvas>
         </div>
       </div>
     </section>
@@ -472,12 +469,6 @@ export class AboutComponent implements OnInit {
     return `https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf`;
   }
 
-  printResume(): void {
-    if (typeof window !== 'undefined') {
-      window.print();
-    }
-  }
-
   readonly attributes: RpgStat[] = [
     { attribute: 'STR', name: 'Backend', value: 72, color: '#ef4444' },
     { attribute: 'INT', name: 'Frontend', value: 93, color: '#3b82f6' },
@@ -491,7 +482,7 @@ export class AboutComponent implements OnInit {
     {
       icon: '\u2694\uFE0F', label: 'Weapons (Frontend)',
       items: [
-        { name: 'Angular 17', level: 95, rarity: 'legendary' },
+        { name: 'Angular 19', level: 95, rarity: 'legendary' },
         { name: 'TypeScript', level: 92, rarity: 'legendary' },
         { name: 'RxJS', level: 85, rarity: 'epic' },
         { name: 'JavaScript', level: 90, rarity: 'epic' },
@@ -594,9 +585,6 @@ export class AboutComponent implements OnInit {
   }
 
   // ── Forge Your Card ──
-
-  @ViewChild('downloadCanvas', { static: false })
-  downloadCanvasRef!: ElementRef<HTMLCanvasElement>;
 
   visitorName = '';
   visitorTitle = '';

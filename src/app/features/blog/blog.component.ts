@@ -291,7 +291,7 @@ interface Post {
                 <p>RSS &amp; weekly digest are coming soon. For now, the best way to follow along:</p>
                 <div class="journal__rail-links">
                   <a href="https://github.com/Nandanhegde1" target="_blank" rel="noopener">GitHub &rarr;</a>
-                  <a href="https://www.linkedin.com/in/nandan-hegde-3a7370166/" target="_blank" rel="noopener">LinkedIn &rarr;</a>
+                  <a href="https://linkedin.com/in/nandanhegde1096" target="_blank" rel="noopener">LinkedIn &rarr;</a>
                   <a routerLink="/contact">Email me &rarr;</a>
                 </div>
               </section>

@@ -143,7 +143,7 @@ interface LogLine {
               <div class="cli__sidecard-label">// elsewhere</div>
               <a href="mailto:nandanhegde1096&#64;gmail.com">email me directly &rarr;</a>
               <a href="https://github.com/Nandanhegde1" target="_blank" rel="noopener">github.com/Nandanhegde1 &rarr;</a>
-              <a href="https://www.linkedin.com/in/nandan-hegde-3a7370166/" target="_blank" rel="noopener">linkedin &rarr;</a>
+              <a href="https://linkedin.com/in/nandanhegde1096" target="_blank" rel="noopener">linkedin &rarr;</a>
             </div>
           </aside>
         </div>

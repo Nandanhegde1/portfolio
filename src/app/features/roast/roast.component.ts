@@ -230,7 +230,6 @@ export class RoastComponent {
   readonly isFallback = signal(false);
   readonly error = signal<string | null>(null);
   readonly copied = signal(false);
-  readonly roastCount = signal(this.getStoredCount());
 
   readonly intensityLevels = [
     { value: 'mild', label: 'Mild', emoji: '\uD83C\uDF36\uFE0F' },
@@ -262,7 +261,6 @@ export class RoastComponent {
       const roast = this.getLocalRoast(stack);
       this.isFallback.set(true);
       this.result.set({ stack, roast, intensity, timestamp: Date.now() });
-      this.incrementCount();
       this.loading.set(false);
       this.streaming.set(false);
       this.sound.play('error');
@@ -320,7 +318,6 @@ export class RoastComponent {
         } else if (event === 'done') {
           const finalRoast = payload.roast || text;
           this.result.set({ stack, roast: finalRoast, intensity, timestamp: ts });
-          this.incrementCount();
           this.loading.set(false);
           this.streaming.set(false);
           this.sound.play('success');
@@ -535,17 +532,4 @@ export class RoastComponent {
     return defaults[Math.floor(Math.random() * defaults.length)];
   }
 
-  private getStoredCount(): number {
-    try {
-      return parseInt(localStorage.getItem('roast-count') || '42', 10);
-    } catch {
-      return 42;
-    }
-  }
-
-  private incrementCount(): void {
-    const next = this.roastCount() + 1;
-    this.roastCount.set(next);
-    try { localStorage.setItem('roast-count', String(next)); } catch { /* ignore quota / disabled storage */ }
-  }
 }
