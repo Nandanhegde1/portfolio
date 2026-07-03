@@ -1,10 +1,15 @@
 import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent],
+      // AppComponent boots SeoService/EngagementService/BackendWarmupService,
+      // which need the router + http trees the real app provides in main.ts.
+      providers: [provideRouter([]), provideHttpClient()],
     }).compileComponents();
   });
 

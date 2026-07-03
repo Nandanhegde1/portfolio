@@ -1,0 +1,51 @@
+name: Uptime check
+
+on:
+  schedule:
+    # Every 6 hours at :43 — offset from the govai scrape crons
+    - cron: '43 */6 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  issues: write
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check all live surfaces
+        id: check
+        run: |
+          declare -A targets=(
+            [portfolio]="https://nandanhegde1.github.io/portfolio/"
+            [backend]="https://portfolio-1-8qlk.onrender.com/api/health"
+            [govai]="https://govai-contracts.nandanhegde1096.workers.dev/"
+            [mcp-directory]="https://mcp-directory.nandanhegde1096.workers.dev/"
+          )
+          failures=""
+          for name in "${!targets[@]}"; do
+            # Render free tier cold-starts: allow a generous timeout + one retry
+            code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 60 --retry 1 --retry-delay 20 "${targets[$name]}" || echo 000)
+            echo "$name -> $code"
+            if [ "$code" -lt 200 ] || [ "$code" -ge 400 ]; then
+              failures="$failures $name($code)"
+            fi
+          done
+          if [ -n "$failures" ]; then
+            echo "failures=$failures" >> "$GITHUB_OUTPUT"
+            exit 1
+          fi
+
+      - name: Open an issue on failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FAILURES: ${{ steps.check.outputs.failures }}
+        run: |
+          title="Uptime check failed:${FAILURES}"
+          existing=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --search "Uptime check failed" --json number --jq '.[0].number // empty')
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --repo "$GITHUB_REPOSITORY" --body "Still failing at $(date -u '+%Y-%m-%d %H:%M UTC'):${FAILURES} — [run]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)"
+          else
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$title" --body "Automated uptime check failed at $(date -u '+%Y-%m-%d %H:%M UTC').\n\nDown:${FAILURES}\n\n[Run log]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)"
+          fi
