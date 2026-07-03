@@ -74,8 +74,9 @@ router.post('/', limiters.comments, async (req, res) => {
 });
 
 // ── Admin: reply / pin / delete (header secret) ───────────────────────
+const { timingSafeMatch } = require('../lib/admin-auth');
 function requireAdmin(req, res, next) {
-  if (!ADMIN_TOKEN || req.get('x-admin-token') !== ADMIN_TOKEN) {
+  if (!ADMIN_TOKEN || !timingSafeMatch(req.get('x-admin-token') || '', ADMIN_TOKEN)) {
     return res.status(401).json({ error: 'unauthorized' });
   }
   next();

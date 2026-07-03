@@ -40,7 +40,7 @@ function validate(req, res) {
 
 // Streaming endpoint — perceived latency drops from ~10s to ~1s by
 // flushing tokens as Anthropic generates them.
-router.post('/stream', limiters.roast, async (req, res) => {
+router.post('/stream', limiters.roast, limiters.llmDailyBudget, async (req, res) => {
   const params = validate(req, res);
   if (!params) return;
   const { stack, level, lang } = params;
@@ -93,7 +93,7 @@ router.post('/stream', limiters.roast, async (req, res) => {
 });
 
 // Legacy non-streaming endpoint — kept for clients that can't consume SSE.
-router.post('/', limiters.roast, async (req, res) => {
+router.post('/', limiters.roast, limiters.llmDailyBudget, async (req, res) => {
   const params = validate(req, res);
   if (!params) return;
   const { stack, level, lang } = params;
