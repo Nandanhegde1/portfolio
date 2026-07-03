@@ -16,12 +16,6 @@ export class GitHubService {
   readonly loading = signal(false);
   readonly error = signal<string | null>(null);
 
-  readonly topRepos = computed(() =>
-    this.repos()
-      .sort((a, b) => b.stargazers_count - a.stargazers_count)
-      .slice(0, 6)
-  );
-
   // Most recently updated repo — for "Currently working on" hero indicator
   readonly mostRecentRepo = computed(() => {
     const r = this.repos();
@@ -62,7 +56,12 @@ export class GitHubService {
   fetchAll(username: string): void {
     const cached = this.getCached();
     if (cached) {
-      this.stats.set(cached);
+      // Hydrate ALL signals — restoring only stats left user/repos empty, which
+      // blanked the hero "currently shipping" + dashboard repo widgets for any
+      // returning visitor inside the cache TTL.
+      this.user.set(cached.user);
+      this.repos.set(cached.repos);
+      this.stats.set(cached.stats);
       return;
     }
     this.fetchUser(username);
@@ -101,10 +100,10 @@ export class GitHubService {
     };
 
     this.stats.set(result);
-    this.setCache(result);
+    this.setCache({ user: this.user(), repos, stats: result });
   }
 
-  private getCached(): GitHubStats | null {
+  private getCached(): CachedBundle | null {
     try {
       const raw = localStorage.getItem(this.CACHE_KEY);
       if (!raw) return null;
@@ -113,17 +112,25 @@ export class GitHubService {
         localStorage.removeItem(this.CACHE_KEY);
         return null;
       }
+      // Entries written by the old stats-only cache shape lack repos — treat as a miss.
+      if (!data || !Array.isArray(data.repos)) return null;
       return data;
     } catch {
       return null;
     }
   }
 
-  private setCache(data: GitHubStats): void {
+  private setCache(data: CachedBundle): void {
     try {
       localStorage.setItem(this.CACHE_KEY, JSON.stringify({ data, timestamp: Date.now() }));
     } catch {
       // localStorage full or unavailable
     }
   }
+}
+
+interface CachedBundle {
+  user: GitHubUser | null;
+  repos: GitHubRepo[];
+  stats: GitHubStats;
 }

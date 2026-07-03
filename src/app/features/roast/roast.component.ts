@@ -84,6 +84,7 @@ const FALLBACK_ROASTS: Record<string, string[]> = {
             <textarea
               class="roast__textarea"
               [(ngModel)]="stackInput"
+              aria-label="Your tech stack to roast"
               placeholder="e.g. React, TypeScript, Tailwind, Supabase, Vercel..."
               [maxlength]="500"
               rows="3"
@@ -113,6 +114,7 @@ const FALLBACK_ROASTS: Record<string, string[]> = {
                 <button
                   class="roast__intensity-btn"
                   [class.roast__intensity-btn--active]="intensity() === level.value"
+                  [attr.aria-pressed]="intensity() === level.value"
                   (click)="intensity.set(level.value)"
                 >
                   {{ level.emoji }} {{ level.label }}
@@ -138,6 +140,8 @@ const FALLBACK_ROASTS: Record<string, string[]> = {
         <!-- Result -->
         @if (result()) {
           <div class="roast__result-area" appScrollReveal>
+            <!-- Announce completion to screen readers (streamed text is silent) -->
+            <span class="sr-only" role="status">{{ streaming() ? '' : 'Roast ready' }}</span>
             <!-- Shareable Card -->
             <div class="roast__card" #roastCard>
               <div class="roast__card-inner">

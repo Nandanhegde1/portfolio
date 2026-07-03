@@ -69,6 +69,7 @@ interface LogLine {
                   <textarea
                     #activeInput
                     class="cli__input cli__input--multi"
+                    [attr.aria-label]="promptFor(step())"
                     formControlName="message"
                     rows="3"
                     placeholder="type your message, then press Ctrl+Enter"
@@ -80,18 +81,18 @@ interface LogLine {
                     press <kbd>Enter</kbd> to send &uarr;
                   </button>
                 } @else if (step() === 'name') {
-                  <input #activeInput type="text" class="cli__input" formControlName="name" placeholder="e.g. Ada Lovelace" autocomplete="off" spellcheck="false" (keydown.enter)="$event.preventDefault(); advance()" />
+                  <input #activeInput type="text" class="cli__input" [attr.aria-label]="promptFor(step())" formControlName="name" placeholder="e.g. Ada Lovelace" autocomplete="off" spellcheck="false" (keydown.enter)="$event.preventDefault(); advance()" />
                 } @else if (step() === 'email') {
-                  <input #activeInput type="email" class="cli__input" formControlName="email" placeholder="you&#64;company.com" autocomplete="off" spellcheck="false" (keydown.enter)="$event.preventDefault(); advance()" />
+                  <input #activeInput type="email" class="cli__input" [attr.aria-label]="promptFor(step())" formControlName="email" placeholder="you&#64;company.com" autocomplete="off" spellcheck="false" (keydown.enter)="$event.preventDefault(); advance()" />
                 } @else if (step() === 'subject') {
-                  <input #activeInput type="text" class="cli__input" formControlName="subject" placeholder="collab / role / question" autocomplete="off" spellcheck="false" (keydown.enter)="$event.preventDefault(); advance()" />
+                  <input #activeInput type="text" class="cli__input" [attr.aria-label]="promptFor(step())" formControlName="subject" placeholder="collab / role / question" autocomplete="off" spellcheck="false" (keydown.enter)="$event.preventDefault(); advance()" />
                 }
                 <button type="submit" class="cli__submit-hidden" tabindex="-1" aria-hidden="true"></button>
                 <span class="cli__caret" aria-hidden="true"></span>
               </form>
 
               @if (currentError(); as e) {
-                <div class="cli__line cli__line--err">
+                <div class="cli__line cli__line--err" role="alert">
                   <span class="cli__sigil cli__sigil--err">[err]</span>
                   <span class="cli__text">{{ e }}</span>
                 </div>

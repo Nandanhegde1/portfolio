@@ -72,7 +72,7 @@ import { TooltipDirective } from '../../directives/tooltip.directive';
             }
           </button>
 
-          <button class="navbar__mobile-toggle" [class.navbar__mobile-toggle--open]="mobileOpen" (click)="toggleMobile()" [appTooltip]="'nav.openMenu' | transloco" [attr.aria-label]="'nav.menu' | transloco">
+          <button class="navbar__mobile-toggle" [class.navbar__mobile-toggle--open]="mobileOpen" (click)="toggleMobile()" [appTooltip]="'nav.openMenu' | transloco" [attr.aria-label]="'nav.menu' | transloco" [attr.aria-expanded]="mobileOpen">
             <span></span><span></span><span></span>
           </button>
         </div>
@@ -134,6 +134,7 @@ export class NavbarComponent {
   @HostListener('document:keydown.escape')
   onEscape(): void {
     if (this.dropdownOpen()) this.dropdownOpen.set(false);
+    if (this.mobileOpen) this.mobileOpen = false;
   }
 
   toggleTheme(): void {

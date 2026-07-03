@@ -22,7 +22,7 @@ interface OutputLine {
   template: `
     @if (isOpen()) {
       <div class="terminal-overlay" (click)="close()">
-        <div class="terminal" (click)="$event.stopPropagation()">
+        <div class="terminal" role="dialog" aria-modal="true" aria-label="Interactive terminal" (click)="$event.stopPropagation()">
           <div class="terminal__header">
             <div class="terminal__dots">
               <span class="terminal__dot terminal__dot--red"></span>
