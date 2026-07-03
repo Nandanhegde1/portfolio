@@ -76,12 +76,16 @@ npx ng serve         # http://localhost:4200
 # Backend
 cd backend
 npm install
+cp .env.example .env # fill in the vars (see backend/.env.example — every var is documented)
 npm run dev          # http://localhost:3000
+npm test             # 5 smoke tests against the real app on an ephemeral port
 ```
 
 ## 🚢 Deploy
 
-Push to `main`. GitHub Actions builds and deploys to Pages automatically.
+- **Frontend** — push to `main`; the CI workflow lints, tests, builds, and deploys to GitHub Pages *only if all checks pass*.
+- **Backend** — Render auto-deploys `backend/` (root dir `backend`, uses the Dockerfile) on push to `main`. Secrets (`ANTHROPIC_API_KEY`, `SUPABASE_URL`, `SUPABASE_SERVICE_KEY`, `ADMIN_TOKEN`, `ALLOWED_ORIGINS`) live in the Render dashboard, never in the repo.
+- **Uptime** — a 6-hourly workflow pings all live surfaces and opens a GitHub issue if anything is down.
 
 ## 🪪 License
 

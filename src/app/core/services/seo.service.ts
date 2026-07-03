@@ -40,8 +40,8 @@ export class SeoService {
   update(config: SeoConfig): void {
     const title = config.title
       ? `${config.title} | ${SITE_NAME}`
-      : `${SITE_NAME} | Senior Software Engineer`;
-    const description = config.description ?? 'Senior Software Engineer with 6+ years building enterprise Angular apps. AWS Certified.';
+      : `${SITE_NAME} | Senior Full-Stack Engineer · AI Products`;
+    const description = config.description ?? 'I build full-stack products — and the AI inside them. AI voice-interview + fit-scoring on a 10,000-user platform. Angular, TypeScript, Node, LLMs.';
     const url = config.url ?? SITE_BASE;
     const image = config.image ?? DEFAULT_IMAGE;
     const type = config.type ?? 'website';
