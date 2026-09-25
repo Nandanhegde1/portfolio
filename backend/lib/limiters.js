@@ -9,8 +9,10 @@ const make = (opts) => rateLimit({
 // ── Global daily LLM budget ─────────────────────────────────────────────
 // Per-IP limits bound one abuser, not total Anthropic spend: N distinct IPs
 // could still generate N×20 roasts per window. This caps total LLM calls per
-// UTC day across ALL clients. In-memory is correct here — Render runs a single
-// instance, and a restart resetting the counter only errs generous.
+// UTC day across ALL clients. In-memory, so each running instance keeps its own
+// count: exact on a single-instance host, and on Vercel, where concurrent
+// instances can run, the cap applies per instance. A restart resetting the
+// counter only errs generous either way.
 const DAILY_LLM_CALL_CAP = Number(process.env.DAILY_LLM_CALL_CAP || 300);
 let dailyCount = 0;
 let dailyKey = new Date().toISOString().slice(0, 10);

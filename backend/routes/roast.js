@@ -18,14 +18,20 @@ function buildMessages(stack, level) {
   }];
 }
 
+// Awaited before the response closes. On a serverless host the function can be
+// frozen as soon as the response ends, and an insert still in flight goes with it.
+// Never rejects: a failed log must not fail the roast.
 function logRoast({ stack, level, roast }) {
   const sb = getSupabase();
-  if (!sb) return;
-  sb.from('roast_logs')
+  if (!sb) return Promise.resolve();
+  return sb.from('roast_logs')
     .insert({ stack: stack.slice(0, 500), intensity: level, roast: roast.slice(0, 5000) })
-    .then(({ error }) => {
-      if (error) console.error('[supabase] roast_logs insert failed:', error.message);
-    });
+    .then(
+      ({ error }) => {
+        if (error) console.error('[supabase] roast_logs insert failed:', error.message);
+      },
+      (err) => console.error('[supabase] roast_logs insert failed:', err?.message || err)
+    );
 }
 
 function validate(req, res) {
@@ -75,9 +81,11 @@ router.post('/stream', limiters.roast, limiters.llmDailyBudget, async (req, res)
 
     if (aborted) return;
     const final = full || FALLBACK;
+    // The client has the whole roast once 'done' arrives; the stream stays open
+    // only for the log write.
     send('done', { roast: final });
+    await logRoast({ stack, level, roast: final });
     res.end();
-    logRoast({ stack, level, roast: final });
   } catch (err) {
     if (aborted) return;
     if (err.code === 'NO_API_KEY')   send('error', { error: 'Roast service unavailable' });
@@ -106,8 +114,8 @@ router.post('/', limiters.roast, limiters.llmDailyBudget, async (req, res) => {
       temperature: 1,
     }) || FALLBACK;
 
+    await logRoast({ stack, level, roast });
     res.json({ roast });
-    logRoast({ stack, level, roast });
   } catch (err) {
     if (err.code === 'NO_API_KEY') return res.status(503).json({ error: 'Roast service unavailable' });
     if (err.code === 'UPSTREAM_ERROR') {

@@ -7,7 +7,7 @@ const limiters = require('./lib/limiters');
 
 const app = express();
 
-// Render/Heroku/etc. terminate TLS at a reverse proxy.
+// Vercel, Render and the like terminate TLS at a reverse proxy.
 // Trust the first hop so req.ip + X-Forwarded-For work for rate-limit.
 app.set('trust proxy', 1);
 
