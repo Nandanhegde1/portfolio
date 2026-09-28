@@ -38,7 +38,7 @@ A data-rich, interactive developer portfolio built with **Angular 19** + **SCSS*
 Frontend  ─ Angular 19, TypeScript, SCSS, RxJS, Signals, Three.js
 Backend   ─ Express 4, Supabase (Postgres), Helmet, rate limiting
 AI        ─ Anthropic Claude (Roast My Stack — token streaming)
-Hosting   ─ GitHub Pages (frontend) + Render (API)
+Hosting   ─ GitHub Pages (frontend) + Vercel (API)
 CI/CD     ─ GitHub Actions
 ```
 
@@ -84,7 +84,7 @@ npm test             # 5 smoke tests against the real app on an ephemeral port
 ## 🚢 Deploy
 
 - **Frontend** — push to `main`; the CI workflow lints, tests, builds, and deploys to GitHub Pages *only if all checks pass*.
-- **Backend** — Render auto-deploys `backend/` (root dir `backend`, uses the Dockerfile) on push to `main`. Secrets (`ANTHROPIC_API_KEY`, `SUPABASE_URL`, `SUPABASE_SERVICE_KEY`, `ADMIN_TOKEN`, `ALLOWED_ORIGINS`) live in the Render dashboard, never in the repo.
+- **Backend** — Vercel auto-deploys `backend/` (root dir `backend`, zero-config Express as one function) on push to `main`. Secrets (`ANTHROPIC_API_KEY`, `SUPABASE_URL`, `SUPABASE_SERVICE_KEY`, `ADMIN_TOKEN`, `ALLOWED_ORIGINS`) live in the Vercel project settings, never in the repo.
 - **Uptime** — a 6-hourly workflow pings all live surfaces and opens a GitHub issue if anything is down.
 
 ## 🪪 License

@@ -44,7 +44,7 @@ export const routes: Routes = [
         data: {
           seo: {
             title: 'Under the Hood — Architecture, CI/CD, SEO & Security',
-            description: 'How this portfolio is actually built: Angular 19, Node backend, Claude AI, Supabase, Render, GitHub Pages, performance budgets, and OWASP-audited security.',
+            description: 'How this portfolio is actually built: Angular 19, Node backend, Claude AI, Supabase, Vercel, GitHub Pages, performance budgets, and OWASP-audited security.',
             url: 'https://nandanhegde1.github.io/portfolio/under-the-hood',
           },
         },

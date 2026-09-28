@@ -18,13 +18,13 @@ jobs:
         run: |
           declare -A targets=(
             [portfolio]="https://nandanhegde1.github.io/portfolio/"
-            [backend]="https://portfolio-1-8qlk.onrender.com/api/health"
+            [backend]="https://nandan-portfolio-api.vercel.app/api/health"
             [govai]="https://govai-contracts.nandanhegde1096.workers.dev/"
             [mcp-directory]="https://mcp-directory.nandanhegde1096.workers.dev/"
           )
           failures=""
           for name in "${!targets[@]}"; do
-            # Render free tier cold-starts: allow a generous timeout + one retry
+            # Free-tier cold starts: allow a generous timeout + one retry
             code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 60 --retry 1 --retry-delay 20 "${targets[$name]}" || echo 000)
             echo "$name -> $code"
             if [ "$code" -lt 200 ] || [ "$code" -ge 400 ]; then

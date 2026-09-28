@@ -83,9 +83,9 @@ export class UnderTheHoodComponent {
       tech: ['Node 22', 'Express 5', 'Helmet', 'express-rate-limit', 'CORS allowlist'],
     },
     {
-      id: 'render', label: 'Render Hosting', icon: '☁️', layer: 'infra',
+      id: 'render', label: 'Vercel Hosting', icon: '☁️', layer: 'infra',
       desc: 'Auto-deploys on push to main. Free-tier with health-check warmup.',
-      tech: ['Render', 'Auto-deploy', 'HTTPS', 'Env secrets'],
+      tech: ['Vercel', 'Auto-deploy', 'HTTPS', 'Env secrets'],
     },
     {
       id: 'supa', label: 'Supabase Postgres', icon: '🗄️', layer: 'data',
@@ -129,7 +129,7 @@ export class UnderTheHoodComponent {
     { icon: '🔮', title: 'Route Preloading', desc: 'PreloadAllModules fetches every lazy chunk after initial nav, so subsequent route clicks are instant.' },
     { icon: '⚡', title: 'View Transitions API', desc: 'Native browser route morphs (Chrome/Edge). Falls back gracefully elsewhere.' },
     { icon: '🎯', title: 'IntersectionObserver @defer', desc: 'Three.js (~150KB) only loads when hero scrolls into viewport, with idle prefetch.' },
-    { icon: '🔌', title: 'Preconnect Hints', desc: '<link rel="preconnect"> to Render, GitHub, Spotify shaves ~200ms off first request.' },
+    { icon: '🔌', title: 'Preconnect Hints', desc: '<link rel="preconnect"> to the API, GitHub, Spotify shaves ~200ms off first request.' },
     { icon: '🌙', title: 'Tab-Hidden Pause', desc: 'WebGL animation + API polling pause when document.hidden — saves CPU + battery.' },
     { icon: '💾', title: 'Smart Caching', desc: 'GitHub responses cached 1h in localStorage. Service Worker for offline shell.' },
     { icon: '📱', title: 'Adaptive Quality', desc: 'Three.js particle count halves on mobile / low-memory devices (deviceMemory ≤ 4).' },
@@ -137,12 +137,12 @@ export class UnderTheHoodComponent {
   ];
 
   readonly cicdSteps: PipelineStep[] = [
-    { step: 1, name: 'Push to main', cmd: 'git push origin main', desc: 'Triggers GitHub webhook + Render webhook simultaneously.', duration: '< 1s' },
+    { step: 1, name: 'Push to main', cmd: 'git push origin main', desc: 'Triggers GitHub webhook + Vercel webhook simultaneously.', duration: '< 1s' },
     { step: 2, name: 'Frontend Build', cmd: 'npx ng build --configuration=production', desc: 'AOT compile, tree-shake, minify, hash assets, generate sourcemaps.', duration: '~45s' },
     { step: 3, name: 'Bundle Audit', cmd: 'Built-in size budgets', desc: 'Fails build if initial > 500KB or component > 6KB. Keeps the site fast.', duration: '< 1s' },
     { step: 4, name: 'Deploy to GH Pages', cmd: 'npx angular-cli-ghpages', desc: 'Pushes built artifacts to gh-pages branch, served from edge CDN.', duration: '~30s' },
-    { step: 5, name: 'Backend Deploy', cmd: 'Render auto-deploy', desc: 'Render picks up backend/ changes, runs npm install + node server.js, zero-downtime swap.', duration: '~90s' },
-    { step: 6, name: 'Health Check', cmd: 'GET /api/health', desc: 'Frontend pings backend on app load, warming the dyno before users open the lab.', duration: '< 100ms' },
+    { step: 5, name: 'Backend Deploy', cmd: 'Vercel auto-deploy', desc: 'Vercel builds backend/ into one Express function and swaps it in with zero downtime.', duration: '~30s' },
+    { step: 6, name: 'Health Check', cmd: 'GET /api/health', desc: 'Frontend pings backend on app load, warming the function before users open the lab.', duration: '< 100ms' },
   ];
 
   readonly seoSignals = [

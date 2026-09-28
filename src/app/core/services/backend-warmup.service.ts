@@ -4,9 +4,8 @@ import { environment } from '../../../environments/environment';
 
 /**
  * Pings the backend `/api/health` endpoint on app boot and at a regular
- * interval to keep Render's free-tier instance warm. Render free dynos
- * sleep after ~15 min of inactivity and take ~30s to cold-start, which
- * makes lab/roast features feel broken on first interaction.
+ * interval to keep the API's free-tier function warm, so the first click on
+ * the lab or roast features does not pay a cold start.
  *
  * Strategy:
  *  - Fire-and-forget ping immediately on init (warms dyno before user clicks).
