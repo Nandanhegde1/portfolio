@@ -1,6 +1,6 @@
 const express = require('express');
 const limiters = require('../lib/limiters');
-const { callClaude, streamClaude } = require('../lib/anthropic');
+const { callModel, streamModel } = require('../lib/llm');
 const { getSupabase } = require('../supabase');
 const { ROAST_PROMPTS } = require('../prompts/roast');
 const { languageInstruction } = require('../lib/i18n');
@@ -10,6 +10,9 @@ const router = express.Router();
 const VALID_LEVELS = ['mild', 'medium', 'savage'];
 const FALLBACK = 'Your stack is so mid, even AI refuses to roast it.';
 const MAX_TOKENS = 600;
+// The longest a roast waits on its log write. An unreachable database otherwise
+// held every response open for the length of its connection timeout.
+const LOG_WAIT_MS = 2000;
 
 function buildMessages(stack, level) {
   return [{
@@ -20,11 +23,11 @@ function buildMessages(stack, level) {
 
 // Awaited before the response closes. On a serverless host the function can be
 // frozen as soon as the response ends, and an insert still in flight goes with it.
-// Never rejects: a failed log must not fail the roast.
+// Never rejects: a failed log must not fail the roast. Bounded by LOG_WAIT_MS.
 function logRoast({ stack, level, roast }) {
   const sb = getSupabase();
   if (!sb) return Promise.resolve();
-  return sb.from('roast_logs')
+  const insert = sb.from('roast_logs')
     .insert({ stack: stack.slice(0, 500), intensity: level, roast: roast.slice(0, 5000) })
     .then(
       ({ error }) => {
@@ -32,6 +35,7 @@ function logRoast({ stack, level, roast }) {
       },
       (err) => console.error('[supabase] roast_logs insert failed:', err?.message || err)
     );
+  return Promise.race([insert, new Promise((resolve) => setTimeout(resolve, LOG_WAIT_MS))]);
 }
 
 function validate(req, res) {
@@ -45,7 +49,7 @@ function validate(req, res) {
 }
 
 // Streaming endpoint — perceived latency drops from ~10s to ~1s by
-// flushing tokens as Anthropic generates them.
+// flushing tokens as the model generates them.
 router.post('/stream', limiters.roast, limiters.llmDailyBudget, async (req, res) => {
   const params = validate(req, res);
   if (!params) return;
@@ -62,16 +66,25 @@ router.post('/stream', limiters.roast, limiters.llmDailyBudget, async (req, res)
     res.write(`data: ${JSON.stringify(data)}\n\n`);
   };
 
+  // Watch the response, not the request: the request side can report closed as
+  // soon as its body has been read, before the roast has started. Aborting the
+  // upstream call stops paying for tokens nobody will see.
   let aborted = false;
-  req.on('close', () => { aborted = true; });
+  const upstream = new AbortController();
+  res.on('close', () => {
+    if (res.writableEnded) return;
+    aborted = true;
+    upstream.abort();
+  });
 
   try {
     let full = '';
-    await streamClaude({
+    await streamModel({
       system: ROAST_PROMPTS[level] + languageInstruction(lang),
       messages: buildMessages(stack, level),
       maxTokens: MAX_TOKENS,
       temperature: 1,
+      signal: upstream.signal,
       onText: (chunk) => {
         if (aborted) return;
         full += chunk;
@@ -107,7 +120,7 @@ router.post('/', limiters.roast, limiters.llmDailyBudget, async (req, res) => {
   const { stack, level, lang } = params;
 
   try {
-    const roast = await callClaude({
+    const roast = await callModel({
       system: ROAST_PROMPTS[level] + languageInstruction(lang),
       messages: buildMessages(stack, level),
       maxTokens: MAX_TOKENS,

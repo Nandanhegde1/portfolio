@@ -1,0 +1,10 @@
+data: {"choices":[{"delta":{"content":"You","role":"assistant"},"index":0}],"created":1790848530,"id":"Ei6-avicEpWqg8UPgZTjwA8","model":"gemini-3.5-flash-lite","object":"chat.completion.chunk"}
+
+data: {"choices":[{"delta":{"content":" chose enterprise-grade scaffolding just to deploy a Node backend on a frontend host that","role":"assistant"},"index":0}],"created":1790848530,"id":"Ei6-avicEpWqg8UPgZTjwA8","model":"gemini-3.5-flash-lite","object":"chat.completion.chunk"}
+
+data: {"choices":[{"delta":{"content":" hates serverful apps. At least your `node_modules` folder is heavier than your actual business logic.","role":"assistant"},"index":0}],"created":1790848536,"id":"Ei6-avicEpWqg8UPgZTjwA8","model":"gemini-3.5-flash-lite","object":"chat.completion.chunk"}
+
+data: {"choices":[{"delta":{"extra_content":{"google":{"thought_signature":"EmAKXgFpFH0TAFQGKEHNLppD5LlZDDx6potuH4ZBqXtgLBA8E/dFft1VLoxSOIhznNnBfHPcuCKZ8p5xj7ttEzPn3yEjEh1zjTVeVc4SEj8ZfOproJ67wWgSHelfCFeyb80="}},"role":"assistant"},"finish_reason":"stop","index":0}],"created":1790848536,"id":"Ei6-avicEpWqg8UPgZTjwA8","model":"gemini-3.5-flash-lite","object":"chat.completion.chunk"}
+
+data: [DONE]
+

@@ -51,3 +51,14 @@ test('admin endpoints reject a missing token', async () => {
   const res = await fetch(`${base}/api/admin/anything`);
   assert.equal(res.status, 401);
 });
+
+test('the contact route does not claim success when there is no inbox', async () => {
+  // No SUPABASE_URL in the test environment, so there is nowhere to store it.
+  const res = await fetch(`${base}/api/contact`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ name: 'A', email: 'a@example.com', subject: 'Hi', message: 'Hello there' }),
+  });
+  assert.equal(res.status, 503);
+  assert.match((await res.json()).error, /email directly/);
+});

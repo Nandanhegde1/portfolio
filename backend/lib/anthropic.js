@@ -21,7 +21,7 @@ function authHeaders(apiKey) {
   };
 }
 
-async function callAnthropic(body) {
+async function callAnthropic(body, signal) {
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
     const err = new Error('Anthropic API key not configured');
@@ -32,6 +32,7 @@ async function callAnthropic(body) {
     method: 'POST',
     headers: authHeaders(apiKey),
     body: JSON.stringify(body),
+    signal,
   });
   if (!response.ok) {
     const text = await response.text();
@@ -43,16 +44,16 @@ async function callAnthropic(body) {
   return response;
 }
 
-async function callClaude({ system, messages, maxTokens = 1024, temperature, model }) {
-  const response = await callAnthropic(buildBody({ system, messages, maxTokens, temperature, model }));
+async function callClaude({ system, messages, maxTokens = 1024, temperature, model, signal }) {
+  const response = await callAnthropic(buildBody({ system, messages, maxTokens, temperature, model }), signal);
   const data = await response.json();
   return data.content?.[0]?.text || '';
 }
 
 // Streams Claude's response by piping content_block_delta text events into onText.
 // Returns the full concatenated text once the stream completes.
-async function streamClaude({ system, messages, maxTokens = 1024, temperature, model, onText }) {
-  const response = await callAnthropic(buildBody({ system, messages, maxTokens, temperature, model, stream: true }));
+async function streamClaude({ system, messages, maxTokens = 1024, temperature, model, onText, signal }) {
+  const response = await callAnthropic(buildBody({ system, messages, maxTokens, temperature, model, stream: true }), signal);
 
   const reader = response.body.getReader();
   const decoder = new TextDecoder();
