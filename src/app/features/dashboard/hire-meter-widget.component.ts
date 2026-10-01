@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { EngagementService } from '../../core/services';
+import { environment } from '../../../environments/environment';
 
 interface TierStop {
   at: number;
@@ -320,7 +321,7 @@ export class HireMeterWidgetComponent {
     { path: '/blog',      label: 'Blog',       icon: '✍️', points: 15 },
     { path: '/lab',       label: 'The Lab',          icon: '🧪', points: 10 },
     { path: '/quiz',      label: 'Quiz',             icon: '🎯', points: 10 },
-    { path: '/roast-me-back', label: 'Roast Me Back', icon: '🔥', points: 8  },
+    ...(environment.features.supabase ? [{ path: '/roast-me-back', label: 'Roast Me Back', icon: '🔥', points: 8 }] : []),
     { path: '/contact',   label: 'Contact',    icon: '📬', points: 7  },
   ];
 

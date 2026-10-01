@@ -47,10 +47,12 @@ import { StatsService } from '../../core/services/stats.service';
           </div>
         }
 
-        <!-- Live Stats Widget (real backend data) -->
-        <div appScrollReveal>
-          <app-live-stats-widget />
-        </div>
+        <!-- Live Stats Widget (real backend data). Off while the database is offline. -->
+        @if (statsEnabled) {
+          <div appScrollReveal>
+            <app-live-stats-widget />
+          </div>
+        }
 
         <!-- Code Vitals — "Health Monitor" -->
         <div class="dash__vitals" appScrollReveal>
@@ -127,6 +129,7 @@ import { StatsService } from '../../core/services/stats.service';
 export class DashboardComponent implements OnInit, OnDestroy {
   readonly github = inject(GitHubService);
   private readonly statsService = inject(StatsService);
+  protected readonly statsEnabled = this.statsService.enabled;
 
   // Real visitor count from backend, falls back to a tasteful baseline while loading
   readonly visitorCount = computed(() => this.statsService.visitor()?.totalPageViews ?? 0);

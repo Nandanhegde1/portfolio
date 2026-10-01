@@ -5,6 +5,7 @@ import { RouterLink } from '@angular/router';
 import { HeroComponent } from '../hero/hero.component';
 import { ScrollRevealDirective } from '../../shared/directives/scroll-reveal.directive';
 import { AnimatedCounterComponent } from '../../shared/components';
+import { environment } from '../../../environments/environment';
 
 interface HomeStat {
   value: number;
@@ -119,7 +120,7 @@ interface FeaturedProject {
               Roast My Tech Stack
             </h3>
             <p class="bento__roast-hero-desc">
-              Drop your stack. Claude roasts it in three intensities. Source linked.
+              Drop your stack. Gemini roasts it in three intensities. Source linked.
               The system prompt took 3 rewrites — the first version only generated compliments.
             </p>
             <span class="bento__roast-hero-cta">Open the lab →</span>
@@ -152,7 +153,9 @@ interface FeaturedProject {
               Get in Touch
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </a>
-            <a routerLink="/roast-me-back" class="bento__cta-btn bento__cta-btn--secondary">Or roast me back</a>
+            @if (roastWallEnabled) {
+              <a routerLink="/roast-me-back" class="bento__cta-btn bento__cta-btn--secondary">Or roast me back</a>
+            }
           </div>
         </div>
 
@@ -162,6 +165,8 @@ interface FeaturedProject {
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {
+  /** The roast wall needs its database; hidden while it is offline. */
+  protected readonly roastWallEnabled = environment.features.supabase;
   readonly stats: HomeStat[] = [
     { value: 6, suffix: '+', label: 'Years Experience', icon: '\u26A1' },
     { value: 15, suffix: '+', label: 'Features Shipped', icon: '\uD83D\uDE80' },

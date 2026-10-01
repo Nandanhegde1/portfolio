@@ -1,6 +1,7 @@
 import { Injectable, computed, signal, inject } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 interface SectionVisit {
   path: string;
@@ -26,7 +27,8 @@ export class EngagementService {
     '/blog': 15,
     '/lab': 10,
     '/quiz': 10,
-    '/roast-me-back': 8,
+    // Counted only while the roast wall is live; otherwise the score could never top out.
+    ...(environment.features.supabase ? { '/roast-me-back': 8 } : {}),
     '/contact': 7,
   };
   private readonly maxScore = Object.values(this.weights).reduce((a, b) => a + b, 0);

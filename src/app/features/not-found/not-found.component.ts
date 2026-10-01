@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { environment } from '../../../environments/environment';
 
 interface Cmd {
   cmd: string;
@@ -121,7 +122,7 @@ export class NotFoundComponent implements OnInit {
     resume: () => ({ cmd: 'resume', out: '<a href="assets/Nandan_Hegde_Resume.pdf" target="_blank" class="nf__link">↳ Download resume.pdf</a>' }),
       roast: () => ({ cmd: 'roast', out: 'Heading to the lab.', href: '/lab' }),
     dashboard: () => ({ cmd: 'dashboard', out: 'Loading metrics…', href: '/dashboard' }),
-      ls: () => ({ cmd: 'ls', out: '<span class="nf__dir">/about  /dashboard  /under-the-hood  /blog  /lab  /quiz  /pitch  /roast-me-back  /contact</span>' }),
+      ls: () => ({ cmd: 'ls', out: '<span class="nf__dir">/about  /dashboard  /under-the-hood  /blog  /lab  /quiz  /pitch  ' + (environment.features.supabase ? '/roast-me-back  ' : '') + '/contact</span>' }),
     whoami: () => ({ cmd: 'whoami', out: 'guest — but you could be on my team. Try <span class="nf__hl">sudo hire-me</span>.' }),
     date: () => ({ cmd: 'date', out: new Date().toString() }),
     clear: () => ({ cmd: '', out: '' }),

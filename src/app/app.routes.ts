@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { environment } from '../environments/environment';
 
 export const routes: Routes = [
   {
@@ -44,7 +45,7 @@ export const routes: Routes = [
         data: {
           seo: {
             title: 'Under the Hood — Architecture, CI/CD, SEO & Security',
-            description: 'How this portfolio is actually built: Angular 19, Node backend, Claude AI, Supabase, Vercel, GitHub Pages, performance budgets, and OWASP-audited security.',
+            description: 'How this portfolio is actually built: Angular 19, Node backend, Gemini AI, Supabase, Vercel, GitHub Pages, performance budgets, and OWASP-audited security.',
             url: 'https://nandanhegde1.github.io/portfolio/under-the-hood',
           },
         },
@@ -72,25 +73,34 @@ export const routes: Routes = [
           },
         },
       },
-      {
-        path: 'roast-me-back',
-        loadComponent: () => import('./features/roast-me-back/roast-me-back.component').then(m => m.RoastMeBackComponent),
-        data: {
-          seo: {
-            title: 'Roast Me Back — The Honest Wall',
-            description: 'The AI on /lab roasts your stack. This page flips it. Leave a one-line roast of this portfolio. I read every one and reply to the sharp ones.',
-            url: 'https://nandanhegde1.github.io/portfolio/roast-me-back',
-          },
-        },
-      },
-      { path: 'guestbook', redirectTo: 'roast-me-back', pathMatch: 'full' },
+      // The roast wall keeps its posts in Supabase, which is offline. Until
+      // features.supabase is back on, both paths send visitors home.
+      ...(environment.features.supabase
+        ? [
+            {
+              path: 'roast-me-back',
+              loadComponent: () => import('./features/roast-me-back/roast-me-back.component').then(m => m.RoastMeBackComponent),
+              data: {
+                seo: {
+                  title: 'Roast Me Back — The Honest Wall',
+                  description: 'The AI on /lab roasts your stack. This page flips it. Leave a one-line roast of this portfolio. I read every one and reply to the sharp ones.',
+                  url: 'https://nandanhegde1.github.io/portfolio/roast-me-back',
+                },
+              },
+            },
+            { path: 'guestbook', redirectTo: 'roast-me-back', pathMatch: 'full' as const },
+          ]
+        : [
+            { path: 'roast-me-back', redirectTo: '', pathMatch: 'full' as const },
+            { path: 'guestbook', redirectTo: '', pathMatch: 'full' as const },
+          ]),
       {
         path: 'lab',
         loadComponent: () => import('./features/roast/roast.component').then(m => m.RoastComponent),
         data: {
           seo: {
             title: 'The Lab — AI Experiments',
-            description: 'A weekend experiment. Claude wired to a streaming endpoint, given permission to roast your tech stack. Source linked.',
+            description: 'A weekend experiment. Gemini wired to a streaming endpoint, given permission to roast your tech stack. Source linked.',
             url: 'https://nandanhegde1.github.io/portfolio/lab',
           },
         },

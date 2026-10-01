@@ -7,7 +7,7 @@
 [![Node](https://img.shields.io/badge/Node-20.x-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-A data-rich, interactive developer portfolio built with **Angular 19** + **SCSS** + **Three.js** + **Express** + **Supabase** + **Anthropic Claude**.
+A data-rich, interactive developer portfolio built with **Angular 19** + **SCSS** + **Three.js** + **Express** + **Supabase** + **Google Gemini**.
 
 > **Live:** https://nandanhegde1.github.io/portfolio/
 
@@ -18,11 +18,11 @@ A data-rich, interactive developer portfolio built with **Angular 19** + **SCSS*
 | | |
 |---|---|
 | 🎨 **Interactive 3D Hero** | Three.js particles with mouse parallax, theme-reactive |
-| 🔥 **Roast My Stack** | Claude roasts your tech choices with 3 intensity levels (token streaming) |
+| 🔥 **Roast My Stack** | Gemini roasts your tech choices with 3 intensity levels (token streaming) |
 | 📊 **Dashboard (demo)** | A UI playground — tech orbit, animations, and live GitHub stats |
-| 📈 **Visitor Analytics** | Self-hosted via Supabase, no cookies, GDPR-friendly |
-| 📝 **Guestbook** | Backed by Supabase, optimistic UI, DiceBear avatars |
-| 💌 **Contact Form** | Persisted to Supabase, rate-limited, validated |
+| 📈 **Visitor Analytics** | Self-hosted via Supabase, no cookies. Switched off while the database is offline |
+| 📝 **Guestbook** | Backed by Supabase, optimistic UI, DiceBear avatars. Switched off while the database is offline |
+| 💌 **Contact Form** | Validated and rate-limited. While the database is offline it drafts the message in your mail app instead |
 | 🎴 **Card Forge** | Generate & download a custom holographic dev card (Canvas API) |
 | 🌗 **5 Themes** | Light · Dark · Synthwave · Nord · Dracula |
 | ⌨️ **Terminal Palette** | `Ctrl+K` opens a CLI with autocomplete & easter eggs |
@@ -37,7 +37,7 @@ A data-rich, interactive developer portfolio built with **Angular 19** + **SCSS*
 ```
 Frontend  ─ Angular 19, TypeScript, SCSS, RxJS, Signals, Three.js
 Backend   ─ Express 4, Supabase (Postgres), Helmet, rate limiting
-AI        ─ Anthropic Claude (Roast My Stack — token streaming)
+AI        ─ Google Gemini, free tier (Roast My Stack — token streaming)
 Hosting   ─ GitHub Pages (frontend) + Vercel (API)
 CI/CD     ─ GitHub Actions
 ```
@@ -84,7 +84,7 @@ npm test             # 5 smoke tests against the real app on an ephemeral port
 ## 🚢 Deploy
 
 - **Frontend** — push to `main`; the CI workflow lints, tests, builds, and deploys to GitHub Pages *only if all checks pass*.
-- **Backend** — Vercel auto-deploys `backend/` (root dir `backend`, zero-config Express as one function) on push to `main`. Secrets (`ANTHROPIC_API_KEY`, `SUPABASE_URL`, `SUPABASE_SERVICE_KEY`, `ADMIN_TOKEN`, `ALLOWED_ORIGINS`) live in the Vercel project settings, never in the repo.
+- **Backend** — Vercel auto-deploys `backend/` (root dir `backend`, zero-config Express as one function) on push to `main`. Secrets (`GEMINI_API_KEY`, `SUPABASE_URL`, `SUPABASE_SERVICE_KEY`, `ADMIN_TOKEN`, `ALLOWED_ORIGINS`) live in the Vercel project settings, never in the repo.
 - **Uptime** — a 6-hourly workflow pings all live surfaces and opens a GitHub issue if anything is down.
 
 ## 🪪 License

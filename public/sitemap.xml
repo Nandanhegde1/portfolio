@@ -46,11 +46,6 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://nandanhegde1.github.io/portfolio/roast-me-back</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
     <loc>https://nandanhegde1.github.io/portfolio/quiz</loc>
     <changefreq>monthly</changefreq>
     <priority>0.4</priority>

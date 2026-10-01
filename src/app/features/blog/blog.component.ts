@@ -4,6 +4,7 @@ import { Title } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { BlogCommentsService, COMMENT_REACTIONS, CommentReaction } from './blog-comments.service';
+import { environment } from '../../../environments/environment';
 
 interface Post {
   slug: string;
@@ -75,7 +76,8 @@ interface Post {
           </div>
         </div>
 
-        <!-- ── COMMENTS ── -->
+        <!-- ── COMMENTS ── (off while the comments database is offline) -->
+        @if (commentsEnabled) {
         <section class="comments" [attr.aria-label]="'blog.comments.title' | transloco">
           <header class="comments__head">
             <h2 class="comments__title">
@@ -166,6 +168,7 @@ interface Post {
             </ul>
           }
         </section>
+        }
 
         <nav class="reader__pager" aria-label="Article navigation">
           @if (prevPost(); as p) {
@@ -308,6 +311,7 @@ export class BlogComponent implements OnInit, OnDestroy {
   private readonly router = inject(Router);
   private readonly title = inject(Title);
   readonly comments = inject(BlogCommentsService);
+  protected readonly commentsEnabled = environment.features.supabase;
   private readonly defaultTitle = 'Blog | Nandan Hegde';
 
   readonly reactionList = COMMENT_REACTIONS;
@@ -490,7 +494,7 @@ export class BlogComponent implements OnInit, OnDestroy {
       if (slug && this.posts.some(p => p.slug === slug)) {
         this.activeSlug.set(slug);
         this.title.setTitle(`${this.posts.find(p => p.slug === slug)!.title} | Nandan Hegde`);
-        this.comments.loadFor(slug);
+        if (this.commentsEnabled) this.comments.loadFor(slug);
         this.commentName.set(this.comments.rememberedName());
         this.commentBody.set('');
         queueMicrotask(() => window.scrollTo({ top: 0, behavior: 'auto' }));

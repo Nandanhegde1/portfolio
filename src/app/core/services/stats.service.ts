@@ -26,6 +26,8 @@ export interface InterviewStats {
 export class StatsService {
   private readonly http = inject(HttpClient);
   private readonly base = environment.apiUrl;
+  /** False while the analytics database is offline: nothing is fetched or sent. */
+  readonly enabled = environment.features.supabase;
 
   readonly visitor = signal<VisitorStats | null>(null);
   readonly recruiter = signal<RecruiterStats | null>(null);
@@ -33,6 +35,7 @@ export class StatsService {
   readonly loading = signal(false);
 
   async loadAll(): Promise<void> {
+    if (!this.enabled) return;
     this.loading.set(true);
     const [v, r, i] = await Promise.allSettled([
       firstValueFrom(this.http.get<VisitorStats>(`${this.base}/api/analytics/stats`)),
@@ -47,6 +50,7 @@ export class StatsService {
 
   /** Fire-and-forget page view ping. */
   trackPageView(path: string): void {
+    if (!this.enabled) return;
     this.http.post(`${this.base}/api/analytics`, { path }).subscribe({ error: () => { /* analytics is best-effort */ } });
   }
 }

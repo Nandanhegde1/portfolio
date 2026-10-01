@@ -5,6 +5,8 @@ import { environment } from '../../../environments/environment';
 import { burstConfetti } from '../../shared/utils/confetti';
 import { SoundService } from '../../core/services/sound.service';
 
+const CONTACT_EMAIL = 'nandanhegde1096@gmail.com';
+
 type Step = 'name' | 'email' | 'subject' | 'message' | 'review' | 'sending' | 'done';
 
 interface LogLine {
@@ -252,6 +254,24 @@ export class ContactComponent implements AfterViewInit {
 
   private send(): void {
     if (this.form.invalid) return;
+
+    // With no inbox behind the API (features.supabase off) a POST would only look
+    // like it worked. Draft the message in the visitor's own mail app instead.
+    if (!environment.features.supabase) {
+      const { name, email, subject, message } = this.form.getRawValue();
+      const body = `${message}\n\n${name} (${email})`;
+      window.location.href =
+        `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      this.log.update(l => [
+        ...l,
+        { kind: 'ok', text: 'opened your email app with the message drafted. send it from there and it reaches me directly.' },
+      ]);
+      this.step.set('done');
+      this.sound.play('unlock');
+      queueMicrotask(() => this.scrollToBottom());
+      return;
+    }
+
     this.submitting.set(true);
     this.step.set('sending');
     const t0 = performance.now();

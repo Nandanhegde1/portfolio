@@ -89,13 +89,13 @@ export class UnderTheHoodComponent {
     },
     {
       id: 'supa', label: 'Supabase Postgres', icon: '🗄️', layer: 'data',
-      desc: 'Managed Postgres for guestbook, analytics, recruiter logs, chat history.',
+      desc: 'Managed Postgres for the roast wall, blog comments, analytics and the contact inbox. Offline for now, so those features are switched off.',
       tech: ['Postgres 15', 'Row-level security', 'REST API', 'Realtime'],
     },
     {
-      id: 'claude', label: 'Anthropic Claude', icon: '🧠', layer: 'ai',
-      desc: 'Sonnet 4.5 powers the lab roast experiment. Streaming SSE responses.',
-      tech: ['claude-sonnet-4-5', 'System prompts', 'Streaming-ready'],
+      id: 'claude', label: 'Google Gemini', icon: '🧠', layer: 'ai',
+      desc: 'Gemini 3.5 Flash-Lite on the free tier powers the lab roast experiment. Streaming SSE responses.',
+      tech: ['gemini-3.5-flash-lite', 'System prompts', 'Token streaming'],
     },
     {
       id: 'github', label: 'GitHub REST API', icon: '🐙', layer: 'data',
@@ -159,7 +159,7 @@ export class UnderTheHoodComponent {
   readonly securityFeatures = [
     { icon: '🛡️', title: 'Helmet Headers', desc: 'CSP, X-Frame-Options, HSTS, X-Content-Type-Options on every backend response.' },
     { icon: '🚦', title: 'Rate Limiting', desc: 'Per-IP limits: chat 20/15min, roast 20/15min, contact 5/15min, guestbook 10/15min.' },
-    { icon: '🔐', title: 'Secret Management', desc: 'API keys never touch the client. All Anthropic/Spotify calls proxied through backend.' },
+    { icon: '🔐', title: 'Secret Management', desc: 'API keys never touch the client. All model and Spotify calls proxied through backend.' },
     { icon: '🌐', title: 'CORS Allowlist', desc: 'Only nandanhegde1.github.io + localhost can call the API. Unknown origins get 403.' },
     { icon: '🧹', title: 'Input Sanitisation', desc: 'Length caps on every field, regex email validation, basic profanity filter on guestbook.' },
     { icon: '🔒', title: 'XSS Protection', desc: 'Angular auto-escapes templates. DomSanitizer used only when explicitly required.' },
@@ -229,14 +229,14 @@ export class UnderTheHoodComponent {
     {
       id: 'ai-chat',
       label: 'Opening the lab',
-      description: 'Your message goes to the API, which proxies to Claude with a system prompt and logs the conversation in Postgres.',
-      hops: ['user', 'cdn', 'spa', 'api', 'claude', 'supa'],
+      description: 'Your message goes to the API, which proxies to Gemini with a system prompt.',
+      hops: ['user', 'cdn', 'spa', 'api', 'claude'],
       color: '#ec4899',
     },
     {
       id: 'roast',
       label: 'Roasting a stack',
-      description: 'API streams Claude tokens back over Server-Sent Events; the UI types out the roast in real time.',
+      description: 'API streams Gemini tokens back over Server-Sent Events; the UI types out the roast in real time.',
       hops: ['user', 'spa', 'api', 'claude', 'spa'],
       color: '#f59e0b',
     },

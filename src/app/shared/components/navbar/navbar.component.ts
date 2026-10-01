@@ -4,6 +4,7 @@ import { filter } from 'rxjs/operators';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { ThemeService } from '../../../core/services';
 import { TooltipDirective } from '../../directives/tooltip.directive';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-navbar',
@@ -43,7 +44,9 @@ import { TooltipDirective } from '../../directives/tooltip.directive';
             @if (dropdownOpen()) {
               <ul class="navbar__dropdown-menu">
                 <li><a routerLink="/lab" routerLinkActive="active" (click)="dropdownOpen.set(false)">🧪 The Lab · Roast My Stack</a></li>
-                <li><a routerLink="/roast-me-back" routerLinkActive="active" (click)="dropdownOpen.set(false)">🔥 Roast Me Back</a></li>
+                @if (roastWallEnabled) {
+                  <li><a routerLink="/roast-me-back" routerLinkActive="active" (click)="dropdownOpen.set(false)">🔥 Roast Me Back</a></li>
+                }
                 <li><a routerLink="/quiz" routerLinkActive="active" (click)="dropdownOpen.set(false)">🎯 Team Quiz</a></li>
                 <li><a routerLink="/dashboard" routerLinkActive="active" (click)="dropdownOpen.set(false)">📊 UI Playground</a></li>
               </ul>
@@ -89,7 +92,9 @@ import { TooltipDirective } from '../../directives/tooltip.directive';
           <li><a routerLink="/blog" routerLinkActive="active" (click)="mobileOpen = false">{{ 'nav.blog' | transloco }}</a></li>
           <li><a routerLink="/under-the-hood" routerLinkActive="active" (click)="mobileOpen = false">{{ 'nav.underTheHood' | transloco }}</a></li>
           <li><a routerLink="/lab" routerLinkActive="active" (click)="mobileOpen = false">🧪 The Lab · Roast My Stack</a></li>
-          <li><a routerLink="/roast-me-back" routerLinkActive="active" (click)="mobileOpen = false">🔥 Roast Me Back</a></li>
+          @if (roastWallEnabled) {
+            <li><a routerLink="/roast-me-back" routerLinkActive="active" (click)="mobileOpen = false">🔥 Roast Me Back</a></li>
+          }
           <li><a routerLink="/quiz" routerLinkActive="active" (click)="mobileOpen = false">🎯 Team Quiz</a></li>
           <li><a routerLink="/contact" routerLinkActive="active" (click)="mobileOpen = false">{{ 'nav.contact' | transloco }}</a></li>
         </ul>
@@ -105,6 +110,8 @@ export class NavbarComponent {
 
   themeSpinning = false;
   readonly dropdownOpen = signal(false);
+  /** The roast wall needs its database; hidden while it is offline. */
+  readonly roastWallEnabled = environment.features.supabase;
   mobileOpen = false;
 
   constructor() {

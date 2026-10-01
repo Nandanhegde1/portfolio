@@ -61,9 +61,12 @@ const FALLBACK_ROASTS: Record<string, string[]> = {
           <div class="roast__icon">🔥</div>
           <h1 class="roast__title">Roast My Stack</h1>
           <p class="roast__subtitle">
-            A weekend experiment. I gave Claude permission to be mean about your tech stack,
+            A weekend experiment. I gave an LLM permission to be mean about your tech stack,
             wired it to a streaming endpoint, and put it on the internet.
             The system prompt is 47 lines and took 3 rewrites &mdash; the first version only generated compliments.
+          </p>
+          <p class="roast__notice" style="margin: 8px 0 0; font-size: 13px; opacity: 0.75;">
+            Runs on Google Gemini's free tier, which may use what you type for training. Keep it to tech stacks.
           </p>
           <div class="roast__source-chips">
             <a href="https://github.com/Nandanhegde1/portfolio/blob/main/backend/routes/roast.js" target="_blank" rel="noopener" class="roast__chip">
@@ -164,7 +167,7 @@ const FALLBACK_ROASTS: Record<string, string[]> = {
             </div>
 
             @if (isFallback()) {
-              <p class="roast__fallback-note" style="margin: 0 0 12px; font-size: 13px; color: #fbbf24; text-align: center;">⚠ AI offline — sample roast shown, not a live Claude response.</p>
+              <p class="roast__fallback-note" style="margin: 0 0 12px; font-size: 13px; color: #fbbf24; text-align: center;">⚠ AI offline — sample roast shown, not a live AI response.</p>
             }
 
             <!-- Action buttons -->
