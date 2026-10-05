@@ -50,18 +50,24 @@ export const routes: Routes = [
           },
         },
       },
-      {
-        path: 'blog',
-        loadComponent: () => import('./features/blog/blog.component').then(m => m.BlogComponent),
-        data: {
-          seo: {
-            title: 'Blog — Engineering Notes',
-            description: 'Technical writing on Angular, TypeScript, performance, and software engineering.',
-            url: 'https://nandanhegde1.github.io/portfolio/blog',
-            type: 'article',
-          },
-        },
-      },
+      // The blog is hidden until its posts hold up line by line. Until
+      // features.blog is back on, /blog sends visitors home.
+      ...(environment.features.blog
+        ? [
+            {
+              path: 'blog',
+              loadComponent: () => import('./features/blog/blog.component').then(m => m.BlogComponent),
+              data: {
+                seo: {
+                  title: 'Blog — Engineering Notes',
+                  description: 'Technical writing on Angular, TypeScript, performance, and software engineering.',
+                  url: 'https://nandanhegde1.github.io/portfolio/blog',
+                  type: 'article',
+                },
+              },
+            },
+          ]
+        : [{ path: 'blog', redirectTo: '', pathMatch: 'full' as const }]),
       {
         path: 'contact',
         loadComponent: () => import('./features/contact/contact.component').then(m => m.ContactComponent),

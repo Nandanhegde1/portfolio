@@ -24,7 +24,8 @@ export class EngagementService {
     '/': 10,
     '/about': 20,
     '/dashboard': 20,
-    '/blog': 15,
+    // Counted only while the blog is shown; otherwise the score could never top out.
+    ...(environment.features.blog ? { '/blog': 15 } : {}),
     '/lab': 10,
     '/quiz': 10,
     // Counted only while the roast wall is live; otherwise the score could never top out.

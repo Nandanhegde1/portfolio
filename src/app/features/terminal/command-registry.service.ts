@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment';
 
 export interface TerminalCommand {
   name: string;
@@ -80,11 +81,14 @@ export class CommandRegistryService {
       action: () => { this.router.navigate(['/dashboard']); return 'Navigating to Dashboard...'; },
     });
 
-    this.register({
-      name: 'blog',
-      description: 'Navigate to blog',
-      action: () => { this.router.navigate(['/blog']); return 'Navigating to Blog...'; },
-    });
+    // Hidden with the blog itself; see features.blog.
+    if (environment.features.blog) {
+      this.register({
+        name: 'blog',
+        description: 'Navigate to blog',
+        action: () => { this.router.navigate(['/blog']); return 'Navigating to Blog...'; },
+      });
+    }
 
     this.register({
       name: 'contact',
