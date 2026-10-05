@@ -189,26 +189,11 @@
   <!-- Performance -->
   @if (activeTab() === 'perf') {
     <div class="hood__panel" role="tabpanel">
-      <h2 class="hood__h2">Lighthouse scores</h2>
-      <p class="hood__p">Audited from production on mobile + desktop. Click <a class="hood__inline-link" href="https://pagespeed.web.dev/analysis?url=https%3A%2F%2Fnandanhegde1.github.io%2Fportfolio%2F" target="_blank" rel="noopener">to verify on PageSpeed Insights →</a></p>
-      <div class="hood__lh">
-        @for (s of lighthouse; track s.label) {
-          <div class="hood__lh-card" [style.--lh-color]="s.color">
-            <svg viewBox="0 0 36 36" class="hood__lh-ring" aria-hidden="true">
-              <circle cx="18" cy="18" r="15.9155" class="hood__lh-bg"/>
-              <circle cx="18" cy="18" r="15.9155" class="hood__lh-fg"
-                      [attr.stroke-dasharray]="s.value + ', 100'"/>
-            </svg>
-            <div class="hood__lh-body">
-              <span class="hood__lh-value">{{ s.value }}</span>
-              <span class="hood__lh-label">{{ s.label }}</span>
-            </div>
-          </div>
-        }
-      </div>
+      <h2 class="hood__h2">Lighthouse</h2>
+      <p class="hood__p">Scores change with every deploy and every device, so this page does not quote one. <a class="hood__inline-link" href="https://pagespeed.web.dev/analysis?url=https%3A%2F%2Fnandanhegde1.github.io%2Fportfolio%2F" target="_blank" rel="noopener">Run PageSpeed Insights on the live site →</a></p>
 
       <h2 class="hood__h2">Performance budget</h2>
-      <p class="hood__p">Every kilobyte fought for. Here are the receipts.</p>
+      <p class="hood__p">Sizes from the production build, budgets from angular.json.</p>
       <div class="hood__metrics">
         @for (m of perfMetrics; track m.label) {
           <div class="hood__metric" [style.--metric-color]="m.color">
@@ -235,13 +220,13 @@
   @if (activeTab() === 'cicd') {
     <div class="hood__panel" role="tabpanel">
       <h2 class="hood__h2">Ship-it pipeline</h2>
-      <p class="hood__p">Push to main → live in production in under 3 minutes. Zero clicks.</p>
+      <p class="hood__p">Push to main, and the frontend deploys itself once the checks pass. Zero clicks.</p>
       <ol class="hood__pipeline">
         @for (s of cicdSteps; track s.step) {
           <li class="hood__step">
             <div class="hood__step-num">{{ s.step }}</div>
             <div class="hood__step-body">
-              <h3 class="hood__step-name">{{ s.name }} <span class="hood__step-time">{{ s.duration }}</span></h3>
+              <h3 class="hood__step-name">{{ s.name }}</h3>
               <code class="hood__step-cmd">{{ s.cmd }}</code>
               <p class="hood__step-desc">{{ s.desc }}</p>
             </div>
@@ -249,7 +234,7 @@
         }
       </ol>
       <div class="hood__callout">
-        <strong>Total time from `git push` → live:</strong> ~3 minutes for frontend + backend in parallel. No CI/CD runner costs (uses GitHub Pages + Vercel free tiers).
+        <strong>Runner costs:</strong> none. GitHub Actions minutes are free on a public repo, and the site runs on the GitHub Pages and Vercel free tiers.
       </div>
     </div>
   }
