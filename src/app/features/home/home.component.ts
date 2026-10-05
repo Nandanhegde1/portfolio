@@ -236,8 +236,8 @@ export class HomeComponent {
     },
     {
       year: '2021',
-      title: 'AWS Certified',
-      description: 'Solutions Architect Associate. Multi-cloud infrastructure with Terraform across AWS, Azure, GCP.',
+      title: 'AWS Certification',
+      description: 'Solutions Architect Associate (2021, expired). Multi-cloud infrastructure with Terraform across AWS, Azure, GCP.',
       side: 'right',
     },
     {

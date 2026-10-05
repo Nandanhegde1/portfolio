@@ -32,7 +32,7 @@
         "Architecting a candidate-ranking engine (retrieval + ranking) that surfaces the strongest candidates for a job — owning the ranking approach, vector-database selection, and a model-cost strategy",
         "Designed the conversation pathways for a multilingual voice agent that automates candidate follow-ups (documents, bookings, reminders)",
         "Led the Compass modernization: legacy AngularJS to modern Angular 19, ~30% faster loads for 10,000+ monthly users; integrated Power BI, Microsoft SSO, and Bland AI; delivered 15+ features across 5 sprints",
-        "Set the team's testing standard — 5,000+ Karma/Jasmine test lines, 100% branch coverage on critical modules — and built the Azure DevOps CI/CD pipelines",
+        "Set the team's testing standard (5,000+ Karma/Jasmine test lines, branch-coverage targets on critical modules) and built the Azure DevOps CI/CD pipelines",
         "Drove adoption of Claude across 30+ engineers and authored the team's AI-usage guidelines",
         "Built a browser extension automating recruiting data capture for 500+ users, and a real-time candidate-data sync engine in Angular"
       ],
@@ -131,7 +131,7 @@
         "Browser extension automating data collection for 500+ recruiters",
         "Real-time candidate sync engine eliminating duplicate entries",
         "Power BI, Microsoft SSO, and Bland AI integration",
-        "5,000+ test lines with 100% branch coverage"
+        "5,000+ test lines, with branch-coverage targets on critical modules"
       ],
       "technologies": [
         "Angular 19",
@@ -418,9 +418,9 @@
   ],
   "certifications": [
     {
-      "name": "AWS Certified Solutions Architect",
+      "name": "AWS Certified Solutions Architect Associate",
       "issuer": "Amazon Web Services",
-      "date": "2021",
+      "date": "2021 (expired)",
       "url": "https://aws.amazon.com/verification"
     }
   ],
@@ -455,8 +455,8 @@
     },
     {
       "date": "2021",
-      "title": "AWS Certified",
-      "description": "Earned AWS Solutions Architect Associate certification",
+      "title": "AWS Certification",
+      "description": "AWS Solutions Architect Associate (2021, expired)",
       "category": "achievement",
       "icon": "certificate"
     },
@@ -476,7 +476,7 @@
     "prompt": "nandan@portfolio:~$"
   },
   "chatbot": {
-    "systemPrompt": "You are an AI assistant for Nandan Hegde's portfolio. He is a senior full-stack engineer (~6 years) at Thinkbridge (client: PSG Global Solutions) who leads and architects the AI workstream on a recruiting platform used by 10,000+ people. He designed an AI interviewing + fit-scoring system (an AI voice agent interviews candidates; the transcript is scored against the role), is architecting a candidate-ranking/retrieval engine, integrates LLMs (Azure OpenAI, Claude), and builds the product in Angular 19 / TypeScript / Node.js. He drove Claude adoption across 30+ engineers and authored the team's AI-usage guidelines, set the testing standard (5,000+ Karma/Jasmine lines, 100% branch coverage), built Azure DevOps CI/CD, and led an AngularJS-to-Angular 19 modernization. Previously at Infosys (Swiss Re global claims platform across 40+ countries; a multi-cloud accelerator). AWS Certified Solutions Architect. Open to senior/lead full-stack and AI-product roles, including relocation. Note: he designs, architects, and integrates AI systems rather than training models. Answer professionally and concisely.",
+    "systemPrompt": "You are an AI assistant for Nandan Hegde's portfolio. He is a senior full-stack engineer (~6 years) at Thinkbridge (client: PSG Global Solutions) who leads and architects the AI workstream on a recruiting platform used by 10,000+ people. He designed an AI interviewing + fit-scoring system (an AI voice agent interviews candidates; the transcript is scored against the role), is architecting a candidate-ranking/retrieval engine, integrates LLMs (Azure OpenAI, Claude), and builds the product in Angular 19 / TypeScript / Node.js. He drove Claude adoption across 30+ engineers and authored the team's AI-usage guidelines, set the testing standard (5,000+ Karma/Jasmine lines, branch-coverage targets on critical modules), built Azure DevOps CI/CD, and led an AngularJS-to-Angular 19 modernization. Previously at Infosys (Swiss Re global claims platform across 40+ countries; a multi-cloud accelerator). AWS Solutions Architect Associate certification (2021, expired). Open to senior/lead full-stack and AI-product roles, including relocation. Note: he designs, architects, and integrates AI systems rather than training models. Answer professionally and concisely.",
     "quickQuestions": [
       "What's your tech stack?",
       "Tell me about your experience",

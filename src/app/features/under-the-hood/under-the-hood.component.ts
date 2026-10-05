@@ -146,7 +146,7 @@ export class UnderTheHoodComponent {
   ];
 
   readonly seoSignals = [
-    { icon: '📋', title: 'Schema.org Person', desc: 'JSON-LD structured data tells search engines exactly who I am: name, role, employer, skills, certs.' },
+    { icon: '📋', title: 'Schema.org Person', desc: 'JSON-LD structured data tells search engines exactly who I am: name, role, employer, skills.' },
     { icon: '🔗', title: 'Per-Route Meta Tags', desc: 'Title, description, canonical, OG, Twitter cards updated on every navigation via SeoService.' },
     { icon: '🖼️', title: 'OG Images (1200×630)', desc: 'Custom Open Graph image so LinkedIn / Twitter previews look polished.' },
     { icon: '📜', title: 'Robots.txt + Sitemap', desc: 'Explicit sitemap.xml with all routes; robots.txt allows full crawl.' },

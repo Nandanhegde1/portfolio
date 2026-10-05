@@ -6,6 +6,7 @@ import { RouterLink } from '@angular/router';
 
 interface PitchStat {
   value: number;
+  prefix?: string;
   suffix: string;
   label: string;
 }
@@ -52,7 +53,7 @@ interface ValueProp {
             @for (stat of stats; track stat.label) {
               <div class="pitch__stat-block">
                 <span class="pitch__stat-value" [attr.data-target]="stat.value">
-                  {{ getAnimatedValue(stat) }}{{ stat.suffix }}
+                  {{ stat.prefix }}{{ getAnimatedValue(stat) }}{{ stat.suffix }}
                 </span>
                 <span class="pitch__stat-label">{{ stat.label }}</span>
               </div>
@@ -78,20 +79,12 @@ interface ValueProp {
             <div class="pitch__journey-node pitch__journey-node--right">
               <div class="pitch__journey-dot"></div>
               <div class="pitch__journey-card">
-                <span class="pitch__journey-year">2021</span>
-                <h3>AWS Certified</h3>
-                <p>Solutions Architect Associate. Cloud-first thinking, infrastructure as code.</p>
-              </div>
-            </div>
-            <div class="pitch__journey-node">
-              <div class="pitch__journey-dot"></div>
-              <div class="pitch__journey-card">
                 <span class="pitch__journey-year">2022</span>
                 <h3>Joined Thinkbridge</h3>
                 <p>Senior Engineer leading the AI workstream — an AI voice-interview + fit-scoring system and a candidate-ranking engine — on a 10,000-user recruiting platform.</p>
               </div>
             </div>
-            <div class="pitch__journey-node pitch__journey-node--right">
+            <div class="pitch__journey-node">
               <div class="pitch__journey-dot"></div>
               <div class="pitch__journey-card">
                 <span class="pitch__journey-year">Now</span>
@@ -164,14 +157,13 @@ export class PitchComponent implements AfterViewInit, OnDestroy {
   private animationFrame = 0;
   private animStart = 0;
   private readonly animDuration = 2000;
-  readonly animatedStats = signal<number[]>([0, 0, 0, 0, 0, 0]);
+  readonly animatedStats = signal<number[]>([0, 0, 0, 0, 0]);
 
   readonly stats: PitchStat[] = [
     { value: 6, suffix: '+', label: 'Years Experience' },
     { value: 10000, suffix: '+', label: 'Platform Users' },
-    { value: 10, suffix: '+', label: 'Engineers Led' },
+    { value: 10, prefix: '~', suffix: '', label: 'Engineers Led' },
     { value: 3, suffix: '', label: 'Cloud Platforms' },
-    { value: 1, suffix: '', label: 'AWS Certification' },
     { value: 12, suffix: '+', label: 'Projects Delivered' },
   ];
 
