@@ -36,8 +36,6 @@ app.get('/', (_req, res) => {
       '/api/health',
       '/api/roast',
       '/api/roasts',
-      '/api/github/user/:username',
-      '/api/github/repos/:username',
       '/api/analytics',
       '/api/contact',
       '/api/recruiter/stats',
@@ -48,7 +46,6 @@ app.get('/', (_req, res) => {
 });
 
 app.use('/api/health',     require('./routes/health'));
-app.use('/api/github',     require('./routes/github'));
 app.use('/api/analytics',  require('./routes/analytics'));
 app.use('/api/roast',      require('./routes/roast'));
 app.use('/api/roasts',     require('./routes/roasts'));

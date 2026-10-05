@@ -37,9 +37,10 @@ router.get('/', async (_req, res) => {
     .order('created_at', { ascending: false })
     .limit(200);
 
+  // 503, not 500: a failed read here is the database being unreachable or paused.
   if (error) {
     console.error('[roasts] fetch failed:', error.message);
-    return res.status(500).json({ error: 'Failed to fetch roasts' });
+    return res.status(503).json({ error: 'Failed to fetch roasts' });
   }
   res.json(data || []);
 });

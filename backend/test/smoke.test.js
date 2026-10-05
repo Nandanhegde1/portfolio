@@ -62,3 +62,19 @@ test('the contact route does not claim success when there is no inbox', async ()
   assert.equal(res.status, 503);
   assert.match((await res.json()).error, /email directly/);
 });
+
+test('the unused GitHub proxy is gone', async () => {
+  const res = await fetch(`${base}/api/github/user/octocat`);
+  assert.equal(res.status, 404);
+});
+
+test('the stats routes need the admin token', async () => {
+  // They list companies from the recruiter and interview logs once a database is back.
+  process.env.ADMIN_TOKEN = 'test-secret';
+  for (const path of ['/api/recruiter/stats', '/api/interviews/stats']) {
+    const denied = await fetch(`${base}${path}`);
+    assert.equal(denied.status, 401, path);
+    const allowed = await fetch(`${base}${path}`, { headers: { 'x-admin-token': 'test-secret' } });
+    assert.equal(allowed.status, 200, path);
+  }
+});

@@ -6,7 +6,8 @@ const router = express.Router();
 
 const EMPTY_STATS = { total: 0, byStage: {}, byOutcome: {}, recent: [] };
 
-router.get('/stats', async (_req, res) => {
+// Admin-only: with a database behind it, this returns company names from the interview log.
+router.get('/stats', requireAdminKey, async (_req, res) => {
   const sb = getSupabase();
   if (!sb) return res.json(EMPTY_STATS);
 

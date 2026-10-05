@@ -7,7 +7,8 @@ const router = express.Router();
 const EMPTY_STATS = { total: 0, last30Days: 0, byCompany: {}, recent: [] };
 const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
 
-router.get('/stats', async (_req, res) => {
+// Admin-only: with a database behind it, this returns company names from the recruiter log.
+router.get('/stats', requireAdminKey, async (_req, res) => {
   const sb = getSupabase();
   if (!sb) return res.json(EMPTY_STATS);
 
