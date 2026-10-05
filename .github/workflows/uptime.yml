@@ -12,17 +12,25 @@ permissions:
 jobs:
   ping:
     runs-on: ubuntu-latest
+    env:
+      API: https://nandan-portfolio-api.vercel.app
+      # Optional dead-man's switch: a healthchecks.io ping URL. It emails when the
+      # pings stop, which is the one failure this workflow cannot report itself.
+      HC_PING_URL: ${{ secrets.HC_PING_URL }}
     steps:
       - name: Check all live surfaces
         id: check
         run: |
+          failures=""
+
+          # Pages and endpoints where a 2xx/3xx status is enough
           declare -A targets=(
             [portfolio]="https://nandanhegde1.github.io/portfolio/"
-            [backend]="https://nandan-portfolio-api.vercel.app/api/health"
+            [backend]="$API/api/health"
             [govai]="https://govai-contracts.nandanhegde1096.workers.dev/"
             [mcp-directory]="https://mcp-directory.nandanhegde1096.workers.dev/"
+            [india-tenders]="https://india-tenders.nandanhegde1096.workers.dev/"
           )
-          failures=""
           for name in "${!targets[@]}"; do
             # Free-tier cold starts: allow a generous timeout + one retry
             code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 60 --retry 1 --retry-delay 20 "${targets[$name]}" || echo 000)
@@ -31,21 +39,75 @@ jobs:
               failures="$failures $name($code)"
             fi
           done
+
+          # The resume is the file recruiters actually open, so it must come back as a PDF
+          type=$(curl -s -o /dev/null -w '%{http_code} %{content_type}' --max-time 60 --retry 1 \
+            https://nandanhegde1.github.io/portfolio/assets/Nandan_Hegde_Resume.pdf || echo 000)
+          echo "resume-pdf -> $type"
+          case "$type" in
+            "200 application/pdf"*) ;;
+            *) failures="$failures resume-pdf" ;;
+          esac
+
+          # planning-desk can answer 200 with MCP servers missing, so check the tool count too
+          health=$(curl -s --max-time 90 --retry 1 --retry-delay 20 https://planning-desk.onrender.com/api/health || true)
+          if jq -e '.status == "ok" and .tool_count == 18' <<< "$health" > /dev/null 2>&1; then
+            echo "planning-desk -> ok, 18 tools"
+          else
+            echo "planning-desk -> ${health:0:300}"
+            failures="$failures planning-desk"
+          fi
+
+          # /api/health stays green while the model provider refuses every call,
+          # so run one small roast and require the stream to reach its 'done' event.
+          # Four runs a day spend 4 of the API's default cap of 100 LLM calls a day.
+          roast=$(curl -s --max-time 90 -X POST -H 'content-type: application/json' \
+            -d '{"stack":"uptime probe: bash and curl","intensity":"mild"}' \
+            "$API/api/roast/stream" || true)
+          if grep -q '^event: done' <<< "$roast"; then
+            echo "roast -> done"
+          else
+            echo "roast -> ${roast:0:300}"
+            failures="$failures roast"
+          fi
+
           if [ -n "$failures" ]; then
             echo "failures=$failures" >> "$GITHUB_OUTPUT"
             exit 1
           fi
 
-      - name: Open an issue on failure
+      - name: Open or update the issue on failure
         if: failure()
         env:
           GH_TOKEN: ${{ github.token }}
           FAILURES: ${{ steps.check.outputs.failures }}
         run: |
-          title="Uptime check failed:${FAILURES}"
-          existing=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --search "Uptime check failed" --json number --jq '.[0].number // empty')
+          now=$(date -u '+%Y-%m-%d %H:%M UTC')
+          run_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          # printf into a file: a "\n" inside a double-quoted --body stays a literal backslash-n
+          printf 'Automated uptime check failed at %s.\n\nDown:%s\n\n[Run log](%s)\n' "$now" "$FAILURES" "$run_url" > "$RUNNER_TEMP/body.md"
+          existing=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --search 'in:title "Uptime check failed"' --json number --jq '.[0].number // empty')
           if [ -n "$existing" ]; then
-            gh issue comment "$existing" --repo "$GITHUB_REPOSITORY" --body "Still failing at $(date -u '+%Y-%m-%d %H:%M UTC'):${FAILURES} — [run]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)"
+            # Retitle so the issue list names what is down now, not what was down first
+            gh issue edit "$existing" --repo "$GITHUB_REPOSITORY" --title "Uptime check failed:${FAILURES}"
+            gh issue comment "$existing" --repo "$GITHUB_REPOSITORY" --body-file "$RUNNER_TEMP/body.md"
           else
-            gh issue create --repo "$GITHUB_REPOSITORY" --title "$title" --body "Automated uptime check failed at $(date -u '+%Y-%m-%d %H:%M UTC').\n\nDown:${FAILURES}\n\n[Run log]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)"
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "Uptime check failed:${FAILURES}" --body-file "$RUNNER_TEMP/body.md"
           fi
+
+      - name: Close the issue once everything passes
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          printf 'All checks passed at %s.\n\n[Run log](%s)\n' "$(date -u '+%Y-%m-%d %H:%M UTC')" \
+            "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" > "$RUNNER_TEMP/body.md"
+          for n in $(gh issue list --repo "$GITHUB_REPOSITORY" --state open --search 'in:title "Uptime check failed"' --json number --jq '.[].number'); do
+            gh issue comment "$n" --repo "$GITHUB_REPOSITORY" --body-file "$RUNNER_TEMP/body.md"
+            gh issue close "$n" --repo "$GITHUB_REPOSITORY"
+          done
+
+      - name: Heartbeat
+        # Runs whether the checks passed or not: it reports that the workflow ran.
+        if: always() && env.HC_PING_URL != ''
+        run: curl -fsS --max-time 10 --retry 3 "$HC_PING_URL" > /dev/null || true
