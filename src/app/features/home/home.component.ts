@@ -186,7 +186,7 @@ export class HomeComponent {
     {
       title: 'Ask GovAI',
       client: 'Side project · live',
-      oneLiner: 'A measured RAG over 670+ federal AI/ML contract awards — BM25 retrieval feeding grounded, cited LLM synthesis with a refuse-to-invent guardrail.',
+      oneLiner: 'A measured RAG over 700+ federal AI/ML contract awards — BM25 retrieval feeding grounded, cited LLM synthesis with a refuse-to-invent guardrail.',
       metric: 'Reproducible eval · honest failure analysis',
       stack: ['TypeScript', 'RAG', 'BM25', 'Evals'],
       link: '/projects',

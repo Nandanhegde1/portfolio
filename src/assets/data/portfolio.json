@@ -100,7 +100,7 @@
     {
       "id": "ask-govai",
       "title": "Ask GovAI — RAG over Federal AI Contracts",
-      "description": "A retrieval-augmented Q&A layer over a live index of 670+ U.S. federal AI/ML contract awards. BM25 lexical retrieval (key-free) feeds grounded, provider-agnostic LLM synthesis (free Gemini or Claude) with citations and a refuse-to-invent guardrail — backed by a measured eval harness (recall@8 = 92%; 69% BM25 baseline before the structured query router), not a demo.",
+      "description": "A retrieval-augmented Q&A layer over a live index of 700+ U.S. federal AI/ML contract awards. BM25 lexical retrieval (key-free) feeds grounded, provider-agnostic LLM synthesis (free Gemini or Claude) with citations and a refuse-to-invent guardrail — backed by a measured eval harness (recall@8 = 92%; 69% BM25 baseline before the structured query router), not a demo.",
       "highlights": [
         "Cost-aware by design: cheap lexical retrieval finds the documents; the LLM only synthesizes",
         "Grounded answers cite the award_id and refuse when the dataset doesn't support a claim",
@@ -117,7 +117,7 @@
       ],
       "metrics": [
         { "value": "92%", "label": "recall@8 (12/13)" },
-        { "value": "670+", "label": "federal AI contract awards" }
+        { "value": "700+", "label": "federal AI contract awards" }
       ],
       "imageUrl": "",
       "liveUrl": "https://govai-contracts.nandanhegde1096.workers.dev/",
@@ -237,29 +237,6 @@
       "imageUrl": "",
       "liveUrl": "https://planning-desk.onrender.com",
       "githubUrl": "https://github.com/Nandanhegde1/planning-desk",
-      "featured": false,
-      "category": "innovation"
-    },
-    {
-      "id": "india-tenders",
-      "title": "IndiaTenders: Open Government Tenders, Searchable",
-      "description": "A free, searchable index of open Indian government tenders from the Central Public Procurement Portal (CPPP), deduplicated, categorised and sorted by closing date. Tender-intelligence subscriptions charge thousands of rupees a year for this data, which is public.",
-      "highlights": [
-        "A cron scrapes a bounded number of the newest CPPP list pages every 6 hours, about 1.5 seconds apart, and builds coverage across runs",
-        "The parser is pure and unit-tested against a saved copy of the real page",
-        "Data-quality gates: a run that parses nothing fails instead of publishing, and one that would shrink the dataset below 70% refuses to overwrite",
-        "Tests and the build run before each data commit, so bad data blocks the publish",
-        "A static page per tender and organisation, plus CSV and JSON exports, RSS and a sitemap"
-      ],
-      "technologies": [
-        "Astro",
-        "TypeScript",
-        "GitHub Actions",
-        "Cloudflare Workers"
-      ],
-      "imageUrl": "",
-      "liveUrl": "https://india-tenders.nandanhegde1096.workers.dev/",
-      "githubUrl": "https://github.com/Nandanhegde1/india-tenders",
       "featured": false,
       "category": "innovation"
     },
