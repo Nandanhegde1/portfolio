@@ -49,22 +49,24 @@ jobs:
             *) failures="$failures resume-pdf" ;;
           esac
 
-          # planning-desk can answer 200 with MCP servers missing, so check the tool count too
+          # planning-desk can answer 200 with MCP servers missing, so check the tool count too,
+          # and that the daily turn cap is not turning visitors away
           health=$(curl -s --max-time 90 --retry 1 --retry-delay 20 https://planning-desk.onrender.com/api/health || true)
-          if jq -e '.status == "ok" and .tool_count == 18' <<< "$health" > /dev/null 2>&1; then
-            echo "planning-desk -> ok, 18 tools"
+          if jq -e '.status == "ok" and .tool_count == 18 and .daily_cap_reached == false' <<< "$health" > /dev/null 2>&1; then
+            echo "planning-desk -> ok, 18 tools, daily cap not reached"
           else
             echo "planning-desk -> ${health:0:300}"
             failures="$failures planning-desk"
           fi
 
           # /api/health stays green while the model provider refuses every call,
-          # so run one small roast and require the stream to reach its 'done' event.
+          # so run one small roast and require model text ('chunk') and the 'done' event.
+          # 'done' alone is not enough: an empty reply ends with the canned fallback line.
           # Four runs a day spend 4 of the API's default cap of 100 LLM calls a day.
           roast=$(curl -s --max-time 90 -X POST -H 'content-type: application/json' \
             -d '{"stack":"uptime probe: bash and curl","intensity":"mild"}' \
             "$API/api/roast/stream" || true)
-          if grep -q '^event: done' <<< "$roast"; then
+          if grep -q '^event: chunk' <<< "$roast" && grep -q '^event: done' <<< "$roast"; then
             echo "roast -> done"
           else
             echo "roast -> ${roast:0:300}"
