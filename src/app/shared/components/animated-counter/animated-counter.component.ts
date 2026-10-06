@@ -13,7 +13,8 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="counter" [class]="'counter--' + size()">
-      <div class="counter__digits">
+      <span class="sr-only">{{ targetValue() }}{{ suffix() }}</span>
+      <div class="counter__digits" aria-hidden="true">
         @for (digit of displayDigits(); track $index) {
           <div class="counter__slot">
             <div class="counter__reel" [style.transform]="'translateY(-' + digit.offset + '%)'">
@@ -34,6 +35,8 @@ import {
 export class AnimatedCounterComponent implements OnInit, OnDestroy {
   readonly targetValue = input.required<number>();
   readonly label = input<string>('');
+  /** Read out with the final value; the visible suffix stays with the caller. */
+  readonly suffix = input<string>('');
   readonly size = input<'sm' | 'md' | 'lg'>('md');
   readonly duration = input(2000);
 

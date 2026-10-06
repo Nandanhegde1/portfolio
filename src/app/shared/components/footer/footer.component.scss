@@ -22,6 +22,7 @@
   }
 
   &__logo {
+    padding: 0; // a <button> now; the global reset leaves its padding
     font-family: $font-mono;
     font-size: $fs-lg;
     font-weight: $fw-bold;

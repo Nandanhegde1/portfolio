@@ -8,8 +8,10 @@ import { ToastService } from '../../../core/services/toast.service';
   template: `
     <div class="toast-host" aria-live="polite" aria-atomic="true">
       @for (t of toast.toasts(); track t.id) {
+        <!-- Clicking the toast is a pointer shortcut; the × button is the keyboard path. -->
         <div
           class="toast"
+          role="presentation"
           [class.toast--achievement]="t.variant === 'achievement'"
           [class.toast--success]="t.variant === 'success'"
           [class.toast--info]="t.variant === 'info'"

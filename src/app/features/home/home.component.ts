@@ -86,8 +86,8 @@ interface FeaturedProject {
                 <span class="bento__stat-icon">{{ stat.icon }}</span>
                 <div class="bento__stat-content">
                   <div class="bento__stat-value">
-                    <app-animated-counter [targetValue]="stat.value" size="md" />
-                    <span class="bento__stat-suffix">{{ stat.suffix }}</span>
+                    <app-animated-counter [targetValue]="stat.value" [suffix]="stat.suffix" size="md" />
+                    <span class="bento__stat-suffix" aria-hidden="true">{{ stat.suffix }}</span>
                   </div>
                   <span class="bento__stat-label">{{ stat.label }}</span>
                 </div>

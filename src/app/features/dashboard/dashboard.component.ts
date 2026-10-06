@@ -105,7 +105,16 @@ import { StatsService } from '../../core/services/stats.service';
         </div>
 
         <!-- Dev Fortune Cookie -->
-        <div class="dash__fortune" appScrollReveal animation="scale" (click)="rollFortune()">
+        <div
+          class="dash__fortune"
+          appScrollReveal
+          animation="scale"
+          role="button"
+          tabindex="0"
+          (click)="rollFortune()"
+          (keydown.enter)="rollFortune()"
+          (keydown.space)="$event.preventDefault(); rollFortune()"
+        >
           <div class="dash__fortune-icon">🥠</div>
           <p class="dash__fortune-text" [class.dash__fortune-text--fading]="fortuneFading()">{{ currentFortune() }}</p>
           <span class="dash__fortune-hint">click for another · auto-rotates every 30s</span>

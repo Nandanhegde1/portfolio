@@ -21,6 +21,7 @@ interface LogLine {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="cli">
+      <h1 class="sr-only">Contact</h1>
       <div class="cli__inner">
         <header class="cli__chrome">
           <div class="cli__chrome-dots">

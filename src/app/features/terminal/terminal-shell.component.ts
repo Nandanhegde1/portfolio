@@ -21,8 +21,8 @@ interface OutputLine {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (isOpen()) {
-      <div class="terminal-overlay" (click)="close()">
-        <div class="terminal" role="dialog" aria-modal="true" aria-label="Interactive terminal" (click)="$event.stopPropagation()">
+      <div class="terminal-overlay" role="presentation" (click)="closeOnBackdrop($event)">
+        <div class="terminal" role="dialog" aria-modal="true" aria-label="Interactive terminal">
           <div class="terminal__header">
             <div class="terminal__dots">
               <span class="terminal__dot terminal__dot--red"></span>
@@ -116,6 +116,11 @@ export class TerminalShellComponent implements AfterViewInit {
     if (this.isOpen()) {
       setTimeout(() => this.focusInput(), 50);
     }
+  }
+
+  /** Backdrop clicks close the terminal; clicks inside the dialog do not. */
+  closeOnBackdrop(event: MouseEvent): void {
+    if (event.target === event.currentTarget) this.close();
   }
 
   close(): void {

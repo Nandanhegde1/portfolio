@@ -13,7 +13,7 @@ import { LanguageSwitcherComponent } from '../language-switcher/language-switche
     <footer class="footer">
       <div class="footer__inner">
         <div class="footer__left">
-          <span class="footer__logo" (click)="toggleEasterEgg()">&lt;NH/&gt;</span>
+          <button type="button" class="footer__logo" [attr.aria-pressed]="easterEgg()" (click)="toggleEasterEgg()">&lt;NH/&gt;</button>
           @if (easterEgg()) {
             <p class="footer__easter-egg">🚀 sudo hire-me --force</p>
           } @else {

@@ -84,7 +84,7 @@ import { environment } from '../../../../environments/environment';
       </div>
 
       @if (mobileOpen) {
-        <div class="navbar__mobile-overlay" (click)="mobileOpen = false"></div>
+        <div class="navbar__mobile-overlay" aria-hidden="true" (click)="mobileOpen = false"></div>
         <ul class="navbar__mobile-menu">
           <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="mobileOpen = false">{{ 'nav.home' | transloco }}</a></li>
           <li><a routerLink="/projects" routerLinkActive="active" (click)="mobileOpen = false">{{ 'nav.projects' | transloco }}</a></li>
