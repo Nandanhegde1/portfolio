@@ -97,8 +97,8 @@
     }
   },
   "dashboard": {
-    "title": "Panel en Vivo",
-    "lede": "Métricas reales de sistemas reales. Sin números de vanidad.",
+    "title": "Panel",
+    "lede": "Un espacio de pruebas de UI. Las estadísticas de GitHub son en vivo y los contadores son datos de ejemplo.",
     "github": "Actividad de GitHub",
     "coding": "Estadísticas de programación",
     "skills": "Habilidades",

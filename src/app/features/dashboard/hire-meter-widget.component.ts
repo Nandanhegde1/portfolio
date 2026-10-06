@@ -39,9 +39,9 @@ interface SectionItem {
 
       @if (infoOpen()) {
         <div class="hm__info-panel" role="region" aria-label="How the score works">
-          <p class="hm__info-line"><strong>What is this?</strong> A score that grows as you visit different sections of this portfolio. It's a fun way to see how thoroughly you've explored my work — and a hint to me about which pages people actually find useful.</p>
+          <p class="hm__info-line"><strong>What is this?</strong> A score that grows as you visit different sections of this portfolio, so you can see what you have opened and what is left. It is worked out in your browser and never sent anywhere, so I never see it.</p>
           <p class="hm__info-line"><strong>How it works:</strong> Each section is worth points (shown below). Points are stored only in your browser via <code>localStorage</code>. No account, no cookies, no server.</p>
-          <p class="hm__info-line"><strong>Why bother?</strong> Hit 75+ and the contact CTA pre-fills with a context-aware message. Hit 90+ and you've officially seen everything that makes me hireable.</p>
+          <p class="hm__info-line"><strong>Why bother?</strong> It is a quick way to find the pages you have not opened yet. Nothing unlocks, and the contact page is the same at any score.</p>
         </div>
       }
 

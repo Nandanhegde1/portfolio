@@ -97,8 +97,8 @@
     }
   },
   "dashboard": {
-    "title": "Live Dashboard",
-    "lede": "Live data, not screenshots from last quarter.",
+    "title": "Dashboard",
+    "lede": "A UI playground. The GitHub stats are live and the counters are sample data.",
     "github": "GitHub activity",
     "coding": "Coding stats",
     "skills": "Skills",

@@ -32,6 +32,8 @@ export class SpotifyService {
   private readonly API = `${environment.apiUrl}/api/spotify/now-playing`;
 
   readonly currentTrack = signal<SpotifyTrack | null>(null);
+  /** False once the API says Spotify is not configured; the widget then renders nothing. */
+  readonly available = signal(true);
   readonly loading = signal(false);
   readonly error = signal<string | null>(null);
 
@@ -65,17 +67,11 @@ export class SpotifyService {
           url: data.url || 'https://open.spotify.com',
         });
       } else if (data?.mock) {
-        // backend not configured — use a single static fallback so the widget still renders
-        this.currentTrack.set({
-          name: 'Blinding Lights',
-          artist: 'The Weeknd',
-          album: 'After Hours',
-          albumArt: 'https://i.scdn.co/image/ab67616d0000b2738863bc11d2aa12b54f5aeb36',
-          isPlaying: false,
-          progress: 0,
-          duration: 200_000,
-          url: 'https://open.spotify.com',
-        });
+        // The API has no Spotify credentials, so there is nothing real to show,
+        // and nothing will change until it does.
+        this.currentTrack.set(null);
+        this.available.set(false);
+        this.stopPolling();
       } else {
         this.currentTrack.set(null);
       }

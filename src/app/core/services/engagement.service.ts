@@ -56,7 +56,11 @@ export class EngagementService {
     return { label: '👋 New here', color: '#94a3b8' };
   });
 
-  readonly visitedCount = computed(() => new Set(this.visits().map((v) => v.path)).size);
+  // Only sections that still count: storage can hold paths from earlier versions
+  // of the site (a hidden /roast-me-back), which showed as "8 of 7 sections".
+  readonly visitedCount = computed(
+    () => new Set(this.visits().map((v) => v.path).filter((p) => this.weights[p] != null)).size,
+  );
 
   init(): void {
     if (typeof window === 'undefined') return;

@@ -83,6 +83,13 @@
     margin-bottom: $space-2xl;
   }
 
+  &__vitals-sample {
+    font-family: $font-primary;
+    font-size: $fs-sm;
+    font-weight: $fw-normal;
+    color: var(--text-muted);
+  }
+
   &__vitals-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);

@@ -97,8 +97,8 @@
     }
   },
   "dashboard": {
-    "title": "Live-Dashboard",
-    "lede": "Echte Metriken aus echten Systemen. Keine Eitelkeitszahlen.",
+    "title": "Dashboard",
+    "lede": "Ein UI-Spielplatz. Die GitHub-Statistiken sind live, die Zähler sind Beispieldaten.",
     "github": "GitHub-Aktivität",
     "coding": "Coding-Statistiken",
     "skills": "Fähigkeiten",

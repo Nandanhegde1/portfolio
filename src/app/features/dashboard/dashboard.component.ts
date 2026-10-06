@@ -59,6 +59,7 @@ import { StatsService } from '../../core/services/stats.service';
           <h3 class="dash__section-title">
             <span class="dash__pulse"></span>
             Code Vitals
+            <span class="dash__vitals-sample">Sample figures, not real counts</span>
           </h3>
           <div class="dash__vitals-grid">
             @for (vital of codeVitals; track vital.label) {

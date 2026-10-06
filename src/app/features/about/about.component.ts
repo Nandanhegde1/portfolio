@@ -55,7 +55,7 @@ interface InventoryItem {
         <!-- Header -->
         <div class="rpg__header" appScrollReveal>
           <span class="rpg__tag">// character-select</span>
-          <h1 class="rpg__title">Character Sheet</h1>
+          <h1 class="rpg__title">About</h1>
           <p class="rpg__subtitle">Level {{ level }} · Senior Developer · {{ xpYears }}+ years of adventure</p>
           <a
             class="rpg__print-btn"
@@ -427,7 +427,7 @@ export class AboutComponent implements OnInit {
 
   // Attributes open by default (it's the character sheet hook); the rest
   // are dense, optional reading and start collapsed.
-  readonly openSections = signal<Set<string>>(new Set(['attributes']));
+  readonly openSections = signal<Set<string>>(new Set(['quests']));
 
   // ── Forge customization ──
   readonly forgeColors: CardColor[] = [
