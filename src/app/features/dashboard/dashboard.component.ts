@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, OnDestroy, ChangeDetectionStrategy, signal, computed } from '@angular/core';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { AnimatedCounterComponent, LoadingSkeletonComponent } from '../../shared/components';
+import { AnimatedCounterComponent } from '../../shared/components';
 import { GitHubService } from '../../core/services';
 import { ScrollRevealDirective } from '../../shared/directives/scroll-reveal.directive';
 import { LiveStatsWidgetComponent } from './live-stats-widget.component';
@@ -11,7 +11,7 @@ import { StatsService } from '../../core/services/stats.service';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [AnimatedCounterComponent, LoadingSkeletonComponent, ScrollRevealDirective, LiveStatsWidgetComponent, GithubTickerComponent, HireMeterWidgetComponent, TranslocoPipe],
+  imports: [AnimatedCounterComponent, ScrollRevealDirective, LiveStatsWidgetComponent, GithubTickerComponent, HireMeterWidgetComponent, TranslocoPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="dash">

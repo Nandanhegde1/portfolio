@@ -1,5 +1,3 @@
 # Pending Manual Actions
 
-- [ ] **Supabase**: run [backend/sql/blog_comments.sql](backend/sql/blog_comments.sql) in the Supabase SQL editor to enable blog comments + reactions in production.
-- [ ] **Resume PDF**: replace placeholder [src/assets/Nandan_Hegde_Resume.pdf](src/assets/Nandan_Hegde_Resume.pdf) with the real CV, then commit + redeploy (`npx ng build --configuration=production; npx angular-cli-ghpages --dir=dist/portfolio/browser`).
-- [ ] **i18n**: add multi-language support (see plan below).
+- [ ] **Supabase**, only to bring back analytics, the roast wall, blog comments and the contact inbox. The project behind them no longer exists and `features.supabase` is off. Create a project, run [backend/supabase-setup.sql](backend/supabase-setup.sql), [backend/sql/roasts.sql](backend/sql/roasts.sql) and [backend/sql/blog_comments.sql](backend/sql/blog_comments.sql) in its SQL editor, set `SUPABASE_URL` and `SUPABASE_SERVICE_KEY` in the Vercel project, then turn `features.supabase` on in both environment files.

@@ -1,6 +1,6 @@
 # Nandan Hegde — Portfolio
 
-[![Deploy](https://github.com/Nandanhegde1/portfolio/actions/workflows/deploy.yml/badge.svg)](https://github.com/Nandanhegde1/portfolio/actions/workflows/deploy.yml)
+[![CI](https://github.com/Nandanhegde1/portfolio/actions/workflows/ci.yml/badge.svg)](https://github.com/Nandanhegde1/portfolio/actions/workflows/ci.yml)
 [![Live Site](https://img.shields.io/badge/live-nandanhegde1.github.io%2Fportfolio-6c63ff?logo=github)](https://nandanhegde1.github.io/portfolio/)
 [![Angular](https://img.shields.io/badge/Angular-19-DD0031?logo=angular&logoColor=white)](https://angular.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.6-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -52,17 +52,16 @@ src/app/
 │   ├── hero/         # 3D Three.js scene
 │   ├── about/        # Character sheet + card forge
 │   ├── dashboard/    # GitHub stats, code vitals, live stats
-│   ├── chatbot/      # Claude-powered AI
 │   ├── roast/        # AI tech-stack roaster
-│   ├── guestbook/    # Supabase-backed guestbook
 │   ├── contact/      # Backend-wired contact form
-│   ├── blog/         # "Under the Hood" build doc
-│   ├── quiz/         # "How well do you know me?" quiz
+│   ├── blog/         # Engineering notes, hidden by features.blog
+│   ├── quiz/         # "Would I Survive Your Team?" quiz
 │   └── pitch/        # 60-second hire-me pitch
-└── layouts/          # Main + dashboard layouts
+└── layouts/          # Main layout
 
 backend/
-├── server.js         # Express app, all endpoints
+├── app.js            # Express app; endpoints live in routes/
+├── server.js         # Entrypoint that binds the port
 └── supabase.js       # Lazy Supabase client
 ```
 
@@ -78,13 +77,13 @@ cd backend
 npm install
 cp .env.example .env # fill in the vars (see backend/.env.example — every var is documented)
 npm run dev          # http://localhost:3000
-npm test             # 5 smoke tests against the real app on an ephemeral port
+npm test             # 15 tests (node --test)
 ```
 
 ## 🚢 Deploy
 
 - **Frontend** — push to `main`; the CI workflow lints, tests, builds, and deploys to GitHub Pages *only if all checks pass*.
-- **Backend** — Vercel auto-deploys `backend/` (root dir `backend`, zero-config Express as one function) on push to `main`. Secrets (`GEMINI_API_KEY`, `SUPABASE_URL`, `SUPABASE_SERVICE_KEY`, `ADMIN_TOKEN`, `ALLOWED_ORIGINS`) live in the Vercel project settings, never in the repo.
+- **Backend** — Vercel auto-deploys `backend/` (root dir `backend`, zero-config Express as one function) on push to `main`. Secrets (`GEMINI_API_KEY`, `SUPABASE_URL`, `SUPABASE_SERVICE_KEY`, `ADMIN_TOKEN`, `ALLOWED_ORIGINS`) live in the Vercel project settings, never in the repo. Vercel builds those pushes itself, so a backend deploy is not gated by the backend tests in CI.
 - **Uptime** — a 6-hourly workflow pings all live surfaces and opens a GitHub issue if anything is down.
 
 ## 🪪 License
