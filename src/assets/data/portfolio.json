@@ -115,6 +115,10 @@
         "LLM (Gemini / Claude)",
         "Evals"
       ],
+      "metrics": [
+        { "value": "92%", "label": "recall@8 (12/13)" },
+        { "value": "670+", "label": "federal AI contract awards" }
+      ],
       "imageUrl": "",
       "liveUrl": "https://govai-contracts.nandanhegde1096.workers.dev/",
       "githubUrl": "https://github.com/Nandanhegde1/govai-contracts/tree/main/ask",
@@ -141,6 +145,11 @@
         "RxJS",
         "Karma/Jasmine"
       ],
+      "metrics": [
+        { "value": "~30%", "label": "load time reduction" },
+        { "value": "10,000+", "label": "monthly users" },
+        { "value": "500+", "label": "recruiters on the extension" }
+      ],
       "imageUrl": "",
       "liveUrl": "",
       "githubUrl": "",
@@ -165,6 +174,9 @@
         "Voice AI",
         "FastAPI"
       ],
+      "metrics": [
+        { "value": "10,000+", "label": "people on the platform" }
+      ],
       "imageUrl": "",
       "liveUrl": "",
       "githubUrl": "",
@@ -188,9 +200,66 @@
         "Cloudflare Workers",
         "Tailwind"
       ],
+      "metrics": [
+        { "value": "~1,800", "label": "MCP servers indexed" }
+      ],
       "imageUrl": "",
       "liveUrl": "https://mcp-directory.nandanhegde1096.workers.dev/",
       "githubUrl": "https://github.com/Nandanhegde1/mcp-directory",
+      "featured": false,
+      "category": "innovation"
+    },
+    {
+      "id": "planning-desk",
+      "title": "Planning Desk: Agent Loop over MCP",
+      "description": "A chat interface that answers planning questions by calling real tools over MCP, with a second mode that turns two years of exchange-rate history into spreadsheets, documents and charts. The agent loop is one hand-written function, with no orchestration framework, over 3 MCP servers that run as child processes on stdio and expose 18 tools.",
+      "highlights": [
+        "Hard ceilings on every turn: 8 steps, 12 tool calls, 60,000 tokens, and 45 seconds per tool call",
+        "A rules table decides feasibility, not the model, so the same question gets the same answer twice",
+        "Progress streams over SSE: each tool call shows in the page as it happens",
+        "Runs free on Render and Gemini's free tier, with a Cloudflare Worker in front of Open-Meteo, which refused calls from Render's shared outbound address",
+        "187 tests that need no network, API key or model"
+      ],
+      "technologies": [
+        "Python",
+        "FastAPI",
+        "MCP",
+        "Gemini",
+        "SSE",
+        "Render",
+        "Cloudflare Workers"
+      ],
+      "metrics": [
+        { "value": "18", "label": "tools over MCP" },
+        { "value": "3", "label": "MCP servers on stdio" },
+        { "value": "187", "label": "tests, no network" }
+      ],
+      "imageUrl": "",
+      "liveUrl": "https://planning-desk.onrender.com",
+      "githubUrl": "https://github.com/Nandanhegde1/planning-desk",
+      "featured": false,
+      "category": "innovation"
+    },
+    {
+      "id": "india-tenders",
+      "title": "IndiaTenders: Open Government Tenders, Searchable",
+      "description": "A free, searchable index of open Indian government tenders from the Central Public Procurement Portal (CPPP), deduplicated, categorised and sorted by closing date. Tender-intelligence subscriptions charge thousands of rupees a year for this data, which is public.",
+      "highlights": [
+        "A cron scrapes a bounded number of the newest CPPP list pages every 6 hours, about 1.5 seconds apart, and builds coverage across runs",
+        "The parser is pure and unit-tested against a saved copy of the real page",
+        "Data-quality gates: a run that parses nothing fails instead of publishing, and one that would shrink the dataset below 70% refuses to overwrite",
+        "Tests and the build run before each data commit, so bad data blocks the publish",
+        "A static page per tender and organisation, plus CSV and JSON exports, RSS and a sitemap"
+      ],
+      "technologies": [
+        "Astro",
+        "TypeScript",
+        "GitHub Actions",
+        "Cloudflare Workers"
+      ],
+      "imageUrl": "",
+      "liveUrl": "https://india-tenders.nandanhegde1096.workers.dev/",
+      "githubUrl": "https://github.com/Nandanhegde1/india-tenders",
       "featured": false,
       "category": "innovation"
     },
@@ -210,6 +279,9 @@
         "TypeScript",
         "SCSS",
         "REST APIs"
+      ],
+      "metrics": [
+        { "value": "40+", "label": "countries served" }
       ],
       "imageUrl": "",
       "liveUrl": "",

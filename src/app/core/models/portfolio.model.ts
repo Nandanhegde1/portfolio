@@ -31,6 +31,12 @@ export interface Experience {
   technologies: string[];
 }
 
+/** A headline figure for a project card. Only figures the project's own text states. */
+export interface ProjectMetric {
+  value: string;
+  label: string;
+}
+
 export interface Project {
   id: string;
   title: string;
@@ -43,6 +49,7 @@ export interface Project {
   githubUrl: string;
   featured: boolean;
   category: 'enterprise' | 'devops' | 'personal' | 'open-source';
+  metrics?: ProjectMetric[];
 }
 
 export interface Skill {

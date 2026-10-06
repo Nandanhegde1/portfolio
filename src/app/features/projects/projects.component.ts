@@ -110,9 +110,9 @@ interface CategoryMeta {
                   </div>
                   <p class="reel__panel-desc">{{ p.description }}</p>
 
-                  @if (metricsFor(p).length) {
+                  @if (p.metrics?.length) {
                     <div class="reel__metrics">
-                      @for (m of metricsFor(p); track m.label) {
+                      @for (m of p.metrics; track m.label) {
                         <div class="reel__metric">
                           <strong>{{ m.value }}</strong>
                           <span>{{ m.label }}</span>
@@ -274,21 +274,5 @@ export class ProjectsComponent implements OnInit, AfterViewInit, OnDestroy {
     if (!isPlatformBrowser(this.platformId)) return;
     const el = this.host.nativeElement.querySelector('#panel-' + id) as HTMLElement | null;
     el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-
-  metricsFor(p: Project): { value: string; label: string }[] {
-    const out: { value: string; label: string }[] = [];
-    const re = /(\d[\d,]*\+?%?)\s+([a-z][a-z\s/]{2,30})/i;
-    for (const h of p.highlights ?? []) {
-      const m = h.match(re);
-      if (m) {
-        const value = m[1];
-        let label = m[2].trim().split(/\s+/).slice(0, 3).join(' ');
-        label = label.replace(/[.,;:]$/, '').toLowerCase();
-        if (!out.find(x => x.value === value)) out.push({ value, label });
-      }
-      if (out.length >= 3) break;
-    }
-    return out;
   }
 }
