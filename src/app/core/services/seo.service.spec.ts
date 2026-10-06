@@ -4,6 +4,7 @@ import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { SeoService } from './seo.service';
+import { routes } from '../../app.routes';
 
 // Locks the recruiter-facing meta: route titles/descriptions/canonical drifted
 // back to old positioning twice — this pins the fallback and the update path.
@@ -44,5 +45,17 @@ describe('SeoService', () => {
     service.update({ url: 'https://nandanhegde1.github.io/portfolio/pitch' });
     expect(document.querySelectorAll('link[rel="canonical"]').length).toBe(1);
     expect(document.querySelector('link[rel="canonical"]')?.getAttribute('href')).toBe('https://nandanhegde1.github.io/portfolio/pitch');
+  });
+
+  it('sets robots to noindex when a route asks, and back to index, follow on the next page', () => {
+    service.update({ noindex: true });
+    expect(meta.getTag('name="robots"')?.content).toBe('noindex');
+    service.update({});
+    expect(meta.getTag('name="robots"')?.content).toBe('index, follow');
+  });
+
+  it('keeps the SPA 404 route out of search results', () => {
+    const notFound = routes[0].children?.find((r) => r.path === '404');
+    expect(notFound?.data?.['seo']?.noindex).toBeTrue();
   });
 });

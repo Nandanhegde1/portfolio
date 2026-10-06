@@ -28,6 +28,23 @@ jobs:
       - run: npm run lint
       - run: npx ng test --watch=false --browsers=ChromeHeadless
       - run: npx ng build --configuration=production --base-href=/portfolio/
+      # Pages answers any path it has no file for with 404.html and HTTP 404, so
+      # deep links would never index. A copy of index.html at <route>.html is served
+      # at the extensionless URL with 200 (<route>/index.html would 301 to a trailing
+      # slash). Routes come from the sitemap; each copy gets its own canonical URL.
+      - name: Give each sitemap route its own HTML file
+        working-directory: dist/portfolio/browser
+        run: |
+          set -euo pipefail
+          base='https://nandanhegde1.github.io/portfolio/'
+          routes=$(sed -n "s#.*<loc>${base}\([^<]\+\)</loc>.*#\1#p" sitemap.xml)
+          [ -n "$routes" ] || { echo "No routes found in sitemap.xml"; exit 1; }
+          for route in $routes; do
+            mkdir -p "$(dirname "$route")"
+            sed "s#<link rel=\"canonical\" href=\"${base}\">#<link rel=\"canonical\" href=\"${base}${route}\">#" index.html > "$route.html"
+            grep -q "href=\"${base}${route}\"" "$route.html" || { echo "Canonical not set in $route.html"; exit 1; }
+            echo "$route.html"
+          done
       - uses: actions/upload-pages-artifact@v3
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         with:

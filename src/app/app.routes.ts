@@ -117,8 +117,8 @@ export const routes: Routes = [
         loadComponent: () => import('./features/quiz/quiz.component').then(m => m.QuizComponent),
         data: {
           seo: {
-            title: 'Quiz — How Well Do You Know Me?',
-            description: 'A fun quiz about my career, projects, and tech stack.',
+            title: 'Would I Survive Your Team?',
+            description: '7 real scenarios. 1 developer archetype. 0 wrong answers.',
             url: 'https://nandanhegde1.github.io/portfolio/quiz',
           },
         },
@@ -165,6 +165,7 @@ export const routes: Routes = [
             title: '404 — Lost? Try the terminal',
             description: 'Page not found, but here\'s an interactive terminal you can play with.',
             url: 'https://nandanhegde1.github.io/portfolio/404',
+            noindex: true,
           },
         },
       },

@@ -10,6 +10,8 @@ export interface SeoConfig {
   url?: string;
   image?: string;
   type?: 'website' | 'article' | 'profile';
+  /** Keep the page out of search results (e.g. the 404 route). */
+  noindex?: boolean;
 }
 
 const SITE_NAME = 'Nandan Hegde';
@@ -49,6 +51,8 @@ export class SeoService {
     this.titleService.setTitle(title);
 
     this.metaService.updateTag({ name: 'description', content: description });
+    // Written on every navigation so leaving a noindex page restores the default.
+    this.metaService.updateTag({ name: 'robots', content: config.noindex ? 'noindex' : 'index, follow' });
     this.metaService.updateTag({ property: 'og:title', content: title });
     this.metaService.updateTag({ property: 'og:description', content: description });
     this.metaService.updateTag({ property: 'og:url', content: url });
