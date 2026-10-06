@@ -50,8 +50,8 @@
       <tspan dx="10">users served</tspan>
     </text>
     <text x="600" y="400">
-      <tspan font-weight="700" fill="#e6edf3" font-size="28">AWS</tspan>
-      <tspan dx="10">Certified</tspan>
+      <tspan font-weight="700" fill="#e6edf3" font-size="28">15+</tspan>
+      <tspan dx="10">features shipped</tspan>
     </text>
   </g>
 
