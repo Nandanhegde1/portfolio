@@ -212,7 +212,7 @@
     {
       "id": "planning-desk",
       "title": "Planning Desk: Agent Loop over MCP",
-      "description": "A chat interface that answers planning questions by calling real tools over MCP, with a second mode that turns two years of exchange-rate history into spreadsheets, documents and charts. The agent loop is one hand-written function, with no orchestration framework, over 3 MCP servers that run as child processes on stdio and expose 18 tools.",
+      "description": "A chat interface that answers planning questions by calling real tools over MCP, with a second mode that turns two years of exchange-rate history into spreadsheets, documents and charts. The agent loop is one custom function, with no orchestration framework, over 3 MCP servers that run as child processes on stdio and expose 18 tools.",
       "highlights": [
         "Hard ceilings on every turn: 8 steps, 12 tool calls, 60,000 tokens, and 45 seconds per tool call",
         "A rules table decides feasibility, not the model, so the same question gets the same answer twice",

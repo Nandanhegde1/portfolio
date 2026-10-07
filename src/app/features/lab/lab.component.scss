@@ -1,29 +1,44 @@
 @use 'variables' as *;
 @use 'mixins' as *;
 
+// Two panes from 1024 px up: the diagram on the left, a sticky panel with the
+// counters, the answer and the tool calls on the right, so a whole turn fits on
+// one laptop screen. Below that the panes stack.
+$lab-side-width: 380px;
+$lab-sticky-top: $navbar-height + 16px;
+
 .lab {
   min-height: calc(100vh - $navbar-height);
-  padding: $space-3xl 0;
+  padding: $space-lg 0 $space-xl;
   background: var(--bg-primary);
 
   @include mobile {
-    padding: $space-xl 0;
+    padding: $space-lg 0;
   }
 
   &__container {
     @include container;
 
     & {
-      max-width: 1040px;
+      max-width: 1280px;
       display: flex;
       flex-direction: column;
-      gap: $space-xl;
+      gap: $space-lg;
     }
   }
 
   // ── Header ──
   &__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: $space-md $space-lg;
+  }
+
+  &__intro {
     max-width: 760px;
+    min-width: 0;
   }
 
   &__eyebrow {
@@ -36,11 +51,11 @@
 
   &__title {
     font-family: $font-heading;
-    font-size: $fs-4xl;
+    font-size: $fs-2xl;
     font-weight: $fw-extrabold;
-    line-height: 1.1;
+    line-height: 1.15;
     color: var(--text-primary);
-    margin: $space-sm 0 $space-md;
+    margin: $space-xs 0;
 
     @include mobile {
       font-size: $fs-2xl;
@@ -49,29 +64,26 @@
 
   &__lede {
     color: var(--text-secondary);
-    font-size: $fs-md;
-    line-height: 1.6;
-    margin: 0 0 $space-md;
-
-    @include mobile {
-      font-size: $fs-base;
-    }
+    font-size: $fs-base;
+    line-height: 1.55;
+    margin: 0 0 $space-sm;
   }
 
   &__honesty {
-    margin: 0 0 $space-md;
-    padding: $space-sm $space-md;
+    margin: 0;
+    padding: $space-xs $space-sm;
     border-left: 3px solid var(--accent);
     background: var(--accent-light);
     border-radius: 0 $radius-md $radius-md 0;
     color: var(--text-primary);
-    font-size: $fs-sm;
-    line-height: 1.55;
+    font-size: $fs-xs;
+    line-height: 1.5;
   }
 
   &__links {
     display: flex;
     flex-wrap: wrap;
+    flex-shrink: 0;
     gap: $space-sm;
   }
 
@@ -110,21 +122,37 @@
     font-size: $fs-sm;
   }
 
-  // ── Run picker ──
+  // ── Toolbar: question chips on the left, playback on the right ──
+  &__toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-sm $space-md;
+  }
+
   &__picker {
     display: flex;
     flex-wrap: wrap;
     gap: $space-sm;
+    min-width: 0;
+
+    @include mobile {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      width: 100%;
+      padding-bottom: 2px;
+    }
   }
 
   &__chip {
     display: inline-flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 2px;
+    align-items: baseline;
+    gap: $space-sm;
+    flex-shrink: 0;
     max-width: 100%;
-    padding: $space-sm $space-md;
-    border-radius: $radius-lg;
+    padding: 8px 14px;
+    border-radius: $radius-full;
     border: 1px solid var(--border);
     background: var(--card-bg);
     color: var(--text-primary);
@@ -151,56 +179,16 @@
   &__chip-title {
     font-size: $fs-sm;
     font-weight: $fw-semibold;
+    white-space: nowrap;
   }
 
   &__chip-meta {
     font-family: $font-mono;
     font-size: $fs-xs;
     color: var(--text-muted);
+    white-space: nowrap;
   }
 
-  // ── Panel ──
-  &__panel {
-    display: flex;
-    flex-direction: column;
-    gap: $space-lg;
-    padding: $space-xl;
-    border-radius: $radius-xl;
-    border: 1px solid var(--border);
-    background: var(--card-bg);
-    min-width: 0;
-
-    @include mobile {
-      padding: 12px;
-    }
-  }
-
-  &__label {
-    display: block;
-    font-family: $font-mono;
-    font-size: $fs-xs;
-    color: var(--text-muted);
-    margin-bottom: $space-xs;
-  }
-
-  &__question-text {
-    margin: 0;
-    color: var(--text-primary);
-    font-size: $fs-base;
-    line-height: 1.55;
-  }
-
-  &__question-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: $space-xs $space-md;
-    margin: $space-sm 0 0;
-    font-family: $font-mono;
-    font-size: $fs-xs;
-    color: var(--text-muted);
-  }
-
-  // ── Controls ──
   &__controls {
     display: flex;
     flex-wrap: wrap;
@@ -247,11 +235,6 @@
   &__speeds {
     display: inline-flex;
     gap: 2px;
-    margin-left: auto;
-
-    @include mobile {
-      margin-left: 0;
-    }
   }
 
   &__speed {
@@ -269,11 +252,100 @@
   &__chip,
   &__btn,
   &__speed,
-  &__link {
+  &__link,
+  &__tab {
     &:focus-visible {
       outline: 2px solid var(--accent);
       outline-offset: 2px;
     }
+  }
+
+  // ── Workspace: diagram pane and the sticky details pane ──
+  &__workspace {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) $lab-side-width;
+    gap: $space-lg;
+    align-items: stretch;
+
+    @media (max-width: #{$bp-desktop - 1px}) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  &__main,
+  &__side {
+    min-width: 0;
+    border-radius: $radius-xl;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+  }
+
+  &__main {
+    display: flex;
+    flex-direction: column;
+    gap: $space-sm;
+    padding: $space-md;
+
+    @include mobile {
+      padding: 12px;
+    }
+  }
+
+  // The details pane is exactly as tall as the diagram pane: its content sits in
+  // an absolutely positioned layer, so a long answer scrolls inside the pane and
+  // never makes the page taller. Below 1024 px the panes stack and it flows normally.
+  &__side {
+    position: relative;
+    min-height: 320px;
+
+    @media (max-width: #{$bp-desktop - 1px}) {
+      min-height: 0;
+    }
+  }
+
+  &__side-inner {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    gap: $space-md;
+    padding: $space-md;
+    overflow: hidden;
+
+    @media (max-width: #{$bp-desktop - 1px}) {
+      position: static;
+      overflow: visible;
+    }
+
+    @include mobile {
+      padding: 12px;
+    }
+  }
+
+  &__label {
+    display: block;
+    font-family: $font-mono;
+    font-size: $fs-xs;
+    color: var(--text-muted);
+    margin-bottom: 2px;
+  }
+
+  &__question-text {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: $fs-sm;
+    font-weight: $fw-semibold;
+    line-height: 1.5;
+  }
+
+  &__question-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-xs $space-md;
+    margin: $space-xs 0 0;
+    font-family: $font-mono;
+    font-size: $fs-xs;
+    color: var(--text-muted);
   }
 
   // ── Diagram ──
@@ -292,11 +364,15 @@
     display: block;
     width: 100%;
     height: auto;
-    max-height: 560px;
+    max-height: min(46vh, 420px);
     overflow: visible;
   }
 
-  // ── Narration, counters ──
+  &__svg--narrow {
+    max-height: none;
+  }
+
+  // ── Narration ──
   &__narration {
     display: flex;
     flex-direction: column;
@@ -313,31 +389,25 @@
     color: var(--text-muted);
   }
 
+  // ── Counters ──
   &__counters {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: $space-md;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: $space-sm;
     margin: 0;
+    flex-shrink: 0;
 
-    @include tablet {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    @include mobile {
-      gap: $space-sm;
+    @media (min-width: $bp-tablet) and (max-width: #{$bp-desktop - 1px}) {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
   }
 
   &__counter {
-    padding: $space-sm $space-md;
+    padding: $space-sm 12px;
     border-radius: $radius-md;
     border: 1px solid var(--border);
     background: var(--bg-secondary);
     min-width: 0;
-
-    @include mobile {
-      padding: $space-sm;
-    }
 
     // text-secondary, not muted: muted on bg-secondary is 4.29:1 in the light theme.
     dt {
@@ -354,7 +424,8 @@
   &__counter-value {
     display: block;
     font-family: $font-mono;
-    font-size: $fs-md;
+    font-size: $fs-sm;
+    white-space: nowrap;
     font-weight: $fw-bold;
     color: var(--text-primary);
     font-variant-numeric: tabular-nums;
@@ -384,17 +455,73 @@
     }
   }
 
-  // ── Tool call list, answer ──
-  &__section {
-    min-width: 0;
+  // ── Tabs: answer and tool calls ──
+  &__tabs {
+    display: flex;
+    gap: $space-xs;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
   }
 
-  &__h2 {
-    font-family: $font-heading;
-    font-size: $fs-lg;
-    font-weight: $fw-bold;
-    color: var(--text-primary);
-    margin: 0 0 $space-sm;
+  &__tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 40px;
+    margin-bottom: -1px;
+    padding: 0 12px;
+    border: none;
+    border-bottom: 2px solid transparent;
+    background: none;
+    color: var(--text-secondary);
+    font: inherit;
+    font-size: $fs-sm;
+    font-weight: $fw-semibold;
+    cursor: pointer;
+    transition: color $transition-fast, border-color $transition-fast;
+
+    &:hover {
+      color: var(--text-primary);
+    }
+
+    &--active {
+      color: var(--text-primary);
+      border-bottom-color: var(--accent);
+    }
+  }
+
+  &__tab-count {
+    min-width: 20px;
+    padding: 0 6px;
+    border-radius: $radius-full;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    font-family: $font-mono;
+    font-size: $fs-xs;
+    text-align: center;
+  }
+
+  &__tab-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  // The panel scrolls inside the sticky pane, so the page itself does not have to.
+  &__tabpanel {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    padding-right: 2px;
+
+    &[hidden] {
+      display: none;
+    }
+
+    @media (max-width: #{$bp-desktop - 1px}) {
+      overflow: visible;
+    }
   }
 
   &__muted {
@@ -415,7 +542,7 @@
   }
 
   &__timing {
-    padding: $space-sm $space-md;
+    padding: $space-sm 12px;
     border-radius: $radius-md;
     border: 1px solid var(--border);
     border-left: 3px solid var(--text-muted);
@@ -481,20 +608,19 @@
 
   &__answer {
     margin: 0;
-    padding: $space-md;
+    padding: 12px $space-md;
     border-radius: $radius-md;
     background: var(--bg-secondary);
     border-left: 3px solid var(--accent);
     color: var(--text-primary);
-    font-size: $fs-base;
+    font-size: $fs-sm;
     line-height: 1.6;
     overflow-wrap: anywhere;
+    white-space: pre-line;
   }
 
   &__footnote {
     margin: 0;
-    padding-top: $space-md;
-    border-top: 1px solid var(--border);
     color: var(--text-muted);
     font-size: $fs-xs;
     line-height: 1.6;
@@ -676,5 +802,27 @@
 
   .lab__bar > span {
     transition: none;
+  }
+}
+
+// Short laptop screens (under about 860 px tall): keep the whole turn above the
+// fold by dropping the eyebrow and the intro line. The honesty note stays.
+@media (min-width: $bp-desktop) and (max-height: 860px) {
+  .lab {
+    padding-top: $space-md;
+  }
+
+  .lab__eyebrow,
+  .lab__lede {
+    display: none;
+  }
+
+  .lab__title {
+    font-size: $fs-xl;
+    margin-top: 0;
+  }
+
+  .lab__svg {
+    max-height: min(40vh, 380px);
   }
 }

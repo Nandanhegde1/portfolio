@@ -198,19 +198,20 @@ function buildLayout(narrow: boolean, servers: AgentTraceServer[], model: string
     <section class="lab">
       <div class="lab__container">
         <header class="lab__header">
-          <span class="lab__eyebrow">// the lab · agent trace</span>
-          <h1 class="lab__title">Watch an AI agent work</h1>
-          <p class="lab__lede">
-            Planning Desk answers planning questions by calling real tools over MCP. Its agent loop is one
-            hand-written function, with no orchestration framework, over three MCP servers. Pick a question to
-            see one turn: each model call, each tool call and how long it took, against the ceilings the loop enforces.
-          </p>
-          @if (data()) {
-            <p class="lab__honesty" data-testid="honesty">
-              A recorded run from the live Planning Desk app on {{ recordedDate() }}, replayed in your browser.
-              No model is called from this page.
+          <div class="lab__intro">
+            <span class="lab__eyebrow">// the lab · agent trace</span>
+            <h1 class="lab__title">Watch an AI agent work</h1>
+            <p class="lab__lede">
+              Planning Desk answers planning questions with real tools over MCP, driven by one custom agent loop
+              with hard ceilings. Pick a question to replay a real turn.
             </p>
-          }
+            @if (data()) {
+              <p class="lab__honesty" data-testid="honesty">
+                A recorded run from the live Planning Desk app on {{ recordedDate() }}, replayed in your browser.
+                No model is called from this page.
+              </p>
+            }
+          </div>
           <div class="lab__links">
             <a class="lab__link lab__link--primary" [href]="liveAppUrl" target="_blank" rel="noopener">Try the live app</a>
             <a class="lab__link" [href]="sourceUrl" target="_blank" rel="noopener">Source</a>
@@ -224,195 +225,245 @@ function buildLayout(narrow: boolean, servers: AgentTraceServer[], model: string
         }
 
         @if (data(); as d) {
-          <div class="lab__picker" role="group" aria-label="Recorded questions">
-            @for (r of d.runs; track r.id) {
-              <button
-                type="button"
-                class="lab__chip"
-                [class.lab__chip--active]="r.id === run()?.id"
-                [attr.aria-pressed]="r.id === run()?.id"
-                (click)="select(r.id)"
-              >
-                <span class="lab__chip-title">{{ runTitle(r.id, r.question) }}</span>
-                @if (modeLabel(r.mode); as mode) {
-                  <span class="lab__chip-meta">{{ mode }}</span>
-                }
-              </button>
+          <div class="lab__toolbar">
+            <div class="lab__picker" role="group" aria-label="Recorded questions">
+              @for (r of d.runs; track r.id) {
+                <button
+                  type="button"
+                  class="lab__chip"
+                  [class.lab__chip--active]="r.id === run()?.id"
+                  [attr.aria-pressed]="r.id === run()?.id"
+                  (click)="select(r.id)"
+                >
+                  <span class="lab__chip-title">{{ runTitle(r.id, r.question) }}</span>
+                  @if (modeLabel(r.mode); as mode) {
+                    <span class="lab__chip-meta">{{ mode }}</span>
+                  }
+                </button>
+              }
+            </div>
+
+            @if (run()) {
+              <div class="lab__controls">
+                <button type="button" class="lab__btn lab__btn--primary" (click)="togglePlay()">
+                  {{ replay()?.playing() ? 'Pause' : (replay()?.finished() ? 'Play again' : 'Play') }}
+                </button>
+                <!-- aria-disabled, not disabled: a disabled button drops keyboard focus to the page. -->
+                <button
+                  type="button"
+                  class="lab__btn"
+                  (click)="replay()?.step()"
+                  [attr.aria-disabled]="replay()?.finished() ? 'true' : null"
+                >Step</button>
+                <button type="button" class="lab__btn" (click)="restart()">Replay</button>
+                <div class="lab__speeds" role="group" aria-label="Playback speed">
+                  @for (s of speeds; track s) {
+                    <button
+                      type="button"
+                      class="lab__speed"
+                      [class.lab__speed--active]="replay()?.speed() === s"
+                      [attr.aria-pressed]="replay()?.speed() === s"
+                      (click)="replay()?.setSpeed(s)"
+                    >{{ s }}x</button>
+                  }
+                </div>
+              </div>
             }
           </div>
         }
 
         @if (run(); as r) {
-          <article class="lab__panel">
-            <div class="lab__question">
-              <span class="lab__label">You asked</span>
-              <p class="lab__question-text">{{ r.question }}</p>
-              <p class="lab__question-meta">
-                @if (modeLabel(r.mode); as mode) {
-                  <span>Mode: {{ mode }}</span>
-                }
-                @if (r.toolsOffered !== undefined) {
-                  <span>{{ r.toolsOffered }} of {{ toolTotal() }} tools offered</span>
-                }
-                @if (data()?.model; as model) {
-                  <span>Model: {{ model }}</span>
-                }
-              </p>
-            </div>
-
-            <div class="lab__controls">
-              <button type="button" class="lab__btn lab__btn--primary" (click)="replay()?.toggle()">
-                {{ replay()?.playing() ? 'Pause' : (replay()?.finished() ? 'Play again' : 'Play') }}
-              </button>
-              <!-- aria-disabled, not disabled: a disabled button drops keyboard focus to the page. -->
-              <button
-                type="button"
-                class="lab__btn"
-                (click)="replay()?.step()"
-                [attr.aria-disabled]="replay()?.finished() ? 'true' : null"
-              >Step</button>
-              <button type="button" class="lab__btn" (click)="replay()?.replay()">Replay</button>
-              <div class="lab__speeds" role="group" aria-label="Playback speed">
-                @for (s of speeds; track s) {
-                  <button
-                    type="button"
-                    class="lab__speed"
-                    [class.lab__speed--active]="replay()?.speed() === s"
-                    [attr.aria-pressed]="replay()?.speed() === s"
-                    (click)="replay()?.setSpeed(s)"
-                  >{{ s }}x</button>
-                }
-              </div>
-            </div>
-
-            <div class="lab__stage" [class.lab__stage--paused]="!replay()?.playing()">
-              <svg
-                class="lab__svg"
-                [class.lab__svg--narrow]="narrow()"
-                [attr.viewBox]="'0 0 ' + layout().w + ' ' + layout().h"
-                preserveAspectRatio="xMidYMid meet"
-                role="img"
-                [attr.aria-label]="diagramLabel()"
-              >
-                <g>
-                  @for (e of layout().edges; track e.id) {
-                    <g
-                      class="lab__edge"
-                      [class.lab__edge--on]="edgeModes()[e.id] === 'on'"
-                      [class.lab__edge--walking]="edgeModes()[e.id] === 'walking'"
-                    >
-                      <line class="lab__edge-line" [attr.x1]="e.x1" [attr.y1]="e.y1" [attr.x2]="e.x2" [attr.y2]="e.y2" />
-                      <polygon class="lab__edge-head" [attr.points]="e.head" />
-                    </g>
+          <div class="lab__workspace">
+            <article class="lab__main">
+              <div class="lab__question">
+                <span class="lab__label">You asked</span>
+                <p class="lab__question-text">{{ r.question }}</p>
+                <p class="lab__question-meta">
+                  @if (modeLabel(r.mode); as mode) {
+                    <span>Mode: {{ mode }}</span>
                   }
-                </g>
-                @if (!reducedMotion()) {
+                  @if (r.toolsOffered !== undefined) {
+                    <span>{{ r.toolsOffered }} of {{ toolTotal() }} tools offered</span>
+                  }
+                  @if (data()?.model; as model) {
+                    <span>Model: {{ model }}</span>
+                  }
+                </p>
+              </div>
+
+              <div class="lab__stage" [class.lab__stage--paused]="!replay()?.playing()">
+                <svg
+                  class="lab__svg"
+                  [class.lab__svg--narrow]="narrow()"
+                  [attr.viewBox]="'0 0 ' + layout().w + ' ' + layout().h"
+                  preserveAspectRatio="xMidYMid meet"
+                  role="img"
+                  [attr.aria-label]="diagramLabel()"
+                >
                   <g>
-                    @for (p of packets(); track p.id) {
-                      <circle
-                        class="lab__packet"
-                        [class.lab__packet--back]="p.back"
-                        [class.lab__packet--failed]="p.failed"
-                        r="5"
-                        [style.--x1]="p.x1 + 'px'"
-                        [style.--y1]="p.y1 + 'px'"
-                        [style.--x2]="p.x2 + 'px'"
-                        [style.--y2]="p.y2 + 'px'"
-                        [style.--dur]="packetDuration()"
-                      />
+                    @for (e of layout().edges; track e.id) {
+                      <g
+                        class="lab__edge"
+                        [class.lab__edge--on]="edgeModes()[e.id] === 'on'"
+                        [class.lab__edge--walking]="edgeModes()[e.id] === 'walking'"
+                      >
+                        <line class="lab__edge-line" [attr.x1]="e.x1" [attr.y1]="e.y1" [attr.x2]="e.x2" [attr.y2]="e.y2" />
+                        <polygon class="lab__edge-head" [attr.points]="e.head" />
+                      </g>
                     }
                   </g>
-                }
-                <g>
-                  @for (n of layout().nodes; track n.id) {
-                    <g class="lab__node" [attr.data-state]="nodeModes()[n.id] ?? 'idle'" [attr.transform]="'translate(' + n.x + ' ' + n.y + ')'">
-                      <rect class="lab__node-box" [attr.x]="-n.w / 2" [attr.y]="-n.h / 2" [attr.width]="n.w" [attr.height]="n.h" rx="10" />
-                      <text class="lab__node-label" text-anchor="middle" y="-3">{{ n.label }}</text>
-                      <text class="lab__node-sub" text-anchor="middle" y="13">{{ n.sub }}</text>
-                      @if (nodeNotes()[n.id]; as note) {
-                        <text class="lab__node-note" text-anchor="middle" [attr.y]="n.h / 2 + 16">{{ note }}</text>
+                  @if (!reducedMotion()) {
+                    <g>
+                      @for (p of packets(); track p.id) {
+                        <circle
+                          class="lab__packet"
+                          [class.lab__packet--back]="p.back"
+                          [class.lab__packet--failed]="p.failed"
+                          r="5"
+                          [style.--x1]="p.x1 + 'px'"
+                          [style.--y1]="p.y1 + 'px'"
+                          [style.--x2]="p.x2 + 'px'"
+                          [style.--y2]="p.y2 + 'px'"
+                          [style.--dur]="packetDuration()"
+                        />
                       }
                     </g>
                   }
-                </g>
-              </svg>
-            </div>
-
-            <p class="lab__narration" aria-live="polite" aria-atomic="true">
-              @for (line of narration(); track $index) {
-                <span class="lab__narration-line">{{ line }}</span>
-              } @empty {
-                <span class="lab__narration-line lab__narration-line--idle">Press Play to replay the turn, or Step to go one event at a time.</span>
-              }
-            </p>
-
-            <dl class="lab__counters">
-              @for (c of counters(); track c.label) {
-                <div class="lab__counter">
-                  <dt>{{ c.label }}</dt>
-                  <dd>
-                    <span class="lab__counter-value">{{ c.text }}</span>
-                    @if (c.pct !== null) {
-                      <span class="lab__bar" aria-hidden="true"><span [style.width.%]="c.pct"></span></span>
-                    }
-                  </dd>
-                </div>
-              }
-            </dl>
-
-            <section class="lab__section" aria-labelledby="lab-timings">
-              <h2 class="lab__h2" id="lab-timings">Tool calls</h2>
-              @if (state().calls.length) {
-                <ol class="lab__timings">
-                  @for (c of state().calls; track c.call.index) {
-                    <li class="lab__timing" [attr.data-state]="c.result ? (c.result.ok ? 'done' : 'failed') : 'busy'">
-                      <div class="lab__timing-head">
-                        <span class="lab__timing-tool">{{ c.call.tool }}</span>
-                        <span class="lab__timing-server">{{ serverLabel(c.call.server) }}</span>
-                        <span class="lab__timing-ms">
-                          @if (c.result; as res) {
-                            {{ fmt(res.durationMs) }} ms{{ res.ok ? '' : ', failed' }}
-                          } @else {
-                            running
-                          }
-                        </span>
-                      </div>
-                      @if (c.result; as res) {
-                        <span class="lab__bar lab__bar--timing" aria-hidden="true"><span [style.width.%]="percent(res.durationMs, slowestTool())"></span></span>
-                        @if (res.summary) {
-                          <p class="lab__timing-summary">{{ res.summary }}</p>
+                  <g>
+                    @for (n of layout().nodes; track n.id) {
+                      <g class="lab__node" [attr.data-state]="nodeModes()[n.id] ?? 'idle'" [attr.transform]="'translate(' + n.x + ' ' + n.y + ')'">
+                        <rect class="lab__node-box" [attr.x]="-n.w / 2" [attr.y]="-n.h / 2" [attr.width]="n.w" [attr.height]="n.h" rx="10" />
+                        <text class="lab__node-label" text-anchor="middle" y="-3">{{ n.label }}</text>
+                        <text class="lab__node-sub" text-anchor="middle" y="13">{{ n.sub }}</text>
+                        @if (nodeNotes()[n.id]; as note) {
+                          <text class="lab__node-note" text-anchor="middle" [attr.y]="n.h / 2 + 16">{{ note }}</text>
                         }
-                      }
-                    </li>
-                  }
-                </ol>
-              } @else {
-                <p class="lab__muted">No tool calls yet. They appear here as the replay reaches them.</p>
-              }
-            </section>
+                      </g>
+                    }
+                  </g>
+                </svg>
+              </div>
 
-            <section class="lab__section" aria-labelledby="lab-answer">
-              <h2 class="lab__h2" id="lab-answer">Answer</h2>
-              @if (state().final; as fin) {
-                <blockquote class="lab__answer">{{ fin.text }}</blockquote>
-                @for (f of state().files; track $index) {
-                  <p class="lab__muted">{{ fileLine(f) }}</p>
+              <p class="lab__narration" aria-live="polite" aria-atomic="true">
+                @for (line of narration(); track $index) {
+                  <span class="lab__narration-line">{{ line }}</span>
+                } @empty {
+                  <span class="lab__narration-line lab__narration-line--idle">Press Play to replay the turn, or Step to go one event at a time.</span>
                 }
-                <p class="lab__muted">{{ doneLine() }}</p>
-              } @else {
-                <p class="lab__muted">The answer appears when the replay reaches it.</p>
-              }
-            </section>
+              </p>
+            </article>
 
-            <p class="lab__footnote">
-              Clock times are when each event reached the recording client. Tool times are measured on the server,
-              and tool calls in the same step run side by side.
-              @if (ceilings()?.turnSeconds) {
-                The step, tool call and token ceilings were read from the live app; the {{ ceilings()?.turnSeconds }} s
-                turn budget is the app's default setting, which the live app does not report.
-              }
-            </p>
-          </article>
+            <aside class="lab__side" aria-label="Run details">
+              <div class="lab__side-inner">
+              <dl class="lab__counters">
+                @for (c of counters(); track c.label) {
+                  <div class="lab__counter">
+                    <dt>{{ c.label }}</dt>
+                    <dd>
+                      <span class="lab__counter-value">{{ c.text }}</span>
+                      @if (c.pct !== null) {
+                        <span class="lab__bar" aria-hidden="true"><span [style.width.%]="c.pct"></span></span>
+                      }
+                    </dd>
+                  </div>
+                }
+              </dl>
+
+              <div class="lab__tabs" role="tablist" aria-label="Run details">
+                <button
+                  type="button"
+                  role="tab"
+                  id="lab-tab-answer"
+                  class="lab__tab"
+                  [class.lab__tab--active]="tab() === 'answer'"
+                  [attr.aria-selected]="tab() === 'answer'"
+                  aria-controls="lab-panel-answer"
+                  (click)="pickTab('answer')"
+                >
+                  Answer
+                  @if (state().final) {
+                    <span class="lab__tab-dot" aria-hidden="true"></span>
+                  }
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  id="lab-tab-calls"
+                  class="lab__tab"
+                  [class.lab__tab--active]="tab() === 'calls'"
+                  [attr.aria-selected]="tab() === 'calls'"
+                  aria-controls="lab-panel-calls"
+                  (click)="pickTab('calls')"
+                >
+                  Tool calls <span class="lab__tab-count">{{ state().calls.length }}</span>
+                </button>
+              </div>
+
+              <section
+                class="lab__tabpanel"
+                role="tabpanel"
+                id="lab-panel-answer"
+                aria-labelledby="lab-tab-answer"
+                [hidden]="tab() !== 'answer'"
+              >
+                @if (state().final; as fin) {
+                  <blockquote class="lab__answer">{{ fin.text }}</blockquote>
+                  @for (f of state().files; track $index) {
+                    <p class="lab__muted">{{ fileLine(f) }}</p>
+                  }
+                  <p class="lab__muted">{{ doneLine() }}</p>
+                } @else {
+                  <p class="lab__muted">The answer appears here when the replay reaches it.</p>
+                }
+              </section>
+
+              <section
+                class="lab__tabpanel"
+                role="tabpanel"
+                id="lab-panel-calls"
+                aria-labelledby="lab-tab-calls"
+                [hidden]="tab() !== 'calls'"
+              >
+                @if (state().calls.length) {
+                  <ol class="lab__timings">
+                    @for (c of state().calls; track c.call.index) {
+                      <li class="lab__timing" [attr.data-state]="c.result ? (c.result.ok ? 'done' : 'failed') : 'busy'">
+                        <div class="lab__timing-head">
+                          <span class="lab__timing-tool">{{ c.call.tool }}</span>
+                          <span class="lab__timing-server">{{ serverLabel(c.call.server) }}</span>
+                          <span class="lab__timing-ms">
+                            @if (c.result; as res) {
+                              {{ fmt(res.durationMs) }} ms{{ res.ok ? '' : ', failed' }}
+                            } @else {
+                              running
+                            }
+                          </span>
+                        </div>
+                        @if (c.result; as res) {
+                          <span class="lab__bar lab__bar--timing" aria-hidden="true"><span [style.width.%]="percent(res.durationMs, slowestTool())"></span></span>
+                          @if (res.summary) {
+                            <p class="lab__timing-summary">{{ res.summary }}</p>
+                          }
+                        }
+                      </li>
+                    }
+                  </ol>
+                } @else {
+                  <p class="lab__muted">No tool calls yet. They appear here as the replay reaches them.</p>
+                }
+              </section>
+              </div>
+            </aside>
+          </div>
+
+          <p class="lab__footnote">
+            Clock times are when each event reached the recording client. Tool times are measured on the server,
+            and tool calls in the same step run side by side.
+            @if (ceilings()?.turnSeconds) {
+              The step, tool call and token ceilings were read from the live app; the {{ ceilings()?.turnSeconds }} s
+              turn budget is the app's default setting, which the live app does not report.
+            }
+          </p>
         }
       </div>
     </section>
@@ -429,6 +480,8 @@ export class LabComponent implements OnInit, OnDestroy {
   protected readonly narrow = signal(false);
   protected readonly reducedMotion = signal(false);
   private readonly selectedId = signal<string | null>(null);
+  /** The tab the visitor picked; null means follow the replay (tool calls while it runs, the answer once it ends). */
+  private readonly pickedTab = signal<'answer' | 'calls' | null>(null);
   private readonly mediaCleanup: (() => void)[] = [];
 
   protected readonly data = this.traces.data;
@@ -451,6 +504,8 @@ export class LabComponent implements OnInit, OnDestroy {
   });
 
   protected readonly ceilings = computed(() => this.data()?.ceilings ?? null);
+
+  protected readonly tab = computed<'answer' | 'calls'>(() => this.pickedTab() ?? (this.state().final ? 'answer' : 'calls'));
 
   protected readonly recordedDate = computed(() => {
     const at = this.data()?.recordedAt;
@@ -614,6 +669,7 @@ export class LabComponent implements OnInit, OnDestroy {
 
   /** Switches to a run and plays it; picking the current run plays it from the start. */
   select(id: string): void {
+    this.pickedTab.set(null);
     const current = this.replay();
     if (this.run()?.id === id) {
       current?.replay();
@@ -622,6 +678,22 @@ export class LabComponent implements OnInit, OnDestroy {
     current?.destroy();
     this.selectedId.set(id);
     this.replay()?.play();
+  }
+
+  protected pickTab(tab: 'answer' | 'calls'): void {
+    this.pickedTab.set(tab);
+  }
+
+  /** Play or pause; playing again after the end hands the tab choice back to the replay. */
+  protected togglePlay(): void {
+    const rp = this.replay();
+    if (rp?.finished()) this.pickedTab.set(null);
+    rp?.toggle();
+  }
+
+  protected restart(): void {
+    this.pickedTab.set(null);
+    this.replay()?.replay();
   }
 
   protected runTitle(id: string, question: string): string {

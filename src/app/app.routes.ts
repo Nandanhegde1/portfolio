@@ -88,7 +88,7 @@ export const routes: Routes = [
         data: {
           seo: {
             title: 'The Lab: Watch an AI Agent Work',
-            description: 'A recorded run of Planning Desk, an AI agent with a hand-written loop over three MCP servers, replayed step by step in your browser: every model call, every tool call and its timing, against hard ceilings.',
+            description: 'A recorded run of Planning Desk, an AI agent with a custom loop over three MCP servers, replayed step by step in your browser: every model call, every tool call and its timing, against hard ceilings.',
             url: 'https://nandanhegde1.github.io/portfolio/lab',
           },
         },
