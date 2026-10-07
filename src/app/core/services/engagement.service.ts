@@ -28,8 +28,6 @@ export class EngagementService {
     ...(environment.features.blog ? { '/blog': 15 } : {}),
     '/lab': 10,
     '/quiz': 10,
-    // Counted only while the roast wall is live; otherwise the score could never top out.
-    ...(environment.features.supabase ? { '/roast-me-back': 8 } : {}),
     '/contact': 7,
   };
   private readonly maxScore = Object.values(this.weights).reduce((a, b) => a + b, 0);
@@ -57,7 +55,7 @@ export class EngagementService {
   });
 
   // Only sections that still count: storage can hold paths from earlier versions
-  // of the site (a hidden /roast-me-back), which showed as "8 of 7 sections".
+  // of the site (a section since removed), which showed as "8 of 7 sections".
   readonly visitedCount = computed(
     () => new Set(this.visits().map((v) => v.path).filter((p) => this.weights[p] != null)).size,
   );

@@ -34,8 +34,6 @@ app.get('/', (_req, res) => {
     message: 'Portfolio API',
     endpoints: [
       '/api/health',
-      '/api/roast',
-      '/api/roasts',
       '/api/analytics',
       '/api/contact',
       '/api/recruiter/stats',
@@ -47,8 +45,6 @@ app.get('/', (_req, res) => {
 
 app.use('/api/health',     require('./routes/health'));
 app.use('/api/analytics',  require('./routes/analytics'));
-app.use('/api/roast',      require('./routes/roast'));
-app.use('/api/roasts',     require('./routes/roasts'));
 app.use('/api/contact',    require('./routes/contact'));
 app.use('/api/blog',       require('./routes/blog'));
 app.use('/api/recruiter',  require('./routes/recruiter'));

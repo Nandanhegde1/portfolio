@@ -32,7 +32,7 @@ test('unknown routes 404 as JSON, not an HTML error page', async () => {
 });
 
 test('malformed JSON body returns a JSON 400', async () => {
-  const res = await fetch(`${base}/api/roasts`, {
+  const res = await fetch(`${base}/api/contact`, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
     body: '{not json',

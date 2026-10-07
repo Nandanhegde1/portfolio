@@ -32,7 +32,7 @@ interface Cmd {
         <h1 class="nf__title">Page not found <span class="nf__cursor">_</span></h1>
         <p class="nf__lede">
           The route you tried doesn't exist — but here's a terminal you can play with.
-          Try <code>help</code>, <code>ls</code>, <code>about</code>, <code>roast</code>, or <code>sudo hire-me</code>.
+          Try <code>help</code>, <code>ls</code>, <code>about</code>, <code>lab</code>, or <code>sudo hire-me</code>.
         </p>
 
         <div class="nf__terminal" role="region" aria-label="Interactive terminal">
@@ -106,7 +106,7 @@ export class NotFoundComponent implements OnInit {
   <span class="nf__hl">skills</span>     → tech I use
   <span class="nf__hl">contact</span>    → get in touch
   <span class="nf__hl">resume</span>     → download CV
-  <span class="nf__hl">roast</span>      → AI roasts you/me
+  <span class="nf__hl">lab</span>        → replay an AI agent run
   <span class="nf__hl">dashboard</span>  → live stats
   <span class="nf__hl">ls</span>         → list pages
   <span class="nf__hl">whoami</span>     → identify
@@ -120,9 +120,9 @@ export class NotFoundComponent implements OnInit {
     skills: () => ({ cmd: 'skills', out: 'Angular · TypeScript · RxJS · Node · AWS · Docker · K8s · Azure DevOps' }),
     contact: () => ({ cmd: 'contact', out: 'Form ready when you are.', href: '/contact' }),
     resume: () => ({ cmd: 'resume', out: '<a href="assets/Nandan_Hegde_Resume.pdf" target="_blank" class="nf__link">↳ Download resume.pdf</a>' }),
-      roast: () => ({ cmd: 'roast', out: 'Heading to the lab.', href: '/lab' }),
+    lab: () => ({ cmd: 'lab', out: 'Heading to the lab.', href: '/lab' }),
     dashboard: () => ({ cmd: 'dashboard', out: 'Loading metrics…', href: '/dashboard' }),
-      ls: () => ({ cmd: 'ls', out: '<span class="nf__dir">/about  /dashboard  /under-the-hood  ' + (environment.features.blog ? '/blog  ' : '') + '/lab  /quiz  /pitch  ' + (environment.features.supabase ? '/roast-me-back  ' : '') + '/contact</span>' }),
+      ls: () => ({ cmd: 'ls', out: '<span class="nf__dir">/about  /dashboard  /under-the-hood  ' + (environment.features.blog ? '/blog  ' : '') + '/lab  /quiz  /pitch  /contact</span>' }),
     whoami: () => ({ cmd: 'whoami', out: 'guest — but you could be on my team. Try <span class="nf__hl">sudo hire-me</span>.' }),
     date: () => ({ cmd: 'date', out: new Date().toString() }),
     clear: () => ({ cmd: '', out: '' }),

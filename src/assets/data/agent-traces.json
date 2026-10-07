@@ -1,0 +1,375 @@
+{
+ "recordedAt": "2026-10-07T14:26:40+00:00",
+ "source": "https://planning-desk.onrender.com",
+ "endpoint": "POST /api/chat (text/event-stream)",
+ "model": "gemini-3.5-flash-lite",
+ "provider": "openai",
+ "ceilings": {
+  "steps": 8,
+  "toolCalls": 12,
+  "tokens": 60000,
+  "turnSeconds": 170,
+  "toolTimeoutSeconds": 45,
+  "finalAnswerReserveSeconds": 50,
+  "note": "steps, toolCalls, tokens read from live /api/health limits; turnSeconds, toolTimeoutSeconds, finalAnswerReserveSeconds are the config.py defaults (AGENT_MAX_TURN_SECONDS, AGENT_TOOL_TIMEOUT, AGENT_FINAL_ANSWER_RESERVE), not exposed by the live API; render.yaml sets no override."
+ },
+ "modes": {
+  "planning": {
+   "label": "Plans",
+   "tools": 11
+  },
+  "currency": {
+   "label": "Currencies",
+   "tools": 12
+  },
+  "all": {
+   "label": "Everything",
+   "tools": 18
+  }
+ },
+ "servers": [
+  {
+   "id": "feasibility",
+   "label": "Feasibility",
+   "tools": [
+    "check_activity_window",
+    "suggest_better_windows",
+    "check_travel_plan",
+    "find_places",
+    "suggest_alternative_destinations",
+    "explain_thresholds"
+   ]
+  },
+  {
+   "id": "fx",
+   "label": "Foreign exchange",
+   "tools": [
+    "get_rate_series",
+    "compare_pairs",
+    "compute_trendline",
+    "export_spreadsheet",
+    "render_chart",
+    "export_document",
+    "list_series"
+   ]
+  },
+  {
+   "id": "discovery",
+   "label": "Discovery",
+   "tools": [
+    "web_search",
+    "shortlist_destinations",
+    "rate_destination_season",
+    "find_destinations_for_month",
+    "check_configuration"
+   ]
+  }
+ ],
+ "runs": [
+  {
+   "id": "r1",
+   "mode": "planning",
+   "toolsOffered": 11,
+   "question": "I want to play five-a-side football at a turf in Koramangala, Bengaluru on Saturday 10 October 2026 from 18:00 to 21:00. Will the weather work for it, and do turfs there usually have floodlights or need booking ahead?",
+   "totalMs": 7242,
+   "firstByteMs": 483,
+   "done": {
+    "reason": "answered",
+    "steps": 2,
+    "tokens": 8734,
+    "toolCalls": 2,
+    "doneMs": 7241
+   },
+   "toolsUsed": [
+    "feasibility.check_activity_window",
+    "discovery.web_search"
+   ],
+   "events": [
+    {
+     "tMs": 483,
+     "kind": "step",
+     "step": 1,
+     "text": "thinking"
+    },
+    {
+     "tMs": 2347,
+     "kind": "tokens",
+     "step": 1,
+     "tokens": 3534,
+     "modelMs": 1864
+    },
+    {
+     "tMs": 2347,
+     "kind": "tool_call",
+     "step": 1,
+     "index": 1,
+     "server": "feasibility",
+     "tool": "check_activity_window",
+     "args": "activity=outdoor; date_iso=2026-10-10; start_hour=18; place=Koramangala, Bengaluru; end_hour=21"
+    },
+    {
+     "tMs": 2347,
+     "kind": "tool_call",
+     "step": 1,
+     "index": 2,
+     "server": "discovery",
+     "tool": "web_search",
+     "args": "query=Koramangala Bengaluru turf football floodlights booking"
+    },
+    {
+     "tMs": 5657,
+     "kind": "tool_result",
+     "step": 1,
+     "index": 1,
+     "server": "feasibility",
+     "tool": "check_activity_window",
+     "durationMs": 3330,
+     "ok": true,
+     "bytes": 1795,
+     "summary": "go (score 100) at Koramangala, 2026-10-10 18-21h, forecast; reasons: clear"
+    },
+    {
+     "tMs": 5658,
+     "kind": "tool_result",
+     "step": 1,
+     "index": 2,
+     "server": "discovery",
+     "tool": "web_search",
+     "durationMs": 3276,
+     "ok": true,
+     "bytes": 2726,
+     "summary": "5 results via tavily: Top Football Turf Grounds in Koramangala - Bangalore; Football Turf near Koramangala, Bangalore - Play Matrix"
+    },
+    {
+     "tMs": 5658,
+     "kind": "step",
+     "step": 2,
+     "text": "thinking"
+    },
+    {
+     "tMs": 7241,
+     "kind": "tokens",
+     "step": 2,
+     "tokens": 8734,
+     "modelMs": 1583
+    },
+    {
+     "tMs": 7241,
+     "kind": "final",
+     "step": 2,
+     "text": "The weather will work for your match on Saturday 10 October 2026 from 18:00 to 21:00, with a clear verdict and comfortable conditions throughout. Turfs in Koramangala routinely feature high-mast LED floodlights for evening games and require booking ahead through apps or direct contact."
+    }
+   ]
+  },
+  {
+   "id": "r2",
+   "mode": "all",
+   "toolsOffered": 18,
+   "question": "I am planning a 3-day trip to Bangkok from 12 to 14 November 2026 on a budget of about 6000 INR per day. Will the weather work for outdoor sightseeing, and what is 18000 INR in Thai baht at the current rate? Please also show the INR to THB trend over the last 30 days.",
+   "totalMs": 19343,
+   "firstByteMs": 324,
+   "done": {
+    "reason": "answered",
+    "steps": 3,
+    "tokens": 20547,
+    "toolCalls": 3,
+    "doneMs": 19336
+   },
+   "toolsUsed": [
+    "feasibility.check_travel_plan",
+    "fx.get_rate_series",
+    "fx.render_chart"
+   ],
+   "events": [
+    {
+     "tMs": 325,
+     "kind": "step",
+     "step": 1,
+     "text": "thinking"
+    },
+    {
+     "tMs": 3423,
+     "kind": "tokens",
+     "step": 1,
+     "tokens": 5070,
+     "modelMs": 3098
+    },
+    {
+     "tMs": 3423,
+     "kind": "tool_call",
+     "step": 1,
+     "index": 1,
+     "server": "feasibility",
+     "tool": "check_travel_plan",
+     "args": "end_date_iso=2026-11-14; place=Bangkok; start_date_iso=2026-11-12"
+    },
+    {
+     "tMs": 3423,
+     "kind": "tool_call",
+     "step": 1,
+     "index": 2,
+     "server": "fx",
+     "tool": "get_rate_series",
+     "args": "base=INR; start_date_iso=2026-09-07; quotes=THB; end_date_iso=2026-10-07"
+    },
+    {
+     "tMs": 5986,
+     "kind": "tool_result",
+     "step": 1,
+     "index": 1,
+     "server": "feasibility",
+     "tool": "check_travel_plan",
+     "durationMs": 2567,
+     "ok": true,
+     "bytes": 1781,
+     "summary": "Bangkok: 3 days, 0 go, 3 caution, 0 no_go, mean score 82"
+    },
+    {
+     "tMs": 5986,
+     "kind": "tool_result",
+     "step": 1,
+     "index": 2,
+     "server": "fx",
+     "tool": "get_rate_series",
+     "durationMs": 1465,
+     "ok": true,
+     "bytes": 2835,
+     "summary": "INR/THB: 31 points 2026-09-07 to 2026-10-07, latest 0.34833, change 0.06%"
+    },
+    {
+     "tMs": 5986,
+     "kind": "step",
+     "step": 2,
+     "text": "thinking"
+    },
+    {
+     "tMs": 8901,
+     "kind": "tokens",
+     "step": 2,
+     "tokens": 12580,
+     "modelMs": 2915
+    },
+    {
+     "tMs": 8901,
+     "kind": "tool_call",
+     "step": 2,
+     "index": 3,
+     "server": "fx",
+     "tool": "render_chart",
+     "args": "series_id=inrthb-1; chart_type=line; title=INR to THB - Last 30 Days"
+    },
+    {
+     "tMs": 17026,
+     "kind": "tool_result",
+     "step": 2,
+     "index": 3,
+     "server": "fx",
+     "tool": "render_chart",
+     "durationMs": 8120,
+     "ok": true,
+     "bytes": 144,
+     "summary": "line chart rendered (image)"
+    },
+    {
+     "tMs": 17026,
+     "kind": "file",
+     "step": 2,
+     "fileKind": "image",
+     "filename": "fx-chart-20261007-142705-843702.png"
+    },
+    {
+     "tMs": 17026,
+     "kind": "step",
+     "step": 3,
+     "text": "thinking"
+    },
+    {
+     "tMs": 19336,
+     "kind": "tokens",
+     "step": 3,
+     "tokens": 20547,
+     "modelMs": 2310
+    },
+    {
+     "tMs": 19336,
+     "kind": "final",
+     "step": 3,
+     "text": "The trip to Bangkok from 12 to 14 November 2026 receives a caution verdict each day due to high apparent temperatures reaching between 36.1°C and 36.3°C, assessed from seasonal climatology. At the current rate of 0.3483 THB per INR, 18,000 INR is equivalent to approximately 6,269.94 Thai Baht. The 30-day INR to THB trend is displayed in the rendered chart."
+    }
+   ]
+  },
+  {
+   "id": "r3",
+   "mode": "currency",
+   "toolsOffered": 12,
+   "question": "I have 150000 INR set aside for a Dubai trip. How many UAE dirhams (AED) is that at the latest rate, and what has the INR to AED trend been over the last 30 days?",
+   "totalMs": 5246,
+   "firstByteMs": 439,
+   "done": {
+    "reason": "answered",
+    "steps": 2,
+    "tokens": 7425,
+    "toolCalls": 1,
+    "doneMs": 5245
+   },
+   "toolsUsed": [
+    "fx.get_rate_series"
+   ],
+   "events": [
+    {
+     "tMs": 439,
+     "kind": "step",
+     "step": 1,
+     "text": "thinking"
+    },
+    {
+     "tMs": 2218,
+     "kind": "tokens",
+     "step": 1,
+     "tokens": 3644,
+     "modelMs": 1779
+    },
+    {
+     "tMs": 2218,
+     "kind": "tool_call",
+     "step": 1,
+     "index": 1,
+     "server": "fx",
+     "tool": "get_rate_series",
+     "args": "end_date_iso=2026-10-07; start_date_iso=2026-09-07; base=INR; quotes=AED"
+    },
+    {
+     "tMs": 3711,
+     "kind": "tool_result",
+     "step": 1,
+     "index": 1,
+     "server": "fx",
+     "tool": "get_rate_series",
+     "durationMs": 1488,
+     "ok": false,
+     "bytes": 189,
+     "summary": "error: no exchange-rate host answered: api.frankfurter.app returned 404: {\"message\":\"not found\"}"
+    },
+    {
+     "tMs": 3711,
+     "kind": "step",
+     "step": 2,
+     "text": "thinking"
+    },
+    {
+     "tMs": 5245,
+     "kind": "tokens",
+     "step": 2,
+     "tokens": 7425,
+     "modelMs": 1534
+    },
+    {
+     "tMs": 5245,
+     "kind": "final",
+     "step": 2,
+     "text": "The exchange-rate service is currently unavailable, so I cannot provide the latest conversion rate for INR to AED or the 30-day trend."
+    }
+   ]
+  }
+ ]
+}

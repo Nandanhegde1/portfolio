@@ -59,19 +59,22 @@ jobs:
             failures="$failures planning-desk"
           fi
 
-          # /api/health stays green while the model provider refuses every call,
-          # so run one small roast and require model text ('chunk') and the 'done' event.
-          # 'done' alone is not enough: an empty reply ends with the canned fallback line.
-          # Four runs a day spend 4 of the API's default cap of 100 LLM calls a day.
-          roast=$(curl -s --max-time 90 -X POST -H 'content-type: application/json' \
-            -d '{"stack":"uptime probe: bash and curl","intensity":"mild"}' \
-            "$API/api/roast/stream" || true)
-          if grep -q '^event: chunk' <<< "$roast" && grep -q '^event: done' <<< "$roast"; then
-            echo "roast -> done"
-          else
-            echo "roast -> ${roast:0:300}"
-            failures="$failures roast"
+          # The lab replays a recorded agent run from a static JSON file, so the page and
+          # the file must both answer 200. No trailing slash: Pages serves lab.html at
+          # /portfolio/lab, and /portfolio/lab/ is a 404.
+          code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 60 --retry 1 \
+            https://nandanhegde1.github.io/portfolio/lab || echo 000)
+          echo "lab -> $code"
+          if [ "$code" != "200" ]; then
+            failures="$failures lab($code)"
           fi
+          type=$(curl -s -o /dev/null -w '%{http_code} %{content_type}' --max-time 60 --retry 1 \
+            https://nandanhegde1.github.io/portfolio/assets/data/agent-traces.json || echo 000)
+          echo "lab-trace -> $type"
+          case "$type" in
+            "200 application/json"*) ;;
+            *) failures="$failures lab-trace" ;;
+          esac
 
           if [ -n "$failures" ]; then
             echo "failures=$failures" >> "$GITHUB_OUTPUT"

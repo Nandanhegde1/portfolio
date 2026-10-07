@@ -45,10 +45,7 @@ import { environment } from '../../../../environments/environment';
             </button>
             @if (dropdownOpen()) {
               <ul class="navbar__dropdown-menu">
-                <li><a routerLink="/lab" routerLinkActive="active" (click)="dropdownOpen.set(false)">🧪 The Lab · Roast My Stack</a></li>
-                @if (roastWallEnabled) {
-                  <li><a routerLink="/roast-me-back" routerLinkActive="active" (click)="dropdownOpen.set(false)">🔥 Roast Me Back</a></li>
-                }
+                <li><a routerLink="/lab" routerLinkActive="active" (click)="dropdownOpen.set(false)">🧪 The Lab · Agent Trace</a></li>
                 <li><a routerLink="/quiz" routerLinkActive="active" (click)="dropdownOpen.set(false)">🎯 Team Quiz</a></li>
                 <li><a routerLink="/dashboard" routerLinkActive="active" (click)="dropdownOpen.set(false)">📊 UI Playground</a></li>
               </ul>
@@ -95,10 +92,7 @@ import { environment } from '../../../../environments/environment';
             <li><a routerLink="/blog" routerLinkActive="active" (click)="mobileOpen = false">{{ 'nav.blog' | transloco }}</a></li>
           }
           <li><a routerLink="/under-the-hood" routerLinkActive="active" (click)="mobileOpen = false">{{ 'nav.underTheHood' | transloco }}</a></li>
-          <li><a routerLink="/lab" routerLinkActive="active" (click)="mobileOpen = false">🧪 The Lab · Roast My Stack</a></li>
-          @if (roastWallEnabled) {
-            <li><a routerLink="/roast-me-back" routerLinkActive="active" (click)="mobileOpen = false">🔥 Roast Me Back</a></li>
-          }
+          <li><a routerLink="/lab" routerLinkActive="active" (click)="mobileOpen = false">🧪 The Lab · Agent Trace</a></li>
           <li><a routerLink="/quiz" routerLinkActive="active" (click)="mobileOpen = false">🎯 Team Quiz</a></li>
           <li><a routerLink="/contact" routerLinkActive="active" (click)="mobileOpen = false">{{ 'nav.contact' | transloco }}</a></li>
         </ul>
@@ -114,8 +108,6 @@ export class NavbarComponent {
 
   themeSpinning = false;
   readonly dropdownOpen = signal(false);
-  /** The roast wall needs its database; hidden while it is offline. */
-  readonly roastWallEnabled = environment.features.supabase;
   /** Hidden until the posts hold up; see features.blog. */
   readonly blogEnabled = environment.features.blog;
   mobileOpen = false;

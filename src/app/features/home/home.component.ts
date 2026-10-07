@@ -5,7 +5,6 @@ import { RouterLink } from '@angular/router';
 import { HeroComponent } from '../hero/hero.component';
 import { ScrollRevealDirective } from '../../shared/directives/scroll-reveal.directive';
 import { AnimatedCounterComponent } from '../../shared/components';
-import { environment } from '../../../environments/environment';
 
 interface HomeStat {
   value: number;
@@ -108,23 +107,26 @@ interface FeaturedProject {
           </div>
         </div>
 
-        <!-- Row 4: Roast My Stack — the AI experiment, after the real work -->
-        <a routerLink="/lab" class="bento__card bento__card--roast-hero" appScrollReveal [delay]="200">
-          <div class="bento__roast-hero-bg" aria-hidden="true">
-            <span></span><span></span><span></span><span></span>
-          </div>
-          <div class="bento__roast-hero-content">
-            <span class="bento__roast-hero-eyebrow">// the lab · ai experiment</span>
-            <h3 class="bento__roast-hero-title">
-              <span class="bento__roast-hero-emoji">🔥</span>
-              Roast My Tech Stack
-            </h3>
-            <p class="bento__roast-hero-desc">
-              Drop your stack. Gemini roasts it in three intensities. Source linked.
-              The system prompt took 3 rewrites — the first version only generated compliments.
+        <!-- Row 4: The lab, a replayed agent run, after the real work -->
+        <a routerLink="/lab" class="bento__card bento__card--lab" appScrollReveal [delay]="200">
+          <div class="bento__lab-content">
+            <span class="bento__lab-eyebrow">// the lab · agent trace</span>
+            <h3 class="bento__lab-title">Watch an AI agent work</h3>
+            <p class="bento__lab-desc">
+              A recorded Planning Desk run, replayed step by step: a custom agent loop calling three MCP servers,
+              under hard ceilings on steps, tool calls and tokens.
             </p>
-            <span class="bento__roast-hero-cta">Open the lab →</span>
+            <span class="bento__lab-cta">Open the lab <span aria-hidden="true">→</span></span>
           </div>
+          <svg class="bento__lab-art" viewBox="0 0 240 120" aria-hidden="true" focusable="false">
+            <line class="bento__lab-edge" x1="62" y1="60" x2="168" y2="22" />
+            <line class="bento__lab-edge bento__lab-edge--walking" x1="62" y1="60" x2="168" y2="60" />
+            <line class="bento__lab-edge" x1="62" y1="60" x2="168" y2="98" />
+            <rect class="bento__lab-node bento__lab-node--loop" x="14" y="44" width="48" height="32" rx="8" />
+            <rect class="bento__lab-node" x="168" y="8" width="58" height="28" rx="8" />
+            <rect class="bento__lab-node bento__lab-node--busy" x="168" y="46" width="58" height="28" rx="8" />
+            <rect class="bento__lab-node" x="168" y="84" width="58" height="28" rx="8" />
+          </svg>
         </a>
 
         <!-- Row 5: Journey timeline (full width) -->
@@ -153,9 +155,6 @@ interface FeaturedProject {
               Get in Touch
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </a>
-            @if (roastWallEnabled) {
-              <a routerLink="/roast-me-back" class="bento__cta-btn bento__cta-btn--secondary">Or roast me back</a>
-            }
           </div>
         </div>
 
@@ -165,8 +164,6 @@ interface FeaturedProject {
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {
-  /** The roast wall needs its database; hidden while it is offline. */
-  protected readonly roastWallEnabled = environment.features.supabase;
   readonly stats: HomeStat[] = [
     { value: 6, suffix: '+', label: 'Years Experience', icon: '\u26A1' },
     { value: 15, suffix: '+', label: 'Features Shipped', icon: '\uD83D\uDE80' },

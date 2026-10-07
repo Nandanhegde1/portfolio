@@ -4,8 +4,9 @@ import { environment } from '../../../environments/environment';
 
 /**
  * Pings the backend `/api/health` endpoint on app boot and at a regular
- * interval to keep the API's free-tier function warm, so the first click on
- * the lab or roast features does not pay a cold start.
+ * interval to keep the API's free-tier function warm for the calls that follow,
+ * such as the Spotify widget's. The contact form posts to the API only while
+ * features.supabase is on.
  *
  * Strategy:
  *  - Fire-and-forget ping immediately on init (warms dyno before user clicks).

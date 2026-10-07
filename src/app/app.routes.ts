@@ -45,7 +45,7 @@ export const routes: Routes = [
         data: {
           seo: {
             title: 'Under the Hood — Architecture, CI/CD, SEO & Security',
-            description: 'How this portfolio is actually built: Angular 19, Node backend, Gemini AI, Supabase, Vercel, GitHub Pages, performance budgets, and OWASP-audited security.',
+            description: 'How this portfolio is actually built: Angular 19, Node backend, Supabase, Vercel, GitHub Pages, performance budgets, and OWASP-audited security.',
             url: 'https://nandanhegde1.github.io/portfolio/under-the-hood',
           },
         },
@@ -79,38 +79,21 @@ export const routes: Routes = [
           },
         },
       },
-      // The roast wall keeps its posts in Supabase, which is offline. Until
-      // features.supabase is back on, both paths send visitors home.
-      ...(environment.features.supabase
-        ? [
-            {
-              path: 'roast-me-back',
-              loadComponent: () => import('./features/roast-me-back/roast-me-back.component').then(m => m.RoastMeBackComponent),
-              data: {
-                seo: {
-                  title: 'Roast Me Back — The Honest Wall',
-                  description: 'The AI on /lab roasts your stack. This page flips it. Leave a one-line roast of this portfolio. I read every one and reply to the sharp ones.',
-                  url: 'https://nandanhegde1.github.io/portfolio/roast-me-back',
-                },
-              },
-            },
-            { path: 'guestbook', redirectTo: 'roast-me-back', pathMatch: 'full' as const },
-          ]
-        : [
-            { path: 'roast-me-back', redirectTo: '', pathMatch: 'full' as const },
-            { path: 'guestbook', redirectTo: '', pathMatch: 'full' as const },
-          ]),
+      // Retired pages: their old links send visitors home.
+      { path: 'roast-me-back', redirectTo: '', pathMatch: 'full' },
+      { path: 'guestbook', redirectTo: '', pathMatch: 'full' },
       {
         path: 'lab',
-        loadComponent: () => import('./features/roast/roast.component').then(m => m.RoastComponent),
+        loadComponent: () => import('./features/lab/lab.component').then(m => m.LabComponent),
         data: {
           seo: {
-            title: 'The Lab — AI Experiments',
-            description: 'A weekend experiment. Gemini wired to a streaming endpoint, given permission to roast your tech stack. Source linked.',
+            title: 'The Lab: Watch an AI Agent Work',
+            description: 'A recorded run of Planning Desk, an AI agent with a hand-written loop over three MCP servers, replayed step by step in your browser: every model call, every tool call and its timing, against hard ceilings.',
             url: 'https://nandanhegde1.github.io/portfolio/lab',
           },
         },
       },
+      // Old links to the lab's previous experiment land on the lab.
       { path: 'roast', redirectTo: 'lab', pathMatch: 'full' },
       {
         path: 'quiz',

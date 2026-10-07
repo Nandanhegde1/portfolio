@@ -9,7 +9,7 @@ interface ArchNode {
   desc: string;
   icon: string;
   tech: string[];
-  layer: 'edge' | 'frontend' | 'backend' | 'data' | 'ai' | 'infra';
+  layer: 'edge' | 'frontend' | 'backend' | 'data' | 'infra';
 }
 
 interface NodePos {
@@ -88,13 +88,13 @@ export class UnderTheHoodComponent {
     },
     {
       id: 'supa', label: 'Supabase Postgres', icon: '🗄️', layer: 'data',
-      desc: 'Managed Postgres for the roast wall, blog comments, analytics and the contact inbox. Offline for now, so those features are switched off.',
+      desc: 'Managed Postgres for blog comments, analytics and the contact inbox. Offline for now, so those features are switched off.',
       tech: ['Postgres', 'Row-level security', 'REST API'],
     },
     {
-      id: 'claude', label: 'Google Gemini', icon: '🧠', layer: 'ai',
-      desc: 'Gemini 3.5 Flash-Lite on the free tier powers the lab roast experiment. Streaming SSE responses.',
-      tech: ['gemini-3.5-flash-lite', 'System prompts', 'Token streaming'],
+      id: 'trace', label: 'Agent trace', icon: '{ }', layer: 'data',
+      desc: 'The lab replays three turns recorded from the live Planning Desk app: a static JSON file served with the site and played back in the browser with signals and SVG. No model or API is called.',
+      tech: ['Static JSON', 'SVG', 'Signals', 'prefers-reduced-motion'],
     },
     {
       id: 'github', label: 'GitHub REST API', icon: '🐙', layer: 'data',
@@ -136,7 +136,7 @@ export class UnderTheHoodComponent {
     { step: 4, name: 'Bundle Audit', cmd: 'Built-in size budgets', desc: 'Warns when the initial bundle passes 500 kB and fails the build at 1 MB. Component styles warn at 24 kB and fail at 48 kB.' },
     { step: 5, name: 'Deploy to GH Pages', cmd: 'actions/deploy-pages', desc: 'Runs only after lint, tests and build pass, and publishes the build to GitHub Pages.' },
     { step: 6, name: 'Backend Deploy', cmd: 'Vercel auto-deploy', desc: 'Vercel builds backend/ into one Express function and swaps it in with zero downtime.' },
-    { step: 7, name: 'Health Check', cmd: 'GET /api/health', desc: 'Frontend pings backend on app load, warming the function before users open the lab.' },
+    { step: 7, name: 'Health Check', cmd: 'GET /api/health', desc: 'Frontend pings backend on app load and every 10 minutes while the tab is visible, keeping the function warm for the Spotify widget.' },
   ];
 
   readonly seoSignals = [
@@ -152,10 +152,10 @@ export class UnderTheHoodComponent {
 
   readonly securityFeatures = [
     { icon: '🛡️', title: 'Helmet Headers', desc: 'CSP, X-Frame-Options, HSTS, X-Content-Type-Options on every backend response.' },
-    { icon: '🚦', title: 'Rate Limiting', desc: 'Per-IP limits: 100 requests per 15 min overall, roast 20 per 15 min, contact 5 per hour. Model calls also stop at a daily cap, 100 by default.' },
-    { icon: '🔐', title: 'Secret Management', desc: 'API keys never touch the client. All model and Spotify calls proxied through backend.' },
+    { icon: '🚦', title: 'Rate Limiting', desc: 'Per-IP limits: 100 requests per 15 min overall, contact 5 per hour, blog comments 8 per 15 min, reactions 30 per minute.' },
+    { icon: '🔐', title: 'Secret Management', desc: 'API keys never touch the client. Spotify calls are proxied through the backend.' },
     { icon: '🌐', title: 'CORS Allowlist', desc: 'Only nandanhegde1.github.io + localhost get CORS headers. Other origins get none, so the browser blocks the response.' },
-    { icon: '🧹', title: 'Input Sanitisation', desc: 'Length caps on every field, regex email validation, basic profanity filter on guestbook.' },
+    { icon: '🧹', title: 'Input Sanitisation', desc: 'Length caps on every field and regex email validation.' },
     { icon: '🔒', title: 'XSS Protection', desc: 'Angular auto-escapes templates. DomSanitizer used only when explicitly required.' },
     { icon: '🍪', title: 'Cookieless Analytics', desc: 'No tracking cookies. Anonymous page-view counts via localStorage + backend log.' },
     { icon: '✅', title: 'OWASP Top 10 Audit', desc: 'Reviewed against injection, broken auth, sensitive data, XSS, CSRF, SSRF, dependency CVEs.' },
@@ -163,7 +163,7 @@ export class UnderTheHoodComponent {
 
   // Computed: nodes filtered by current tab visualisation
   readonly archByLayer = computed(() => {
-    const layers: ArchNode['layer'][] = ['edge', 'frontend', 'backend', 'ai', 'data', 'infra'];
+    const layers: ArchNode['layer'][] = ['edge', 'frontend', 'backend', 'data', 'infra'];
     return layers.map((layer) => ({
       layer,
       label: this.layerLabel(layer),
@@ -173,11 +173,11 @@ export class UnderTheHoodComponent {
   });
 
   private layerLabel(l: ArchNode['layer']): string {
-    return { edge: 'Edge', frontend: 'Frontend', backend: 'Backend', data: 'Data', ai: 'AI', infra: 'Infrastructure' }[l];
+    return { edge: 'Edge', frontend: 'Frontend', backend: 'Backend', data: 'Data', infra: 'Infrastructure' }[l];
   }
 
   private layerColor(l: ArchNode['layer']): string {
-    return { edge: '#06b6d4', frontend: '#6c63ff', backend: '#10b981', data: '#f59e0b', ai: '#ec4899', infra: '#8b5cf6' }[l];
+    return { edge: '#06b6d4', frontend: '#6c63ff', backend: '#10b981', data: '#f59e0b', infra: '#8b5cf6' }[l];
   }
 
   // ── INTERACTIVE TOPOLOGY ──────────────────────────────────────
@@ -194,7 +194,7 @@ export class UnderTheHoodComponent {
     { id: 'api',     x: 620, y: 270 },
     { id: 'render',  x: 620, y: 90  },
     { id: 'supa',    x: 860, y: 110 },
-    { id: 'claude',  x: 860, y: 230 },
+    { id: 'trace',   x: 860, y: 230 },
     { id: 'github',  x: 860, y: 350 },
     { id: 'spotify', x: 860, y: 460 },
   ];
@@ -207,7 +207,7 @@ export class UnderTheHoodComponent {
     { from: 'three',  to: 'api'     },
     { from: 'render', to: 'api'     },
     { from: 'api',    to: 'supa'    },
-    { from: 'api',    to: 'claude'  },
+    { from: 'spa',    to: 'trace'   },
     { from: 'spa',    to: 'github'  },
     { from: 'api',    to: 'spotify' },
   ];
@@ -221,17 +221,10 @@ export class UnderTheHoodComponent {
       color: '#06b6d4',
     },
     {
-      id: 'ai-chat',
+      id: 'lab',
       label: 'Opening the lab',
-      description: 'Your message goes to the API, which proxies to Gemini with a system prompt.',
-      hops: ['user', 'cdn', 'spa', 'api', 'claude'],
-      color: '#ec4899',
-    },
-    {
-      id: 'roast',
-      label: 'Roasting a stack',
-      description: 'API streams Gemini tokens back over Server-Sent Events; the UI types out the roast in real time.',
-      hops: ['user', 'spa', 'api', 'claude', 'spa'],
+      description: 'The page fetches a recorded Planning Desk trace, a static JSON file, from the same CDN and replays it in the browser. The backend and the model are never called.',
+      hops: ['user', 'cdn', 'spa', 'trace'],
       color: '#f59e0b',
     },
     {

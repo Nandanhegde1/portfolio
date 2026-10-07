@@ -30,7 +30,7 @@ img, svg, video, canvas {
   height: auto;
 }
 
-// Long URLs, code samples, and paste-bin roast text used to push cards wider
+// Long URLs, code samples, and pasted text used to push cards wider
 // than the phone viewport. This is the modern, opt-in safe wrap.
 p, li, h1, h2, h3, h4, h5, h6, span, div {
   overflow-wrap: break-word;

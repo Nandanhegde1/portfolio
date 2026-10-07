@@ -16,6 +16,5 @@ const dump = (table, limit) => async (_req, res) => {
 
 router.get('/contacts',   dump('contacts'));
 router.get('/chat-logs',  dump('chat_logs', 200));
-router.get('/roast-logs', dump('roast_logs', 200));
 
 module.exports = router;

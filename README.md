@@ -7,7 +7,7 @@
 [![Node](https://img.shields.io/badge/Node-20.x-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-A data-rich, interactive developer portfolio built with **Angular 19** + **SCSS** + **Three.js** + **Express** + **Supabase** + **Google Gemini**.
+A data-rich, interactive developer portfolio built with **Angular 19** + **SCSS** + **Three.js** + **Express** + **Supabase**.
 
 > **Live:** https://nandanhegde1.github.io/portfolio/
 
@@ -18,10 +18,9 @@ A data-rich, interactive developer portfolio built with **Angular 19** + **SCSS*
 | | |
 |---|---|
 | 🎨 **Interactive 3D Hero** | Three.js particles with mouse parallax, theme-reactive |
-| 🔥 **Roast My Stack** | Gemini roasts your tech choices with 3 intensity levels (token streaming) |
+| 🧪 **The Lab** | Replays a recorded turn of [Planning Desk](https://github.com/Nandanhegde1/planning-desk), an AI agent over three MCP servers: each model call and tool call animated in SVG, with timings and the loop's ceilings. A static JSON file, no model calls |
 | 📊 **Dashboard (demo)** | A UI playground — tech orbit, animations, and live GitHub stats |
 | 📈 **Visitor Analytics** | Self-hosted via Supabase, no cookies. Switched off while the database is offline |
-| 📝 **Guestbook** | Backed by Supabase, optimistic UI, DiceBear avatars. Switched off while the database is offline |
 | 💌 **Contact Form** | Validated and rate-limited. While the database is offline it drafts the message in your mail app instead |
 | 🎴 **Card Forge** | Generate & download a custom holographic dev card (Canvas API) |
 | 🌗 **5 Themes** | Light · Dark · Synthwave · Nord · Dracula |
@@ -37,7 +36,7 @@ A data-rich, interactive developer portfolio built with **Angular 19** + **SCSS*
 ```
 Frontend  ─ Angular 19, TypeScript, SCSS, RxJS, Signals, Three.js
 Backend   ─ Express 4, Supabase (Postgres), Helmet, rate limiting
-AI        ─ Google Gemini, free tier (Roast My Stack — token streaming)
+Lab       ─ Recorded agent trace (static JSON), replayed with signals and SVG
 Hosting   ─ GitHub Pages (frontend) + Vercel (API)
 CI/CD     ─ GitHub Actions
 ```
@@ -52,7 +51,7 @@ src/app/
 │   ├── hero/         # 3D Three.js scene
 │   ├── about/        # Character sheet + card forge
 │   ├── dashboard/    # GitHub stats, code vitals, live stats
-│   ├── roast/        # AI tech-stack roaster
+│   ├── lab/          # Agent-trace replay of Planning Desk
 │   ├── contact/      # Backend-wired contact form
 │   ├── blog/         # Engineering notes, hidden by features.blog
 │   ├── quiz/         # "Would I Survive Your Team?" quiz
@@ -77,14 +76,14 @@ cd backend
 npm install
 cp .env.example .env # fill in the vars (see backend/.env.example — every var is documented)
 npm run dev          # http://localhost:3000
-npm test             # 15 tests (node --test)
+npm test             # 8 tests (node --test)
 ```
 
 ## 🚢 Deploy
 
 - **Frontend** — push to `main`; the CI workflow lints, tests, builds, and deploys to GitHub Pages *only if all checks pass*.
-- **Backend** — Vercel auto-deploys `backend/` (root dir `backend`, zero-config Express as one function) on push to `main`. Secrets (`GEMINI_API_KEY`, `SUPABASE_URL`, `SUPABASE_SERVICE_KEY`, `ADMIN_TOKEN`, `ALLOWED_ORIGINS`) live in the Vercel project settings, never in the repo. Vercel builds those pushes itself, so a backend deploy is not gated by the backend tests in CI.
-- **Uptime** — a 6-hourly workflow pings all live surfaces and opens a GitHub issue if anything is down.
+- **Backend** — Vercel auto-deploys `backend/` (root dir `backend`, zero-config Express as one function) on push to `main`. Secrets (`SUPABASE_URL`, `SUPABASE_SERVICE_KEY`, `ADMIN_TOKEN`, `ALLOWED_ORIGINS`) live in the Vercel project settings, never in the repo. Vercel builds those pushes itself, so a backend deploy is not gated by the backend tests in CI.
+- **Uptime** — a 6-hourly workflow pings all live surfaces, including the lab page and its trace file, and opens a GitHub issue if anything is down.
 
 ## 🪪 License
 

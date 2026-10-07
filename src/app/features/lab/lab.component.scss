@@ -1,0 +1,680 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.lab {
+  min-height: calc(100vh - $navbar-height);
+  padding: $space-3xl 0;
+  background: var(--bg-primary);
+
+  @include mobile {
+    padding: $space-xl 0;
+  }
+
+  &__container {
+    @include container;
+
+    & {
+      max-width: 1040px;
+      display: flex;
+      flex-direction: column;
+      gap: $space-xl;
+    }
+  }
+
+  // ── Header ──
+  &__header {
+    max-width: 760px;
+  }
+
+  &__eyebrow {
+    font-family: $font-mono;
+    font-size: $fs-xs;
+    font-weight: $fw-bold;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+  }
+
+  &__title {
+    font-family: $font-heading;
+    font-size: $fs-4xl;
+    font-weight: $fw-extrabold;
+    line-height: 1.1;
+    color: var(--text-primary);
+    margin: $space-sm 0 $space-md;
+
+    @include mobile {
+      font-size: $fs-2xl;
+    }
+  }
+
+  &__lede {
+    color: var(--text-secondary);
+    font-size: $fs-md;
+    line-height: 1.6;
+    margin: 0 0 $space-md;
+
+    @include mobile {
+      font-size: $fs-base;
+    }
+  }
+
+  &__honesty {
+    margin: 0 0 $space-md;
+    padding: $space-sm $space-md;
+    border-left: 3px solid var(--accent);
+    background: var(--accent-light);
+    border-radius: 0 $radius-md $radius-md 0;
+    color: var(--text-primary);
+    font-size: $fs-sm;
+    line-height: 1.55;
+  }
+
+  &__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-sm;
+  }
+
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 0 $space-md;
+    border-radius: $radius-md;
+    border: 1px solid var(--border-strong);
+    color: var(--text-primary);
+    font-size: $fs-sm;
+    font-weight: $fw-semibold;
+    text-decoration: none;
+    transition: border-color $transition-fast, color $transition-fast;
+
+    &:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    &--primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--bg-primary);
+
+      &:hover {
+        background: var(--accent-hover);
+        color: var(--bg-primary);
+      }
+    }
+  }
+
+  &__status {
+    color: var(--text-secondary);
+    font-size: $fs-sm;
+  }
+
+  // ── Run picker ──
+  &__picker {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-sm;
+  }
+
+  &__chip {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    max-width: 100%;
+    padding: $space-sm $space-md;
+    border-radius: $radius-lg;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    color: var(--text-primary);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color $transition-fast, background $transition-fast;
+
+    &:hover {
+      border-color: var(--accent);
+    }
+
+    &--active {
+      border-color: var(--accent);
+      background: var(--accent-light);
+
+      // Muted text on the accent tint falls under 4.5:1.
+      .lab__chip-meta {
+        color: var(--text-secondary);
+      }
+    }
+  }
+
+  &__chip-title {
+    font-size: $fs-sm;
+    font-weight: $fw-semibold;
+  }
+
+  &__chip-meta {
+    font-family: $font-mono;
+    font-size: $fs-xs;
+    color: var(--text-muted);
+  }
+
+  // ── Panel ──
+  &__panel {
+    display: flex;
+    flex-direction: column;
+    gap: $space-lg;
+    padding: $space-xl;
+    border-radius: $radius-xl;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    min-width: 0;
+
+    @include mobile {
+      padding: 12px;
+    }
+  }
+
+  &__label {
+    display: block;
+    font-family: $font-mono;
+    font-size: $fs-xs;
+    color: var(--text-muted);
+    margin-bottom: $space-xs;
+  }
+
+  &__question-text {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: $fs-base;
+    line-height: 1.55;
+  }
+
+  &__question-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-xs $space-md;
+    margin: $space-sm 0 0;
+    font-family: $font-mono;
+    font-size: $fs-xs;
+    color: var(--text-muted);
+  }
+
+  // ── Controls ──
+  &__controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: $space-sm;
+  }
+
+  &__btn,
+  &__speed {
+    min-height: 40px;
+    padding: 0 $space-md;
+    border-radius: $radius-md;
+    border: 1px solid var(--border-strong);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font: inherit;
+    font-size: $fs-sm;
+    font-weight: $fw-semibold;
+    cursor: pointer;
+    transition: border-color $transition-fast, background $transition-fast;
+
+    &:hover:not(:disabled):not([aria-disabled='true']) {
+      border-color: var(--accent);
+    }
+
+    &:disabled,
+    &[aria-disabled='true'] {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  &__btn--primary {
+    min-width: 108px;
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--bg-primary);
+
+    &:hover:not(:disabled) {
+      background: var(--accent-hover);
+    }
+  }
+
+  &__speeds {
+    display: inline-flex;
+    gap: 2px;
+    margin-left: auto;
+
+    @include mobile {
+      margin-left: 0;
+    }
+  }
+
+  &__speed {
+    min-width: 44px;
+    padding: 0 $space-sm;
+    font-family: $font-mono;
+
+    &--active {
+      border-color: var(--accent);
+      background: var(--accent-light);
+      color: var(--accent);
+    }
+  }
+
+  &__chip,
+  &__btn,
+  &__speed,
+  &__link {
+    &:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+  }
+
+  // ── Diagram ──
+  &__stage {
+    border-radius: $radius-lg;
+    border: 1px solid var(--border);
+    background: var(--bg-secondary);
+    padding: $space-sm;
+
+    @include mobile {
+      padding: $space-xs;
+    }
+  }
+
+  &__svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 560px;
+    overflow: visible;
+  }
+
+  // ── Narration, counters ──
+  &__narration {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-height: 1.6em;
+    margin: 0;
+    font-family: $font-mono;
+    font-size: $fs-sm;
+    color: var(--text-primary);
+    overflow-wrap: anywhere;
+  }
+
+  &__narration-line--idle {
+    color: var(--text-muted);
+  }
+
+  &__counters {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: $space-md;
+    margin: 0;
+
+    @include tablet {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    @include mobile {
+      gap: $space-sm;
+    }
+  }
+
+  &__counter {
+    padding: $space-sm $space-md;
+    border-radius: $radius-md;
+    border: 1px solid var(--border);
+    background: var(--bg-secondary);
+    min-width: 0;
+
+    @include mobile {
+      padding: $space-sm;
+    }
+
+    // text-secondary, not muted: muted on bg-secondary is 4.29:1 in the light theme.
+    dt {
+      font-family: $font-mono;
+      font-size: $fs-xs;
+      color: var(--text-secondary);
+    }
+
+    dd {
+      margin: 0;
+    }
+  }
+
+  &__counter-value {
+    display: block;
+    font-family: $font-mono;
+    font-size: $fs-md;
+    font-weight: $fw-bold;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+
+    @include mobile {
+      font-size: 13px;
+    }
+  }
+
+  &__bar {
+    display: block;
+    height: 4px;
+    margin-top: $space-xs;
+    border-radius: $radius-full;
+    background: var(--border);
+    overflow: hidden;
+
+    > span {
+      display: block;
+      height: 100%;
+      background: var(--accent);
+      transition: width $transition-base;
+    }
+
+    &--timing {
+      margin-top: 6px;
+    }
+  }
+
+  // ── Tool call list, answer ──
+  &__section {
+    min-width: 0;
+  }
+
+  &__h2 {
+    font-family: $font-heading;
+    font-size: $fs-lg;
+    font-weight: $fw-bold;
+    color: var(--text-primary);
+    margin: 0 0 $space-sm;
+  }
+
+  &__muted {
+    margin: $space-xs 0 0;
+    color: var(--text-muted);
+    font-size: $fs-sm;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+
+  &__timings {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: $space-sm;
+  }
+
+  &__timing {
+    padding: $space-sm $space-md;
+    border-radius: $radius-md;
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--text-muted);
+    min-width: 0;
+
+    &[data-state='done'] {
+      border-left-color: var(--success);
+    }
+
+    &[data-state='failed'] {
+      border-left-color: var(--danger);
+
+      .lab__timing-ms {
+        color: var(--danger);
+      }
+
+      .lab__bar > span {
+        background: var(--danger);
+      }
+    }
+
+    &[data-state='busy'] {
+      border-left-color: var(--accent);
+    }
+  }
+
+  &__timing-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: $space-xs $space-sm;
+    min-width: 0;
+  }
+
+  &__timing-tool {
+    font-family: $font-mono;
+    font-size: $fs-sm;
+    font-weight: $fw-semibold;
+    color: var(--text-primary);
+    overflow-wrap: anywhere;
+  }
+
+  &__timing-server {
+    font-size: $fs-xs;
+    color: var(--text-muted);
+  }
+
+  &__timing-ms {
+    margin-left: auto;
+    font-family: $font-mono;
+    font-size: $fs-sm;
+    color: var(--text-secondary);
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__timing-summary {
+    margin: 6px 0 0;
+    font-size: $fs-xs;
+    line-height: 1.5;
+    color: var(--text-secondary);
+    overflow-wrap: anywhere;
+  }
+
+  &__answer {
+    margin: 0;
+    padding: $space-md;
+    border-radius: $radius-md;
+    background: var(--bg-secondary);
+    border-left: 3px solid var(--accent);
+    color: var(--text-primary);
+    font-size: $fs-base;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+  }
+
+  &__footnote {
+    margin: 0;
+    padding-top: $space-md;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: $fs-xs;
+    line-height: 1.6;
+  }
+}
+
+// ── SVG parts (outside the BEM nest so the selectors stay flat) ──
+.lab__edge-line {
+  stroke: var(--border-strong);
+  stroke-width: 2;
+  transition: stroke $transition-fast;
+}
+
+.lab__edge-head {
+  fill: var(--border-strong);
+  transition: fill $transition-fast;
+}
+
+.lab__edge--on,
+.lab__edge--walking {
+  .lab__edge-line {
+    stroke: var(--accent);
+  }
+
+  .lab__edge-head {
+    fill: var(--accent);
+  }
+}
+
+.lab__edge--on .lab__edge-line {
+  stroke-opacity: 0.55;
+}
+
+.lab__edge--walking .lab__edge-line {
+  stroke-width: 2.5;
+  stroke-dasharray: 7 6;
+  animation: lab-walk 0.7s linear infinite;
+}
+
+.lab__stage--paused .lab__edge--walking .lab__edge-line {
+  animation-play-state: paused;
+}
+
+@keyframes lab-walk {
+  to { stroke-dashoffset: -13; }
+}
+
+.lab__packet {
+  fill: var(--accent);
+  stroke: var(--bg-secondary);
+  stroke-width: 2;
+  animation: lab-packet-out var(--dur, 500ms) ease-in-out both;
+
+  &--back {
+    animation-name: lab-packet-back;
+  }
+
+  &--failed {
+    fill: var(--danger);
+  }
+}
+
+@keyframes lab-packet-out {
+  from { transform: translate(var(--x1), var(--y1)); opacity: 0.3; }
+  20% { opacity: 1; }
+  to { transform: translate(var(--x2), var(--y2)); opacity: 1; }
+}
+
+@keyframes lab-packet-back {
+  from { transform: translate(var(--x1), var(--y1)); opacity: 1; }
+  80% { opacity: 1; }
+  to { transform: translate(var(--x2), var(--y2)); opacity: 0; }
+}
+
+.lab__node-box {
+  fill: var(--card-bg);
+  stroke: var(--border-strong);
+  stroke-width: 1.5;
+  transition: stroke $transition-fast, fill $transition-fast;
+}
+
+.lab__node-label {
+  font-family: $font-heading;
+  font-size: 14px;
+  font-weight: $fw-bold;
+  fill: var(--text-primary);
+}
+
+.lab__node-sub {
+  font-family: $font-mono;
+  font-size: 11px;
+  fill: var(--text-muted);
+}
+
+.lab__node-note {
+  font-family: $font-mono;
+  font-size: 11px;
+  font-weight: $fw-semibold;
+  fill: var(--text-secondary);
+}
+
+.lab__node[data-state='on'] .lab__node-box {
+  stroke: var(--accent);
+}
+
+.lab__node[data-state='busy'] {
+  .lab__node-box {
+    stroke: var(--accent);
+    stroke-width: 2.5;
+    fill: var(--accent-light);
+    animation: lab-busy 1.2s ease-in-out infinite;
+  }
+
+  // Muted text on the tinted fill falls under 4.5:1 in both light and dark.
+  .lab__node-sub {
+    fill: var(--text-secondary);
+  }
+
+  .lab__node-note {
+    fill: var(--accent);
+  }
+}
+
+// Notes sit on the stage's bg-secondary, where the plain success and danger
+// colours fall under 4.5:1 in the light theme. Mixing in text-primary keeps the
+// hue and reaches AA in every theme's direction (darker in light, lighter in dark).
+.lab__node[data-state='done'] {
+  .lab__node-box {
+    stroke: var(--success);
+  }
+
+  .lab__node-note {
+    fill: color-mix(in srgb, var(--success) 65%, var(--text-primary));
+  }
+}
+
+.lab__node[data-state='failed'] {
+  .lab__node-box {
+    stroke: var(--danger);
+    stroke-width: 2.5;
+  }
+
+  .lab__node-note {
+    fill: color-mix(in srgb, var(--danger) 65%, var(--text-primary));
+  }
+}
+
+@keyframes lab-busy {
+  50% { stroke-opacity: 0.4; }
+}
+
+.lab__svg--narrow {
+  .lab__node-label {
+    font-size: 13px;
+  }
+
+  .lab__node-sub,
+  .lab__node-note {
+    font-size: 10px;
+  }
+}
+
+// Reduced motion: no travelling packets or walking dashes. The active edge keeps
+// its colour and weight, so the stepper still shows where the turn is.
+@media (prefers-reduced-motion: reduce) {
+  .lab__packet {
+    display: none;
+  }
+
+  .lab__edge--walking .lab__edge-line,
+  .lab__node[data-state='busy'] .lab__node-box {
+    animation: none;
+  }
+
+  .lab__edge--walking .lab__edge-line {
+    stroke-dasharray: none;
+    stroke-width: 3;
+  }
+
+  .lab__bar > span {
+    transition: none;
+  }
+}
