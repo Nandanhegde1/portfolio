@@ -165,7 +165,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   readonly outerOrbit = [
     { name: 'AWS', icon: '☁️', angle: 30 },
     { name: 'Docker', icon: '🐳', angle: 75 },
-    { name: 'Kubernetes', icon: '⎈', angle: 120 },
+    { name: 'Python', icon: '🐍', angle: 120 },
     { name: 'Terraform', icon: '🏗️', angle: 165 },
     { name: 'Jenkins', icon: '🔧', angle: 210 },
     { name: 'Azure', icon: '🔵', angle: 255 },

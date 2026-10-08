@@ -1,7 +1,7 @@
 {
   "personal": {
     "name": "Nandan Hegde",
-    "title": "Senior Full-Stack Engineer · AI Products",
+    "title": "Senior Software Engineer · AI Engineer",
     "tagline": "I build full-stack products — and the AI inside them.",
     "bio": "Senior engineer (~6 years) who designs and architects the AI workstream behind a product — and builds the product itself. I turn vague, constrained problems into AI features that ship and hold up in production, and I lead the team that delivers them.",
     "email": "nandanhegde1096@gmail.com",
@@ -21,18 +21,18 @@
       "id": "thinkbridge",
       "role": "Senior Software Engineer",
       "company": "Thinkbridge Software Pvt Ltd",
-      "client": "PSG Global Solutions",
+      "client": "US recruiting-technology firm",
       "location": "Pune, India",
       "startDate": "2022-03",
       "endDate": null,
       "current": true,
-      "description": "Lead the AI workstream on a recruiting platform used by 10,000+ people — full-stack, from the Angular product layer to the AI services behind it.",
+      "description": "Led the AI workstream on a recruiting platform used by 10,000+ people — full-stack, from the Angular product layer to the AI services behind it.",
       "highlights": [
         "Designed an AI interviewing system: an AI voice agent interviews candidates and the transcript is scored into a fit score across skills, experience, location, availability and tenure (interview weighted over the résumé)",
-        "Architecting a candidate-ranking engine (retrieval + ranking) that surfaces the strongest candidates for a job — owning the ranking approach, vector-database selection, and a model-cost strategy",
-        "Designed the conversation pathways for a multilingual voice agent that automates candidate follow-ups (documents, bookings, reminders)",
-        "Led the Compass modernization: legacy AngularJS to modern Angular 19, ~30% faster loads for 10,000+ monthly users; integrated Power BI, Microsoft SSO, and Bland AI; delivered 15+ features across 5 sprints",
-        "Set the team's testing standard (5,000+ Karma/Jasmine test lines, branch-coverage targets on critical modules) and built the Azure DevOps CI/CD pipelines",
+        "Designed a candidate-ranking engine, now in production: hybrid retrieval and ranking that surfaces the strongest candidates for a job. Led the ranking approach, the vector-database selection and the model-cost strategy",
+        "Designed the conversation pathways for a multilingual voice agent that guides candidates through multi-step journeys",
+        "Led the zero-downtime migration of a 7-year-old AngularJS platform to Angular 19, with about 30% faster initial load; integrated Power BI, Microsoft SSO, and Bland AI; delivered 15+ features across 5 sprints",
+        "Drove branch-coverage targets on critical modules, tracked in the Azure DevOps CI pipeline",
         "Drove adoption of Claude across 30+ engineers and authored the team's AI-usage guidelines",
         "Built a browser extension automating recruiting data capture for 500+ users, and a real-time candidate-data sync engine in Angular"
       ],
@@ -41,7 +41,7 @@
         "TypeScript",
         "RxJS",
         "Node.js",
-        "LLM integration (Azure OpenAI, Claude)",
+        "LLM integration (Azure OpenAI)",
         "Azure DevOps",
         "Power BI"
       ]
@@ -126,16 +126,16 @@
       "category": "innovation"
     },
     {
-      "id": "compass",
-      "title": "Compass Application",
-      "client": "PSG Global Solutions",
-      "description": "Recruitment operations platform modernized from AngularJS to Angular 19. Led frontend development, performance optimization, and CI/CD pipeline architecture serving 10,000+ monthly users.",
+      "id": "platform-modernization",
+      "title": "Platform Modernization",
+      "client": "US recruiting-technology firm",
+      "description": "Recruitment operations platform migrated from a 7-year-old AngularJS codebase to Angular 19 with zero downtime. Led the frontend work, with about 30% faster initial load measured before and after.",
       "highlights": [
         "AngularJS to Angular 19 migration with ~30% load time reduction",
-        "Browser extension automating data collection for 500+ recruiters",
-        "Real-time candidate sync engine eliminating duplicate entries",
+        "Browser extension automating recruiting data capture for 500+ users",
+        "Real-time candidate-data sync engine in Angular",
         "Power BI, Microsoft SSO, and Bland AI integration",
-        "5,000+ test lines, with branch-coverage targets on critical modules"
+        "Branch-coverage targets on critical modules, tracked in the Azure DevOps CI pipeline"
       ],
       "technologies": [
         "Angular 19",
@@ -147,8 +147,7 @@
       ],
       "metrics": [
         { "value": "~30%", "label": "load time reduction" },
-        { "value": "10,000+", "label": "monthly users" },
-        { "value": "500+", "label": "recruiters on the extension" }
+        { "value": "500+", "label": "users on the extension" }
       ],
       "imageUrl": "",
       "liveUrl": "",
@@ -158,8 +157,8 @@
     },
     {
       "id": "ai-calling-agent",
-      "title": "AI Interview & Fit-Scoring (Anna)",
-      "client": "PSG Global Solutions",
+      "title": "AI Voice Interviewer & Fit Scoring",
+      "client": "US recruiting-technology firm",
       "description": "An AI voice agent that interviews candidates in their language, then scores how well they fit a role from the transcript — across skills, experience, location, availability and tenure. I designed how it interviews and how the fit score is computed.",
       "highlights": [
         "AI voice agent conducts a real, role-specific interview",
@@ -170,7 +169,6 @@
       "technologies": [
         "LLMs",
         "Azure OpenAI",
-        "Claude",
         "Voice AI",
         "FastAPI"
       ],
@@ -386,11 +384,6 @@
         "icon": "docker"
       },
       {
-        "name": "Kubernetes",
-        "level": 55,
-        "icon": "kubernetes"
-      },
-      {
         "name": "Terraform",
         "level": 60,
         "icon": "terraform"
@@ -465,14 +458,7 @@
       "endDate": "2019-07"
     }
   ],
-  "certifications": [
-    {
-      "name": "AWS Certified Solutions Architect Associate",
-      "issuer": "Amazon Web Services",
-      "date": "2021 (expired)",
-      "url": "https://aws.amazon.com/verification"
-    }
-  ],
+  "certifications": [],
   "languages": [
     {
       "name": "English",
@@ -503,16 +489,9 @@
       "icon": "briefcase"
     },
     {
-      "date": "2021",
-      "title": "AWS Certification",
-      "description": "AWS Solutions Architect Associate (2021, expired)",
-      "category": "achievement",
-      "icon": "certificate"
-    },
-    {
       "date": "2022-03",
-      "title": "Joined Thinkbridge",
-      "description": "Senior Software Engineer leading Angular frontend for PSG Global Solutions",
+      "title": "Joined thinkbridge",
+      "description": "Senior Software Engineer. Led the AI workstream for a US recruiting-technology firm",
       "category": "career",
       "icon": "rocket"
     }
@@ -525,13 +504,12 @@
     "prompt": "nandan@portfolio:~$"
   },
   "chatbot": {
-    "systemPrompt": "You are an AI assistant for Nandan Hegde's portfolio. He is a senior full-stack engineer (~6 years) at Thinkbridge (client: PSG Global Solutions) who leads and architects the AI workstream on a recruiting platform used by 10,000+ people. He designed an AI interviewing + fit-scoring system (an AI voice agent interviews candidates; the transcript is scored against the role), is architecting a candidate-ranking/retrieval engine, integrates LLMs (Azure OpenAI, Claude), and builds the product in Angular 19 / TypeScript / Node.js. He drove Claude adoption across 30+ engineers and authored the team's AI-usage guidelines, set the testing standard (5,000+ Karma/Jasmine lines, branch-coverage targets on critical modules), built Azure DevOps CI/CD, and led an AngularJS-to-Angular 19 modernization. Previously at Infosys (Swiss Re global claims platform across 40+ countries; a multi-cloud accelerator). AWS Solutions Architect Associate certification (2021, expired). Open to senior/lead full-stack and AI-product roles, including relocation. Note: he designs, architects, and integrates AI systems rather than training models. Answer professionally and concisely.",
+    "systemPrompt": "You are an AI assistant for Nandan Hegde's portfolio. He is a Senior Software Engineer (6+ years) at thinkbridge. He led the AI workstream for a US recruiting-technology firm, with a team of about 10 engineers: an AI voice interviewer, transcript fit scoring and a candidate ranking engine, all taken from design into production. He led the platform's migration from AngularJS to Angular 19 and drove Claude adoption across 30+ engineers. His public side projects are Planning Desk, Ask GovAI, MCP Directory and IndiaTenders. Answer only from these facts.",
     "quickQuestions": [
       "What's your tech stack?",
       "Tell me about your experience",
       "Are you open to new opportunities?",
-      "What projects have you worked on?",
-      "What certifications do you have?"
+      "What projects have you worked on?"
     ]
   }
 }

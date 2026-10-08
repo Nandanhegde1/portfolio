@@ -125,11 +125,11 @@ export class CommandRegistryService {
       description: 'Display current user info',
       action: () => [
         'Nandan Hegde',
-        'Senior Full-Stack Engineer · AI Products',
+        'Senior Software Engineer · AI Engineer',
         'Location: Bangalore, India',
-        'Stack: Angular, TypeScript, Node.js, LLMs (Azure OpenAI, Claude), AWS',
+        'Stack: Angular, TypeScript, Node.js, Python, LLMs (Azure OpenAI)',
         '',
-        'Currently @ Thinkbridge Software Pvt Ltd',
+        'Currently @ thinkbridge',
       ],
     });
 

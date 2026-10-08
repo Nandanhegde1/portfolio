@@ -514,7 +514,6 @@ export class AboutComponent implements OnInit {
         { name: 'Git', level: 88, rarity: 'epic' },
         { name: 'Jenkins', level: 72, rarity: 'rare' },
         { name: 'Docker', level: 65, rarity: 'common' },
-        { name: 'Kubernetes', level: 55, rarity: 'common' },
         { name: 'Terraform', level: 60, rarity: 'rare' },
       ],
     },

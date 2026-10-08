@@ -45,8 +45,8 @@ interface FeaturedProject {
         <div class="bento__card bento__card--name" appScrollReveal>
           <span class="bento__card-tag">// hello-world</span>
           <h2 class="bento__name">Nandan Hegde</h2>
-          <p class="bento__role">Senior Full-Stack Engineer · AI Products</p>
-          <p class="bento__guild">Thinkbridge · PSG Global Solutions</p>
+          <p class="bento__role">Senior Software Engineer · AI Engineer</p>
+          <p class="bento__guild">thinkbridge</p>
           <div class="bento__available">
             <span class="bento__pulse"></span>
             Open to opportunities
@@ -167,16 +167,16 @@ export class HomeComponent {
   readonly stats: HomeStat[] = [
     { value: 6, suffix: '+', label: 'Years Experience', icon: '\u26A1' },
     { value: 15, suffix: '+', label: 'Features Shipped', icon: '\uD83D\uDE80' },
-    { value: 10, suffix: 'K+', label: 'Users Served', icon: '\uD83D\uDC65' },
-    { value: 5, suffix: 'K+', label: 'Test Lines Written', icon: '\u2705' },
+    { value: 10, suffix: 'K+', label: 'People on the Platform', icon: '\uD83D\uDC65' },
+    { value: 4, suffix: '', label: 'AI Features in Production', icon: '\u2705' },
   ];
 
   readonly featuredProjects: FeaturedProject[] = [
     {
-      title: 'AI Interview & Fit-Scoring (Anna)',
-      client: 'PSG Global Solutions',
+      title: 'AI Voice Interviewer & Fit Scoring',
+      client: 'US recruiting-technology firm',
       oneLiner: 'An AI voice agent interviews each candidate; the transcript is scored into a fit score against the role.',
-      metric: '10K+ user platform · demoed live in Austin',
+      metric: 'In production · demoed at a tradeshow in Austin, US',
       stack: ['LLMs', 'Azure OpenAI', 'Voice AI', 'FastAPI'],
       link: '/case-study/ai-interview',
     },
@@ -189,10 +189,10 @@ export class HomeComponent {
       link: '/projects',
     },
     {
-      title: 'Compass',
-      client: 'PSG Global Solutions',
+      title: 'Platform Modernization',
+      client: 'US recruiting-technology firm',
       oneLiner: 'Migrated a 7-year-old AngularJS recruiting platform to Angular 19 without a single hour of downtime.',
-      metric: '~30% faster load · 10K+ monthly users',
+      metric: '~30% faster initial load, measured before and after',
       stack: ['Angular 19', 'TypeScript', 'Power BI', 'Azure DevOps'],
       link: '/projects',
     },
@@ -215,7 +215,6 @@ export class HomeComponent {
     { name: 'GCP', primary: false },
     { name: 'Terraform', primary: false },
     { name: 'Docker', primary: false },
-    { name: 'Kubernetes', primary: false },
     { name: 'Karma/Jasmine', primary: false },
     { name: 'CI/CD', primary: false },
     { name: 'Jenkins', primary: false },
@@ -232,22 +231,16 @@ export class HomeComponent {
       side: 'left',
     },
     {
-      year: '2021',
-      title: 'AWS Certification',
-      description: 'Solutions Architect Associate (2021, expired). Multi-cloud infrastructure with Terraform across AWS, Azure, GCP.',
-      side: 'right',
-    },
-    {
       year: '2022',
-      title: 'Joined Thinkbridge',
-      description: 'Senior Engineer leading the AI workstream — an AI voice-interview + fit-scoring system and a candidate-ranking engine — and modernized PSG’s platform to Angular 19 for 10,000+ users.',
-      side: 'left',
+      title: 'Joined thinkbridge',
+      description: 'Senior Software Engineer. Led the AI workstream for a US recruiting-technology firm: an AI voice interviewer, transcript fit scoring and a candidate ranking engine, all in production. Led the platform\u2019s migration to Angular 19.',
+      side: 'right',
     },
     {
       year: 'Now',
       title: 'Ready for What\u2019s Next',
       description: 'Open to senior and lead roles in full-stack and AI product. Let\u2019s build something great.',
-      side: 'right',
+      side: 'left',
     },
   ];
 }

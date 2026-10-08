@@ -80,8 +80,8 @@ interface ValueProp {
               <div class="pitch__journey-dot"></div>
               <div class="pitch__journey-card">
                 <span class="pitch__journey-year">2022</span>
-                <h3>Joined Thinkbridge</h3>
-                <p>Senior Engineer leading the AI workstream — an AI voice-interview + fit-scoring system and a candidate-ranking engine — on a 10,000-user recruiting platform.</p>
+                <h3>Joined thinkbridge</h3>
+                <p>Senior Software Engineer. Led the AI workstream for a US recruiting-technology firm: an AI voice interviewer, transcript fit scoring and a candidate ranking engine.</p>
               </div>
             </div>
             <div class="pitch__journey-node">
@@ -89,7 +89,7 @@ interface ValueProp {
               <div class="pitch__journey-card">
                 <span class="pitch__journey-year">Now</span>
                 <h3>What's next?</h3>
-                <p>Ready to lead AI-product work at a bigger scale — open to senior and lead roles abroad.</p>
+                <p>Ready to lead AI-product work at a bigger scale.</p>
               </div>
             </div>
           </div>
@@ -187,7 +187,7 @@ export class PitchComponent implements AfterViewInit, OnDestroy {
 
   readonly techStack = [
     'Angular 19', 'TypeScript', 'RxJS', 'SCSS', 'Node.js', 'Express',
-    'MongoDB', 'Azure', 'AWS', 'GCP', 'Docker', 'Kubernetes',
+    'MongoDB', 'Azure', 'AWS', 'GCP', 'Docker', 'Python',
     'Terraform', 'Jenkins', 'Three.js', 'PowerBI', 'Git', 'REST APIs',
     'GraphQL', 'CI/CD', 'Agile', 'JIRA',
   ];

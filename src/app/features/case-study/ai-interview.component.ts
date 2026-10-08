@@ -10,7 +10,7 @@ import { ScrollRevealDirective } from '../../shared/directives/scroll-reveal.dir
   template: `
     <article class="cs">
       <header class="cs__hero" appScrollReveal>
-        <span class="cs__eyebrow">// case study · production · PSG Global Solutions</span>
+        <span class="cs__eyebrow">// case study · production · US recruiting-technology firm</span>
         <h1 class="cs__title">AI Interview &amp; Fit-Scoring<span class="cs__accent">.</span></h1>
         <p class="cs__standfirst">
           How a recruiting platform used by 10,000+ people got an AI that <em>interviews</em> candidates —
@@ -33,7 +33,7 @@ import { ScrollRevealDirective } from '../../shared/directives/scroll-reveal.dir
         <h2>The design call: interview &gt; résumé</h2>
         <p>
           The core decision was about <strong>signal design</strong>, not model choice. An AI voice agent
-          ("Anna") conducts a real, role-specific interview in the candidate's language. The transcript —
+          conducts a real, role-specific interview in the candidate's language. The transcript —
           not the résumé — becomes the primary scoring input, weighted across five dimensions:
         </p>
         <ul class="cs__dims">
@@ -50,7 +50,7 @@ import { ScrollRevealDirective } from '../../shared/directives/scroll-reveal.dir
         <h2>The system</h2>
         <ol class="cs__flow">
           <li><strong>Interview</strong> — the voice agent runs a role-specific interview over conversation pathways I designed (Bland AI for the voice layer).</li>
-          <li><strong>Score</strong> — the transcript is scored into a fit score against the role's requirements (LLM scoring — Azure OpenAI / Claude — behind a Python/FastAPI service).</li>
+          <li><strong>Score</strong> — the transcript is scored into a fit score against the role's requirements (LLM scoring on Azure OpenAI, behind a Python/FastAPI service).</li>
           <li><strong>Surface</strong> — recruiters see scored, comparable candidates inside the Angular 19 product, where I also own the product layer.</li>
         </ol>
         <p>
@@ -61,11 +61,11 @@ import { ScrollRevealDirective } from '../../shared/directives/scroll-reveal.dir
       </section>
 
       <section class="cs__section" appScrollReveal>
-        <h2>What I'm building on top: the ranking engine</h2>
+        <h2>What came next: the ranking engine</h2>
         <p>
-          Fit scores make candidates <em>comparable</em>, which unlocks the next system — currently in
-          architecture: a candidate-ranking engine that surfaces the strongest candidates for a job order
-          from their résumé, screening, and history, with recruiter-tunable weights. I own the ranking
+          Fit scores make candidates <em>comparable</em>, which unlocked the next system, now in
+          production: a candidate-ranking engine that surfaces the strongest candidates for a job order
+          from their résumé, screening, and history, with recruiter-tunable weights. I led the ranking
           approach (retrieval + ranking), the vector-database selection, and the
           <strong>model-cost strategy</strong>: which model runs at which step, what gets cached, and what
           never needs an LLM at all — the difference between a demo and something affordable at

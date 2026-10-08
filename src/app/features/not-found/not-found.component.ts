@@ -117,7 +117,7 @@ export class NotFoundComponent implements OnInit {
     }),
     about: () => ({ cmd: 'about', out: 'Nandan Hegde — Senior Software Engineer. 6+ yrs Angular/Node/AWS.', href: '/about' }),
     projects: () => ({ cmd: 'projects', out: 'Open the dashboard for live project list.', href: '/dashboard' }),
-    skills: () => ({ cmd: 'skills', out: 'Angular · TypeScript · RxJS · Node · AWS · Docker · K8s · Azure DevOps' }),
+    skills: () => ({ cmd: 'skills', out: 'Angular · TypeScript · RxJS · Node · Python · Docker · Azure DevOps' }),
     contact: () => ({ cmd: 'contact', out: 'Form ready when you are.', href: '/contact' }),
     resume: () => ({ cmd: 'resume', out: '<a href="assets/Nandan_Hegde_Resume.pdf" target="_blank" class="nf__link">↳ Download resume.pdf</a>' }),
     lab: () => ({ cmd: 'lab', out: 'Heading to the lab.', href: '/lab' }),

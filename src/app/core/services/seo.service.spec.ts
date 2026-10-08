@@ -24,7 +24,7 @@ describe('SeoService', () => {
 
   it('applies the AI-product fallback positioning when a route has no seo data', () => {
     service.update({});
-    expect(title.getTitle()).toBe('Nandan Hegde | Senior Full-Stack Engineer · AI Products');
+    expect(title.getTitle()).toBe('Nandan Hegde | Senior Software Engineer · AI Engineer');
     const desc = meta.getTag('name="description"')?.content ?? '';
     expect(desc).toContain('AI');
     expect(desc).not.toContain('enterprise Angular apps');
