@@ -28,9 +28,8 @@
       "current": true,
       "description": "Led the AI workstream on a recruiting platform used by 10,000+ people — full-stack, from the Angular product layer to the AI services behind it.",
       "highlights": [
-        "Designed an AI interviewing system: an AI voice agent interviews candidates and the transcript is scored into a fit score across skills, experience, location, availability and tenure (interview weighted over the résumé)",
+        "Designed an AI interviewing system: an AI voice agent interviews each candidate in their own language over conversation pathways I designed on Bland AI, and the transcript is scored into a fit score across skills, experience, location, availability and tenure (interview weighted over the résumé)",
         "Designed a candidate-ranking engine, now in production: hybrid retrieval and ranking that surfaces the strongest candidates for a job. Led the ranking approach, the vector-database selection and the model-cost strategy",
-        "Designed the conversation pathways for a multilingual voice agent that guides candidates through multi-step journeys",
         "Led the zero-downtime migration of a 7-year-old AngularJS platform to Angular 19, with about 30% faster initial load; integrated Power BI, Microsoft SSO, and Bland AI; delivered 15+ features across 5 sprints",
         "Drove branch-coverage targets on critical modules, tracked in the Azure DevOps CI pipeline",
         "Drove adoption of Claude across 30+ engineers and authored the team's AI-usage guidelines",
